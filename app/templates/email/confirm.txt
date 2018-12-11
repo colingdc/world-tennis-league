@@ -1,6 +1,6 @@
 Bonjour {{ user.username }},
 Bienvenue sur le site de la World Tennis League !
 Afin de valider la création de ton compte, merci de cliquer sur le lien suivant :
-{{ url_for('auth.signup', token=token, _external=True) }}
+{{ url_for('auth.confirm', token=token, _external=True) }}
 
 L'équipe de la WTL

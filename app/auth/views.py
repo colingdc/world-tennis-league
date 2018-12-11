@@ -1,6 +1,6 @@
 from flask import (current_app, flash, redirect, render_template, request,
                    session, url_for)
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 
 from . import bp
 from .. import db
@@ -47,11 +47,32 @@ def signup():
             session.pop("signed", None)
             session.pop("username", None)
             logout_user()
-            return redirect(url_for("auth.login"))
+            login_user(user)
+            return redirect(url_for("auth.unconfirmed"))
     else:
         return render_template("auth/signup.html",
                                form=form,
                                title=title)
+
+
+@bp.route("/unconfirmed")
+def unconfirmed():
+    if current_user.confirmed:
+        return redirect(url_for("main.index"))
+    return render_template("auth/unconfirmed.html")
+
+
+@bp.route("/confirm")
+@login_required
+def resend_confirmation():
+    token = current_user.generate_confirmation_token()
+    send_email(to=current_user.email,
+               subject="Confirmation de votre adresse mail",
+               template="email/confirm",
+               user=current_user,
+               token=token)
+    flash("Un email de confirmation a été envoyé", "info")
+    return redirect(url_for("auth.unconfirmed"))
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -109,4 +130,16 @@ def logout():
     session.pop("signed", None)
     session.pop("username", None)
     logout_user()
-    return redirect(url_for("auth.signup"))
+    return redirect(url_for("main.index"))
+
+
+@bp.route("/confirm/<token>")
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for("main.index"))
+    if current_user.confirm(token):
+        flash("Ton compte est à présent validé", "success")
+    else:
+        flash("Ce lien de confirmation est invalide", "error")
+    return redirect(url_for("main.index"))
