@@ -1,0 +1,12 @@
+<h3>Bonjour {{ user.username }},</h3>
+
+<p>Bienvenue sur le site de la World Tennis League !</p>
+<p>
+  Afin de valider la création de ton compte,
+  <a href="{{ url_for('auth.signup', token=token, _external=True) }}"
+    >merci de cliquer ici.</a
+  >
+</p>
+<br />
+
+<em>L'équipe de la WTL</em>
