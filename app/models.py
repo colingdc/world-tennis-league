@@ -57,13 +57,38 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config["SECRET_KEY"])
         try:
             data = s.loads(token)
-        except:
+        except Exception as e:
             return False
         if data.get("reset") != self.id:
             return False
         self.password = new_password
         db.session.add(self)
         return True
+
+    @staticmethod
+    def create_or_update(email, username, password, confirmed=True,
+                         role_name="User"):
+        role = Role.query.filter_by(name=role_name).first()
+        if role is None:
+            raise ValueError("This role does not exist")
+        user = User.query.filter_by(email=email).first()
+        email_exists = user is not None
+        if not email_exists:
+            user = User(email=email,
+                        role=role,
+                        confirmed=confirmed,
+                        username=username,
+                        password=password)
+        try:
+            db.session.add(user)
+            db.session.commit()
+            if email_exists:
+                print(f"User {username} updated successfully")
+            else:
+                print(f"User {username} created successfully")
+        except Exception as e:
+            print(str(e))
+            db.session.rollback()
 
     def delete(self):
         db.session.delete(self)
