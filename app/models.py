@@ -45,7 +45,7 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config["SECRET_KEY"])
         try:
             data = s.loads(token)
-        except:
+        except Exception as e:
             return False
         if data.get("confirm") != self.id:
             return False
@@ -93,6 +93,16 @@ class User(UserMixin, db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def can(self, permissions):
+        return (self.role is not None and
+                (self.role.permissions & permissions) == permissions)
+
+    def is_administrator(self):
+        return self.can(Permission.ADMINISTER)
+
+    def is_manager(self):
+        return self.can(Permission.MANAGE_TOURNAMENT)
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -146,3 +156,23 @@ class Role(db.Model):
 
     def __repr__(self):
         return self.name
+
+
+class TournamentWeek(db.Model):
+    __tablename__ = "tournament_weeks"
+    id = db.Column(db.Integer, primary_key=True)
+    deleted_at = db.Column(db.DateTime, default=None)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    start_date = db.Column(db.Date)
+    tournaments = db.relationship("Tournament", backref="week", lazy="dynamic")
+
+
+class Tournament(db.Model):
+    __tablename__ = "tournaments"
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    deleted_at = db.Column(db.DateTime, default=None)
+
+    name = db.Column(db.String(64))
+    started_at = db.Column(db.DateTime)
+    week_id = db.Column(db.Integer, db.ForeignKey('tournament_weeks.id'))

@@ -52,4 +52,7 @@ def create_app(config_name):
     from .main import bp as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    from .tournament import bp as tournament_blueprint
+    app.register_blueprint(tournament_blueprint, url_prefix="/tournament")
+
     return app
