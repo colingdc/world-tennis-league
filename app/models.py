@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True)
     password_hash = db.Column(db.String(128))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __repr__(self):
         return "<User %r>" % self.username
@@ -64,6 +65,10 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
@@ -80,3 +85,39 @@ class AnonymousUser(AnonymousUserMixin):
 
 
 login_manager.anonymous_user = AnonymousUser
+
+
+class Permission:
+    PARTICIPATE_TOURNAMENT = 0x01
+    MANAGE_TOURNAMENT = 0x02
+    ADMINISTER = 0x80
+
+
+class Role(db.Model):
+    __tablename__ = "roles"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
+    users = db.relationship("User", backref="role", lazy="dynamic")
+
+    @staticmethod
+    def insert_roles():
+        roles = {
+            'User': (Permission.PARTICIPATE_TOURNAMENT, True),
+            'Tournament Manager': (Permission.PARTICIPATE_TOURNAMENT |
+                                   Permission.MANAGE_TOURNAMENT,
+                                   False),
+            'Administrator': (0xff, False)
+        }
+        for r in roles:
+            role = Role.query.filter_by(name=r).first()
+            if role is None:
+                role = Role(name=r)
+            role.permissions = roles[r][0]
+            role.default = roles[r][1]
+            db.session.add(role)
+        db.session.commit()
+
+    def __repr__(self):
+        return self.name
