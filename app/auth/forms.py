@@ -41,7 +41,9 @@ class ChangePasswordForm(FlaskForm):
         "Nouveau mot de passe",
         validators=[DataRequired(),
                     Length(min=8),
-                    EqualTo('password2')])
+                    EqualTo('password2',
+                            message="Les mots de passe renseignés "
+                            "sont différents.")])
     password2 = PasswordField(
         "Confirmer le nouveau mot de passe",
         validators=[DataRequired()])
@@ -67,7 +69,9 @@ class PasswordResetForm(FlaskForm):
         "Nouveau mot de passe",
         validators=[DataRequired(),
                     Length(min=8),
-                    EqualTo("password2")])
+                    EqualTo('password2',
+                            message="Les mots de passe renseignés "
+                            "sont différents.")])
     password2 = PasswordField(
         "Confirmer le mot de passe",
         validators=[DataRequired()])

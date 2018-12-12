@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_babel import Babel
 from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -8,6 +9,7 @@ from flask_wtf.csrf import CSRFProtect
 import os
 from config import config
 
+babel = Babel()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 bootstrap = Bootstrap()
@@ -21,6 +23,7 @@ def create_app(config_name):
     app.url_map.strict_slashes = False
     CSRFProtect(app)
 
+    babel.init_app(app)
     db.init_app(app)
     bootstrap.init_app(app)
     login_manager.init_app(app)

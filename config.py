@@ -17,6 +17,7 @@ class Config:
     MAIL_SENDER = os.environ.get('MAIL_SENDER')
     MAIL_SUBJECT_PREFIX = "[WTL]"
     ADMIN_WTL = os.environ.get('MAIL_SENDER')
+    BABEL_DEFAULT_LOCALE = "fr"
 
 
 class ConfigDev(Config):
