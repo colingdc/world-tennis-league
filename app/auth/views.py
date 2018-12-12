@@ -6,7 +6,8 @@ from . import bp
 from .. import db
 from ..email import send_email
 from ..models import User
-from .forms import LoginForm, SignupForm
+from .forms import (LoginForm, SignupForm, ChangePasswordForm,
+                    PasswordResetRequestForm, PasswordResetForm)
 
 
 @bp.route("/signup", methods=["GET", "POST"])
@@ -143,3 +144,74 @@ def confirm(token):
     else:
         flash("Ce lien de confirmation est invalide", "error")
     return redirect(url_for("main.index"))
+
+
+@bp.route("/change-password", methods=["GET", "POST"])
+@login_required
+def change_password():
+    title = "Changement de mot de passe"
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.old_password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            flash("Ton mot de passe a été mis à jour", "success")
+            return redirect(url_for("main.index"))
+        else:
+            form.old_password.errors.append("Mot de passe incorrect")
+    return render_template("auth/change_password.html",
+                           form=form,
+                           title=title,
+                           user=current_user)
+
+
+@bp.route("/reset", methods=["GET", "POST"])
+def reset_password_request():
+    if not current_user.is_anonymous():
+        return redirect(url_for("main.index"))
+    form = PasswordResetRequestForm()
+    title = "Réinitialisation du mot de passe"
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            token = user.generate_reset_token()
+            send_email(user.email, "Réinitialisation du mot de passe",
+                       "email/reset_password",
+                       user=user,
+                       token=token,
+                       next=request.args.get("next"))
+        flash("Un email contenant des instructions pour réinitialiser "
+              "ton mot de passe t'a été envoyé. Si tu n'as pas reçu d'email, "
+              "vérifie dans ton dossier de spams et assure toi d'avoir rentré "
+              "la bonne adresse mail.",
+              "info")
+        return redirect(url_for("auth.login"))
+    return render_template("auth/reset_password_request.html",
+                           form=form,
+                           title=title)
+
+
+@bp.route("/reset/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    if not current_user.is_anonymous():
+        return redirect(url_for("main.index"))
+    form = PasswordResetForm()
+    title = "Réinitialisation du mot de passe"
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is None:
+            return redirect(url_for("main.index"))
+        if user.reset_password(token, form.password.data):
+            flash("Ton mot de passe a été mis à jour.", "success")
+            return redirect(url_for("auth.login"))
+        else:
+            flash("L'adresse email entrée ne correspond pas au lien de "
+                  "réinitialisation envoyé.", "warning")
+            return render_template("auth/reset_password.html",
+                                   form=form,
+                                   token=token,
+                                   title=title)
+    return render_template("auth/reset_password.html",
+                           form=form,
+                           token=token,
+                           title=title)

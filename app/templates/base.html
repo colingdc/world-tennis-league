@@ -40,7 +40,7 @@
         <span class="icon-bar"></span> <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{ url_for('auth.signup') }}"
+      <a class="navbar-brand" href="{{ url_for('main.index') }}"
         >World Tennis League</a
       >
     </div>
@@ -54,12 +54,30 @@
             <span class="fa fa-user" aria-hidden="true"></span>
             {{ current_user.username }} <b class="caret"></b
           ></a>
-          <ul class="dropdown-menu"></ul>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="{{ url_for('auth.logout') }}">
+                <span class="fa fa-sign-out" aria-hidden="true"></span> Me
+                déconnecter
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('auth.change_password') }}">
+                <span class="fa fa-lock" aria-hidden="true"></span> Modifier mon
+                mot de passe
+              </a>
+            </li>
+          </ul>
         </li>
         {% else %}
         <li>
           <a href="{{ url_for('auth.signup') }}">
             <span class="fa fa-user-plus" aria-hidden="true"></span> Inscription
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('auth.login') }}">
+            <span class="fa fa-sign-in" aria-hidden="true"></span> Connexion
           </a>
         </li>
         {% endif %}
@@ -78,4 +96,5 @@
   {% endfor %} {% block content %}{% endblock %}
 </div>
 
-{% block extrajs %}{% endblock %} {% endblock %}
+{% block scripts %}{{ super() }}{% endblock %} {% block extrajs %}{% endblock %}
+{% endblock %}

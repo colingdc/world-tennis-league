@@ -36,6 +36,8 @@
 
           <div class="form-group">
             <button class="btn btn-success" type="submit">Valider</button>
+            <br />
+            <br />
             <span>
               Pas encore inscrit ?
               <a href="{{ url_for('auth.signup') }}"> Créer un compte </a>
@@ -43,7 +45,7 @@
             <br />
             <span>
               Mot de passe oublié ?
-              <a href="{{ url_for('auth.signup') }}">
+              <a href="{{ url_for('auth.reset_password_request') }}">
                 Réinitialiser mon mot de passe
               </a>
             </span>
