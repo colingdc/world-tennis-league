@@ -15,6 +15,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    participations = db.relationship(
+        "Participation", backref="user", lazy="dynamic")
 
     def __repr__(self):
         return "<User %r>" % self.username
@@ -171,6 +173,13 @@ class TournamentWeek(db.Model):
         return f"{year} Semaine {week_number}"
 
 
+class TournamentStatus:
+    CREATED = 10
+    REGISTRATION_OPEN = 20
+    ONGOING = 30
+    FINISHED = 40
+
+
 class Tournament(db.Model):
     __tablename__ = "tournaments"
     id = db.Column(db.Integer, primary_key=True)
@@ -179,4 +188,32 @@ class Tournament(db.Model):
 
     name = db.Column(db.String(64))
     started_at = db.Column(db.DateTime)
+    status = db.Column(db.Integer, default=TournamentStatus.CREATED)
     week_id = db.Column(db.Integer, db.ForeignKey('tournament_weeks.id'))
+    participations = db.relationship(
+        "Participation", backref="tournament", lazy="dynamic")
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def get_status(self):
+        statuses = {
+            10: "Créé",
+            20: "Ouvert aux inscriptions",
+            30: "En cours",
+            40: "Terminé"
+        }
+        return statuses.get(self.status)
+
+
+class Participation(db.Model):
+    __tablename__ = "participations"
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    deleted_at = db.Column(db.DateTime, default=None)
+    round_reached = db.Column(db.Integer, default=0)
+    points = db.Column(db.Integer, default=0)
+
+    tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

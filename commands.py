@@ -37,6 +37,33 @@ class CreateFakeUsers(Command):
         db.session.commit()
 
 
+class CreateSpecialUsers(Command):
+    def run(self):
+        Role.insert_roles()
+        manager_role = Role.query.filter(
+            Role.name == "Tournament Manager").first()
+        admin_role = Role.query.filter(Role.name == "Administrator").first()
+
+        manager = User(
+            email="manager@gmail.com",
+            username="manager",
+            password="manager123",
+            confirmed=True,
+            role_id=manager_role.id,
+        )
+        admin = User(
+            email="admin@gmail.com",
+            username="admin",
+            password="admin123",
+            confirmed=True,
+            role_id=admin_role.id,
+        )
+        db.session.add(manager)
+        db.session.add(admin)
+        db.session.commit()
+        print("Admin and tournament manager users created")
+
+
 class CreateFakeTournaments(Command):
     option_list = (
         Option('--number_weeks', '-n', dest='number_weeks'),
@@ -65,7 +92,7 @@ class CreateFakeTournaments(Command):
                 t = Tournament(
                     name=" ".join(f.words(3)),
                     started_at=d,
-                    week_id=w.id
+                    week_id=w.id,
                 )
                 db.session.add(t)
                 print(f"-- Tournament #{j + 1} {t.name} created")

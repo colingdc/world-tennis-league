@@ -50,3 +50,13 @@ def view_tournaments():
     return render_template("tournament/view_tournaments.html",
                            title=title,
                            tournaments=tournaments)
+
+
+@bp.route("/view/<tournament_id>")
+@login_required
+def view_tournament(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    title = tournament.name
+    return render_template("tournament/view_tournament.html",
+                           title=title,
+                           tournament=tournament)

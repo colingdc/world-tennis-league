@@ -1,0 +1,120 @@
+{% extends "base.html" %} {% import "_macros.html" as macros %} {% block styles
+%}
+
+{{ super() }}
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
+/>
+{% endblock %} {% block content %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a data-toggle="collapse" href="#collapse1"> {{ tournament.name }}</a>
+    </h3>
+  </div>
+
+  <div id="collapse1" class="panel-collapse collapse in">
+    <div class="panel-body">
+      <p>Date limite d'inscription : {{ tournament.started_at | dt }}</p>
+    </div>
+  </div>
+</div>
+
+{% if current_user.is_manager() %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a data-toggle="collapse" href="#collapse2">Gestion du tournoi</a>
+    </h3>
+  </div>
+
+  <div id="collapse2" class="panel-collapse collapse in">
+    <div class="panel-body">
+      <div class="row">
+        <!-- Tournament -->
+        <div class="col-md-4 col-sm-4"><h4>Tournoi</h4></div>
+
+        <!-- Tournament draw -->
+        <div class="col-md-4 col-sm-4"><h4>Tableau</h4></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+<div class="panel panel-default panel-table">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a data-toggle="collapse" href="#collapse3"> Participants</a>
+    </h3>
+  </div>
+
+  <div id="collapse3" class="panel-collapse collapse in">
+    <div class="panel-body">
+      {% if tournament.participations.first() %}
+      <div class="table">
+        <table
+          id="participants-table"
+          class="table table-striped table-bordered table-hover"
+        >
+          <thead>
+            <tr>
+              <th>Participant</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for participant in tournament.participations %}
+            <tr>
+              <th>{{ participant.user.username }}</th>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %} Aucun participant à ce tournoi pour le moment {% endif %}
+    </div>
+  </div>
+</div>
+
+{{ macros.confirmation_modal() }}
+
+{% endblock %} {% block extrajs %}
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#participants-table").DataTable({
+      searching: false,
+      paging: false,
+      responsive: true,
+      info: false
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  var action = "view_tournament";
+  $(".formConfirm").on("click", function(e) {
+    e.preventDefault();
+    var el = $(this).parent();
+    var title = el.attr("data-title");
+    var msg = el.attr("data-message");
+    action = el.attr("data-action");
+    $("#formConfirm")
+      .find("#frm_body")
+      .html(msg)
+      .end()
+      .find("#frm_title")
+      .html(title)
+      .end()
+      .modal("show");
+  });
+  $("#formConfirm").on("click", "#frm_submit", function(e) {
+    window.location.href = action;
+  });
+</script>
+{% endblock %}
