@@ -194,6 +194,15 @@ class TournamentStatus:
     FINISHED = 40
 
 
+class TournamentCategory:
+    categories = {
+        "Grand Chelem": [2000, 1200, 720, 360, 180, 90, 45, 10],
+        "ATP 1000": [1000, 600, 360, 180, 90, 45, 25, 10],
+        "ATP 500": [500, 300, 180, 90, 45, 20],
+        "ATP 250": [250, 150, 90, 45, 20, 10],
+    }
+
+
 class Tournament(db.Model):
     __tablename__ = "tournaments"
     id = db.Column(db.Integer, primary_key=True)
@@ -202,12 +211,16 @@ class Tournament(db.Model):
 
     name = db.Column(db.String(64))
     started_at = db.Column(db.DateTime)
+    number_rounds = db.Column(db.Integer)
+    category = db.Column(db.String(64))
     status = db.Column(db.Integer, default=TournamentStatus.CREATED)
     week_id = db.Column(db.Integer, db.ForeignKey('tournament_weeks.id'))
     participations = db.relationship(
         "Participation", backref="tournament", lazy="dynamic")
     players = db.relationship(
         "TournamentPlayer", backref="tournament", lazy="dynamic")
+    matches = db.relationship(
+        "Match", backref="tournament", lazy="dynamic")
 
     def delete(self):
         db.session.delete(self)
@@ -256,6 +269,44 @@ class TournamentPlayer(db.Model):
     seed = db.Column(db.Integer)
     status = db.Column(db.String(8))
     qualifier_id = db.Column(db.Integer)
+    position = db.Column(db.Integer)
 
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
+    matches = db.relationship(
+        "Match",
+        backref="tournament_player",
+        primaryjoin="or_(TournamentPlayer.id==Match.tournament_player1_id, "
+        "TournamentPlayer.id==Match.tournament_player2_id)",
+        lazy='dynamic')
+
+
+class Match(db.Model):
+    __tablename__ = "matches"
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    deleted_at = db.Column(db.DateTime)
+
     position = db.Column(db.Integer)
+    round = db.Column(db.Integer)
+
+    tournament_id = db.Column(
+        db.Integer,
+        db.ForeignKey('tournaments.id'))
+    winner_id = db.Column(
+        db.Integer,
+        db.ForeignKey('tournament_players.id'))
+    winner = db.relationship(
+        "TournamentPlayer",
+        foreign_keys="Match.winner_id")
+    tournament_player1_id = db.Column(
+        db.Integer,
+        db.ForeignKey('tournament_players.id'))
+    tournament_player2_id = db.Column(
+        db.Integer,
+        db.ForeignKey('tournament_players.id'))
+    tournament_player1 = db.relationship(
+        "TournamentPlayer",
+        foreign_keys="Match.tournament_player1_id")
+    tournament_player2 = db.relationship(
+        "TournamentPlayer",
+        foreign_keys="Match.tournament_player2_id")
