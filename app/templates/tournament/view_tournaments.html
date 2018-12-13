@@ -29,7 +29,13 @@
           {% for tournament in tournaments %}
           <tr>
             <td>{{ tournament.id }}</td>
-            <td>{{ tournament.name }}</td>
+            <td>
+              <a
+                href="{{ url_for('tournament.view_tournament', 
+                tournament_id=tournament.id) }}"
+                >{{ tournament.name }}</a
+              >
+            </td>
             <td>{{ tournament.week.get_name() }}</td>
             <td>{{ tournament.started_at | dt }}</td>
             <td>{{ tournament.get_status() }}</td>
