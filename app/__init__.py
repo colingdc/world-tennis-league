@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_babel import Babel
+from flask_babel import Babel, format_datetime
 from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -45,6 +45,12 @@ def create_app(config_name):
             return filename
         newfilename = "{0}?v={1}".format(filename, timestamp)
         return newfilename
+
+    def custom_datetime_filter(value):
+        dt = format_datetime(value, "EEEE d MMMM yyyy à H:mm")
+        return dt.capitalize()
+
+    app.jinja_env.filters["dt"] = custom_datetime_filter
 
     from .auth import bp as auth_blueprint
     app.register_blueprint(auth_blueprint)

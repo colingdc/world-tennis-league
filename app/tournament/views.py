@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from flask import flash, redirect, render_template, request, url_for
+from flask_login import login_required
 
 from . import bp
 from .. import db
@@ -36,3 +37,16 @@ def create_tournament():
         return render_template("tournament/create_tournament.html",
                                title=title,
                                form=form)
+
+
+@bp.route("/view")
+@login_required
+def view_tournaments():
+    title = "Tournois"
+    tournaments = (Tournament.query
+                   .filter(Tournament.deleted_at.is_(None))
+                   .order_by(Tournament.started_at.desc())
+                   )
+    return render_template("tournament/view_tournaments.html",
+                           title=title,
+                           tournaments=tournaments)

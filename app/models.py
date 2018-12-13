@@ -166,6 +166,10 @@ class TournamentWeek(db.Model):
     start_date = db.Column(db.Date)
     tournaments = db.relationship("Tournament", backref="week", lazy="dynamic")
 
+    def get_name(self):
+        year, week_number, _ = self.start_date.isocalendar()
+        return f"{year} Semaine {week_number}"
+
 
 class Tournament(db.Model):
     __tablename__ = "tournaments"

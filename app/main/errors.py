@@ -2,6 +2,7 @@ from flask import render_template, request, jsonify, current_app
 from . import bp
 
 
+@bp.app_errorhandler(401)
 @bp.app_errorhandler(403)
 def forbidden(e):
     if (request.accept_mimetypes.accept_json and
