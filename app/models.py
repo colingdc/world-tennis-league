@@ -192,6 +192,8 @@ class Tournament(db.Model):
     week_id = db.Column(db.Integer, db.ForeignKey('tournament_weeks.id'))
     participations = db.relationship(
         "Participation", backref="tournament", lazy="dynamic")
+    players = db.relationship(
+        "TournamentPlayer", backref="tournament", lazy="dynamic")
 
     def delete(self):
         db.session.delete(self)
@@ -217,3 +219,29 @@ class Participation(db.Model):
 
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+
+class Player(db.Model):
+    __tablename__ = "players"
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    deleted_at = db.Column(db.DateTime, default=None)
+    first_name = db.Column(db.String(64))
+    last_name = db.Column(db.String(64))
+    tournament_players = db.relationship(
+        "TournamentPlayer", backref="player", lazy="dynamic")
+
+
+class TournamentPlayer(db.Model):
+    __tablename__ = "tournament_players"
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    deleted_at = db.Column(db.DateTime, default=None)
+    player_id = db.Column(db.Integer, db.ForeignKey('players.id'))
+
+    seed = db.Column(db.Integer)
+    status = db.Column(db.String(8))
+    qualifier_id = db.Column(db.Integer)
+
+    tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
+    position = db.Column(db.Integer)
