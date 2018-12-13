@@ -106,6 +106,20 @@ class User(UserMixin, db.Model):
     def is_manager(self):
         return self.can(Permission.MANAGE_TOURNAMENT)
 
+    def can_register_to_tournament(self, tournament):
+        if not tournament.status == TournamentStatus.REGISTRATION_OPEN:
+            return False
+        start_date = tournament.week.start_date
+        participations = (
+            self.participations
+            .join(Tournament)
+            .join(TournamentWeek)
+            .filter(TournamentWeek.start_date == start_date)
+        )
+        if participations.first():
+            return False
+        return True
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):

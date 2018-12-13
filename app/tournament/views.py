@@ -1,12 +1,12 @@
 from datetime import timedelta
 
 from flask import flash, redirect, render_template, request, url_for
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from . import bp
 from .. import db
 from ..decorators import manager_required
-from ..models import Tournament, TournamentWeek
+from ..models import Tournament, TournamentWeek, Participation
 from .forms import CreateTournamentForm
 
 
@@ -52,7 +52,7 @@ def view_tournaments():
                            tournaments=tournaments)
 
 
-@bp.route("/view/<tournament_id>")
+@bp.route("/<tournament_id>/view")
 @login_required
 def view_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
@@ -60,3 +60,22 @@ def view_tournament(tournament_id):
     return render_template("tournament/view_tournament.html",
                            title=title,
                            tournament=tournament)
+
+
+@bp.route("/<tournament_id>/register")
+@login_required
+def register(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    if not current_user.can_register_to_tournament(tournament):
+        flash("Tu n'es pas autorisé à t'inscrire à ce tournoi, sans "
+              "doute car tu es déjà inscrit à un autre tournoi cette semaine.",
+              "warning")
+        return redirect(url_for(".view_tournament",
+                                tournament_id=tournament_id))
+
+    participant = Participation(tournament_id=tournament_id,
+                                user_id=current_user.id)
+    db.session.add(participant)
+    db.session.commit()
+    flash(f"Tu es bien inscrit au tournoi {tournament.name}", "success")
+    return redirect(url_for(".view_tournament", tournament_id=tournament_id))
