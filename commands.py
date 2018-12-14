@@ -5,7 +5,7 @@ from faker import Faker
 from flask_script import Command, Option
 
 from app import db
-from app.models import Role, Tournament, TournamentWeek, User
+from app.models import Role, Tournament, TournamentWeek, User, Player
 
 
 class CreateFakeUsers(Command):
@@ -97,3 +97,26 @@ class CreateFakeTournaments(Command):
                 db.session.add(t)
                 print(f"-- Tournament #{j + 1} {t.name} created")
             db.session.commit()
+
+
+class CreateFakePlayers(Command):
+    option_list = (
+        Option('--number_players', '-n', dest='number_players'),
+    )
+
+    def run(self, number_players):
+        if number_players is None:
+            number_players = 10
+        else:
+            number_players = int(number_players)
+
+        f = Faker()
+
+        for i in range(number_players):
+            p = Player(
+                first_name=f.first_name(),
+                last_name=f.last_name(),
+            )
+            db.session.add(p)
+            print(f"Player #{i + 1} {p.get_name()} created")
+        db.session.commit()

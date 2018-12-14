@@ -235,6 +235,9 @@ class Tournament(db.Model):
         }
         return statuses.get(self.status)
 
+    def get_matches_first_round(self):
+        return [m for m in self.matches if m.round == self.number_rounds]
+
 
 class Participation(db.Model):
     __tablename__ = "participations"
@@ -257,6 +260,16 @@ class Player(db.Model):
     last_name = db.Column(db.String(64))
     tournament_players = db.relationship(
         "TournamentPlayer", backref="player", lazy="dynamic")
+
+    def get_name(self, format="full"):
+        if format == "full":
+            return f"{self.last_name.upper()}, {self.first_name}"
+
+    @classmethod
+    def get_all(cls, format="full"):
+        return [(p.id, p.get_name(format))
+                for p in cls.query.filter(cls.deleted_at.is_(None))
+                .order_by(cls.last_name, cls.first_name).all()]
 
 
 class TournamentPlayer(db.Model):

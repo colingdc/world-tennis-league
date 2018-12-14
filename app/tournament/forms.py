@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import (DateTimeField, StringField,
-                     SubmitField, IntegerField, SelectField)
-from wtforms.validators import InputRequired
+from wtforms import (DateTimeField, FieldList, FormField, IntegerField,
+                     SelectField, StringField, SubmitField)
+from wtforms.validators import InputRequired, Optional
 
 
 class CreateTournamentForm(FlaskForm):
@@ -22,4 +22,18 @@ class CreateTournamentForm(FlaskForm):
                          format="%d/%m/%Y",
                          validators=[InputRequired(
                              message="Ce champ est obligatoire")])
+    submit = SubmitField("Valider")
+
+
+class PlayerTournamentDrawForm(FlaskForm):
+    player1_name = SelectField("Joueur", coerce=int)
+    player2_name = SelectField("Joueur", coerce=int)
+    player1_status = StringField("Statut")
+    player2_status = StringField("Statut")
+    player1_seed = IntegerField("Tête de série", validators=[Optional()])
+    player2_seed = IntegerField("Tête de série", validators=[Optional()])
+
+
+class CreateTournamentDrawForm(FlaskForm):
+    player = FieldList(FormField(PlayerTournamentDrawForm))
     submit = SubmitField("Valider")
