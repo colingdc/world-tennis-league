@@ -238,6 +238,11 @@ class Tournament(db.Model):
     def get_matches_first_round(self):
         return [m for m in self.matches if m.round == self.number_rounds]
 
+    def is_draw_created(self):
+        players = (TournamentPlayer.query
+                   .filter(TournamentPlayer.tournament_id == self.id))
+        return players.first() is not None
+
 
 class Participation(db.Model):
     __tablename__ = "participations"
