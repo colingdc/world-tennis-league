@@ -1,9 +1,6 @@
 from flask import render_template, request, jsonify, current_app
-from . import bp
 
 
-@bp.app_errorhandler(401)
-@bp.app_errorhandler(403)
 def forbidden(e):
     if (request.accept_mimetypes.accept_json and
             not request.accept_mimetypes.accept_html):
@@ -14,7 +11,6 @@ def forbidden(e):
     return render_template('errors/403.html'), 403
 
 
-@bp.app_errorhandler(404)
 def page_not_found(e):
     if (request.accept_mimetypes.accept_json and
             not request.accept_mimetypes.accept_html):
@@ -26,7 +22,6 @@ def page_not_found(e):
     return render_template('errors/404.html'), 404
 
 
-@bp.app_errorhandler(400)
 def bad_request(e):
     if (request.accept_mimetypes.accept_json and
             not request.accept_mimetypes.accept_html):
@@ -37,7 +32,6 @@ def bad_request(e):
     return render_template('errors/400.html'), 400
 
 
-@bp.app_errorhandler(500)
 def internal_server_error(e):
     if (request.accept_mimetypes.accept_json and
             not request.accept_mimetypes.accept_html):
@@ -48,7 +42,6 @@ def internal_server_error(e):
     return render_template('errors/500.html'), 500
 
 
-@bp.app_errorhandler(Exception)
 def unhandled_exception(e):
     if (request.accept_mimetypes.accept_json and
             not request.accept_mimetypes.accept_html):

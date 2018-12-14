@@ -9,7 +9,8 @@ from .. import db
 from ..decorators import manager_required
 from ..models import (Tournament, TournamentWeek, Participation,
                       Match, TournamentCategory, TournamentPlayer, Player)
-from .forms import CreateTournamentForm, CreateTournamentDrawForm
+from .forms import (CreateTournamentForm,
+                    CreateTournamentDrawForm, MakeForecastForm)
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -68,10 +69,20 @@ def view_tournaments():
 @login_required
 def view_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+    if current_user.can_make_forecast(tournament):
+        form = MakeForecastForm()
+        form.player.choices = [(p.id, p.player.get_name())
+                               for p in tournament.players]
+        p = current_user.participation(tournament)
+        if p:
+            form.player.data = p.tournament_player_id
+    else:
+        form = None
     title = tournament.name
     return render_template("tournament/view_tournament.html",
                            title=title,
-                           tournament=tournament)
+                           tournament=tournament,
+                           form=form)
 
 
 @bp.route("/<tournament_id>/register")
@@ -245,3 +256,24 @@ def edit_tournament_draw(tournament_id):
                                title=title,
                                form=form,
                                tournament=tournament)
+
+
+@bp.route("/<tournament_id>/forecast", methods=["POST"])
+@login_required
+def make_forecast(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    if not current_user.can_make_forecast(tournament):
+        flash("Tu n'es pas autorisé à faire un pronostic pour ce tournoi",
+              "warning")
+        return redirect(url_for(".view_tournament",
+                                tournament_id=tournament_id))
+
+    if not request.form["player"]:
+        flash("Requête invalide", "warning")
+        return redirect(url_for(".view_tournament",
+                                tournament_id=tournament_id))
+
+    current_user.make_forecast(tournament, int(request.form["player"]))
+    flash("Ton pronostic a bien été pris en compte.", "success")
+    return redirect(url_for(".view_tournament",
+                            tournament_id=tournament_id))

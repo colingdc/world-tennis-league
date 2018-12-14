@@ -61,4 +61,13 @@ def create_app(config_name):
     from .tournament import bp as tournament_blueprint
     app.register_blueprint(tournament_blueprint, url_prefix="/tournament")
 
+    from .errors import (forbidden, page_not_found, bad_request,
+                         internal_server_error, unhandled_exception)
+    app.register_error_handler(401, forbidden)
+    app.register_error_handler(403, forbidden)
+    app.register_error_handler(404, page_not_found)
+    app.register_error_handler(400, bad_request)
+    app.register_error_handler(500, internal_server_error)
+    app.register_error_handler(500, unhandled_exception)
+
     return app

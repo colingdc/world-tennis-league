@@ -120,6 +120,28 @@ class User(UserMixin, db.Model):
             return False
         return True
 
+    def is_registered_to_tournament(self, tournament):
+        return self.participation(tournament) is not None
+
+    def can_make_forecast(self, tournament):
+        if not tournament.status == TournamentStatus.REGISTRATION_OPEN:
+            return False
+        if not self.is_registered_to_tournament(tournament):
+            return False
+        return True
+
+    def participation(self, tournament):
+        participations = (self.participations
+                          .join(Tournament)
+                          .filter(Tournament.id == tournament.id))
+        return participations.first()
+
+    def make_forecast(self, tournament, tournament_player_id):
+        participation = self.participation(tournament)
+        participation.tournament_player_id = tournament_player_id
+        db.session.add(self)
+        db.session.commit()
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
@@ -254,6 +276,8 @@ class Participation(db.Model):
 
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    tournament_player_id = db.Column(
+        db.Integer, db.ForeignKey('tournament_players.id'))
 
 
 class Player(db.Model):
@@ -296,6 +320,8 @@ class TournamentPlayer(db.Model):
         primaryjoin="or_(TournamentPlayer.id==Match.tournament_player1_id, "
         "TournamentPlayer.id==Match.tournament_player2_id)",
         lazy='dynamic')
+    participations = db.relationship(
+        "Participation", backref="tournament_player", lazy="dynamic")
 
 
 class Match(db.Model):
