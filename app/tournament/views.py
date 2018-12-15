@@ -1,16 +1,17 @@
+import json
 from datetime import timedelta
 from math import floor, log
 
-from flask import flash, redirect, render_template, request, url_for, abort
-from flask_login import login_required, current_user
+from flask import abort, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
 
 from . import bp
 from .. import db
 from ..decorators import manager_required
-from ..models import (Tournament, TournamentWeek, Participation,
-                      Match, TournamentCategory, TournamentPlayer, Player)
-from .forms import (CreateTournamentForm,
-                    CreateTournamentDrawForm, MakeForecastForm)
+from ..models import (Match, Participation, Player, Tournament,
+                      TournamentCategory, TournamentPlayer, TournamentWeek)
+from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
+                    FillTournamentDrawForm, MakeForecastForm)
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -290,3 +291,55 @@ def view_tournament_draw(tournament_id):
     return render_template("tournament/view_tournament_draw.html",
                            title=title,
                            tournament=tournament)
+
+
+@bp.route("/<tournament_id>/draw/update", methods=["GET", "POST"])
+@manager_required
+def update_tournament_draw(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    if tournament.deleted_at:
+        abort(404)
+    title = f"Mettre à jour le tableau"
+
+    form = FillTournamentDrawForm()
+
+    if form.validate_on_submit():
+        try:
+            results = json.loads(form.forecast.data)
+        except json.decoder.JSONDecodeError:
+            return redirect(url_for(".view_tournament",
+                                    tournament_id=tournament_id))
+
+        matches = tournament.matches
+
+        for match in matches:
+            winner_id = results[str(match.id)]
+            next_match = match.get_next_match()
+            if winner_id == "None":
+                match.winner_id = None
+                if next_match:
+                    if match.position % 2 == 0:
+                        next_match.tournament_player1_id = None
+                    else:
+                        next_match.tournament_player2_id = None
+                    db.session.add(next_match)
+            else:
+                match.winner_id = winner_id
+                if next_match:
+                    if match.position % 2 == 0:
+                        next_match.tournament_player1_id = winner_id
+                    else:
+                        next_match.tournament_player2_id = winner_id
+                    db.session.add(next_match)
+
+            db.session.add(match)
+        db.session.commit()
+
+        return redirect(url_for(".view_tournament",
+                                tournament_id=tournament_id))
+
+    else:
+        return render_template("tournament/update_tournament_draw.html",
+                               title=title,
+                               tournament=tournament,
+                               form=form)

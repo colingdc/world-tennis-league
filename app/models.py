@@ -404,6 +404,15 @@ class Match(db.Model):
                  .first())
         return match
 
+    def get_next_match(self):
+        if self.round == 1:
+            return None
+        match = (Match.query
+                 .filter(Match.tournament_id == self.tournament_id)
+                 .filter(Match.position == self.position // 2)
+                 .first())
+        return match
+
     def has_bye(self):
         if self.round < self.tournament.number_rounds:
             return False
