@@ -314,17 +314,19 @@ class Player(db.Model):
     tournament_players = db.relationship(
         "TournamentPlayer", backref="player", lazy="dynamic")
 
-    def get_name(self, format="full"):
-        if format == "full":
+    def get_name(self, format="standard"):
+        if format == "standard":
+            return f"{self.first_name} {self.last_name.upper()}"
+        elif format == "last_name_first":
             return f"{self.last_name.upper()}, {self.first_name}"
-        elif format == "draw":
+        elif format == "first_name_initial":
             if self.first_name:
                 return f"{self.first_name[0]}. {self.last_name.upper()}"
             else:
                 return self.last_name.upper()
 
     @classmethod
-    def get_all(cls, format="full"):
+    def get_all(cls, format="last_name_first"):
         return [(p.id, p.get_name(format))
                 for p in cls.query.filter(cls.deleted_at.is_(None))
                 .order_by(cls.last_name, cls.first_name).all()]
@@ -353,16 +355,24 @@ class TournamentPlayer(db.Model):
         "Participation", backref="tournament_player", lazy="dynamic")
 
     def get_name(self, format="full"):
-        full_name = ""
-        if self.status:
-            full_name += f"[{self.status}] "
-        if self.seed:
-            full_name += f"[{self.seed}] "
-        if self.player:
-            full_name += self.player.get_name(format="draw")
-        else:
+        if self.player is None:
+            full_name = ""
+            if self.status:
+                full_name += f"[{self.status}] "
+            if self.seed:
+                full_name += f"[{self.seed}] "
             full_name += f"Qualifié {self.qualifier_id}"
-        return full_name
+            return full_name
+        if format == "full":
+            full_name = ""
+            if self.status:
+                full_name += f"[{self.status}] "
+            if self.seed:
+                full_name += f"[{self.seed}] "
+            full_name += self.player.get_name(format="first_name_initial")
+            return full_name
+        else:
+            return self.player.get_name(format)
 
     def is_bye(self):
         return (self.player and
