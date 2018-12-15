@@ -265,6 +265,24 @@ class Tournament(db.Model):
                    .filter(TournamentPlayer.tournament_id == self.id))
         return players.first() is not None
 
+    def get_matches_by_round(self):
+        return [{"round": i,
+                 "matches": self.matches.filter(Match.round == i).all(),
+                 "first_round": i == self.number_rounds}
+                for i in range(self.number_rounds, 0, -1)]
+
+    def get_last_match(self):
+        return self.matches.filter(Match.position == 1).first()
+
+    def get_round_names(self):
+        names = ["F", "DF", "QF", "HF"]
+        if self.number_rounds > 4:
+            names += ["T" + str(i)
+                      for i in range(self.number_rounds - 4, 0, -1)]
+            return names[::-1]
+        else:
+            return names[:self.number_rounds][::-1]
+
 
 class Participation(db.Model):
     __tablename__ = "participations"
@@ -293,6 +311,11 @@ class Player(db.Model):
     def get_name(self, format="full"):
         if format == "full":
             return f"{self.last_name.upper()}, {self.first_name}"
+        elif format == "draw":
+            if self.first_name:
+                return f"{self.first_name[0]}. {self.last_name.upper()}"
+            else:
+                return self.last_name.upper()
 
     @classmethod
     def get_all(cls, format="full"):
@@ -322,6 +345,23 @@ class TournamentPlayer(db.Model):
         lazy='dynamic')
     participations = db.relationship(
         "Participation", backref="tournament_player", lazy="dynamic")
+
+    def get_name(self, format="full"):
+        full_name = ""
+        if self.status:
+            full_name += f"[{self.status}] "
+        if self.seed:
+            full_name += f"[{self.seed}] "
+        if self.player:
+            full_name += self.player.get_name(format="draw")
+        else:
+            full_name += f"Qualifié {self.qualifier_id}"
+        return full_name
+
+    def is_bye(self):
+        return (self.player and
+                self.player.last_name == "Bye" and
+                self.player.first_name == "")
 
 
 class Match(db.Model):
@@ -354,3 +394,20 @@ class Match(db.Model):
     tournament_player2 = db.relationship(
         "TournamentPlayer",
         foreign_keys="Match.tournament_player2_id")
+
+    def get_previous_match(self, position):
+        if self.round == self.tournament.number_rounds:
+            return None
+        match = (Match.query
+                 .filter(Match.tournament_id == self.tournament_id)
+                 .filter(Match.position == 2 * self.position + position)
+                 .first())
+        return match
+
+    def has_bye(self):
+        if self.round < self.tournament.number_rounds:
+            return False
+        return ((self.tournament_player1 and
+                 self.tournament_player1.is_bye()) or
+                (self.tournament_player2 and
+                 self.tournament_player2.is_bye()))

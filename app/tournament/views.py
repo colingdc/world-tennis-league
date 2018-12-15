@@ -1,7 +1,7 @@
 from datetime import timedelta
 from math import floor, log
 
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for, abort
 from flask_login import login_required, current_user
 
 from . import bp
@@ -108,7 +108,7 @@ def register(tournament_id):
 @manager_required
 def create_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    title = u"{} - Tableau".format(tournament.name)
+    title = f"{tournament.name} - Tableau"
 
     matches = tournament.get_matches_first_round()
 
@@ -182,7 +182,7 @@ def create_tournament_draw(tournament_id):
 @manager_required
 def edit_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    title = u"{} - Tableau".format(tournament.name)
+    title = f"{tournament.name} - Tableau"
 
     matches = tournament.get_matches_first_round()
 
@@ -277,3 +277,16 @@ def make_forecast(tournament_id):
     flash("Ton pronostic a bien été pris en compte.", "success")
     return redirect(url_for(".view_tournament",
                             tournament_id=tournament_id))
+
+
+@bp.route("/<tournament_id>/draw")
+@login_required
+def view_tournament_draw(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    if tournament.deleted_at:
+        abort(404)
+    title = f"{tournament.name} - Tableau"
+
+    return render_template("tournament/view_tournament_draw.html",
+                           title=title,
+                           tournament=tournament)

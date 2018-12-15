@@ -90,7 +90,7 @@ class CreateFakeTournaments(Command):
             number_tournaments = random.randint(1, 3)
             for j in range(number_tournaments):
                 t = Tournament(
-                    name=" ".join(f.words(3)),
+                    name=f"{f.city()} {start_date.year}",
                     started_at=d,
                     week_id=w.id,
                 )
@@ -120,3 +120,14 @@ class CreateFakePlayers(Command):
             db.session.add(p)
             print(f"Player #{i + 1} {p.get_name()} created")
         db.session.commit()
+
+
+class CreateByePlayer(Command):
+    def run(self):
+        p = Player(
+            first_name="",
+            last_name="Bye",
+        )
+        db.session.add(p)
+        db.session.commit()
+        print(f"Player BYE created")

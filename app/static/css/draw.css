@@ -1,0 +1,107 @@
+/*
+ *  Flex Layout Specifics
+*/
+
+a {
+  color: black;
+}
+
+a:hover {
+  color: black;
+}
+
+div.main {
+  overflow-x: auto;
+}
+
+div.draw {
+  display: flex;
+  flex-direction: row;
+  position: center;
+}
+
+.panel-body {
+  position: center;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 140px;
+  max-width: 140px;
+  list-style: none;
+  padding: 0;
+}
+
+.round .spacer {
+  flex-grow: 1;
+}
+
+.round .spacer:first-child,
+.round .spacer:last-child {
+  flex-grow: 0.5;
+}
+
+.round .game-spacer {
+  flex-grow: 1;
+}
+
+/*
+ *  General Styles
+*/
+
+.round-name {
+  font-weight: bold;
+  text-align: center;
+}
+
+.last-round {
+  padding-right: 10px;
+}
+
+div.game {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+div.correct_forecast {
+  background-color: rgba(0, 255, 0, 0.3);
+}
+
+div.incorrect_forecast {
+  background-color: rgba(255, 0, 0, 0.3);
+}
+
+div.non-forecasted {
+  background-color: rgba(200, 200, 200, 0.3);
+}
+
+div.game-player {
+  min-height: 45px;
+  border-top: 1px solid #404040;
+  border-bottom: 1px solid #404040;
+  border-right: 4px solid #404040;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+div.game-player:hover {
+  background-color: lightblue;
+}
+
+div.game-spacer {
+  height: 10px;
+  border-right: 4px solid #404040;
+}
+
+div.game.first-round {
+  border-left: 4px solid #404040;
+}
+
+#player-0-1 {
+  font-weight: bold;
+}
