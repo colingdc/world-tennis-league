@@ -257,6 +257,9 @@ class Tournament(db.Model):
         }
         return statuses.get(self.status)
 
+    def is_open_to_registration(self):
+        return self.status == TournamentStatus.REGISTRATION_OPEN
+
     def get_matches_first_round(self):
         return [m for m in self.matches if m.round == self.number_rounds]
 
@@ -296,6 +299,9 @@ class Participation(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     tournament_player_id = db.Column(
         db.Integer, db.ForeignKey('tournament_players.id'))
+
+    def has_made_forecast(self):
+        return self.tournament_player_id is not None
 
 
 class Player(db.Model):

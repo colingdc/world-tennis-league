@@ -46,6 +46,15 @@
               <button class="btn btn-success" type="submit">Valider</button>
             </div>
           </form>
+          {% else %}
+          <h4>Mon pronostic</h4>
+          <p>
+            {{
+              current_user
+                .participation(tournament)
+                .tournament_player.player.get_name()
+            }}
+          </p>
           {% endif %}
         </div>
         <!-- Tournament draw -->
@@ -80,6 +89,53 @@
       <div class="row">
         <!-- Tournament -->
         <div class="col-md-4 col-sm-4"><h4>Tournoi</h4></div>
+
+        <!-- Registrations -->
+        <div class="col-md-4 col-sm-4">
+          <h4>Inscriptions et suivi</h4>
+
+          {% if tournament.is_open_to_registration() %}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="btn-group" role="group">
+                <div
+                  data-title="Fermer les inscriptions"
+                  data-action="{{ url_for('.close_registrations', tournament_id=tournament.id) }}"
+                  data-message="Confirmer la fermeture des inscriptions ?"
+                >
+                  <a
+                    class="btn btn-secondary btn-outline formConfirm"
+                    href="{{ url_for('.close_registrations', tournament_id=tournament.id)}}"
+                  >
+                    <span class="fa fa-lock"></span> Fermer les inscriptions
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% else %}
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="btn-group" role="group">
+                <div
+                  data-title="Ouvrir les inscriptions"
+                  data-action="{{ url_for('.open_registrations', tournament_id=tournament.id) }}"
+                  data-message="Confirmer l'ouverture des inscriptions ?"
+                >
+                  <a
+                    class="btn btn-secondary btn-outline formConfirm"
+                    href="{{ url_for('.open_registrations', tournament_id=tournament.id) }}"
+                  >
+                    <span class="fa fa-unlock"></span> Ouvrir les inscriptions
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
 
         <!-- Tournament draw -->
         <div class="col-md-4 col-sm-4">

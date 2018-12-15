@@ -9,7 +9,8 @@ from . import bp
 from .. import db
 from ..decorators import manager_required
 from ..models import (Match, Participation, Player, Tournament,
-                      TournamentCategory, TournamentPlayer, TournamentWeek)
+                      TournamentCategory, TournamentPlayer, TournamentWeek,
+                      TournamentStatus)
 from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
                     FillTournamentDrawForm, MakeForecastForm)
 
@@ -343,3 +344,32 @@ def update_tournament_draw(tournament_id):
                                title=title,
                                tournament=tournament,
                                form=form)
+
+
+@bp.route("/<tournament_id>/open_registrations")
+@manager_required
+def open_registrations(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament.status = TournamentStatus.REGISTRATION_OPEN
+    db.session.add(tournament)
+    db.session.commit()
+    flash("Les inscriptions au tournoi sont ouvertes", "info")
+    return redirect(url_for(".view_tournament",
+                            tournament_id=tournament.id))
+
+
+@bp.route("/<tournament_id>/close_registrations")
+@manager_required
+def close_registrations(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament.status = TournamentStatus.ONGOING
+    db.session.add(tournament)
+    db.session.commit()
+
+    for participant in tournament.participations:
+        if not participant.has_made_forecast():
+            db.session.delete(participant)
+    db.session.commit()
+    flash("Les inscriptions au tournoi sont closes", "info")
+    return redirect(url_for(".view_tournament",
+                            tournament_id=tournament.id))
