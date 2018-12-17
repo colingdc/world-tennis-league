@@ -12,7 +12,8 @@ from ..models import (Match, Participation, Player, Tournament,
                       TournamentCategory, TournamentPlayer, TournamentWeek,
                       TournamentStatus)
 from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
-                    FillTournamentDrawForm, MakeForecastForm)
+                    EditTournamentForm, FillTournamentDrawForm,
+                    MakeForecastForm)
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -52,6 +53,46 @@ def create_tournament():
         return render_template("tournament/create_tournament.html",
                                title=title,
                                form=form)
+
+
+@bp.route("/<tournament_id>/edit", methods=["GET", "POST"])
+@manager_required
+def edit_tournament(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    title = tournament.name
+    form = EditTournamentForm(request.form)
+
+    form.category.choices = [("", "Choisissez une catégorie")]
+    form.category.choices += [(c, c) for c in TournamentCategory.categories]
+
+    if request.method == "GET":
+        form.name.data = tournament.name
+        form.category.data = tournament.category
+        form.start_date.data = tournament.started_at
+        form.week.data = tournament.week.start_date
+    if form.validate_on_submit():
+        monday = form.week.data - timedelta(days=form.week.data.weekday())
+        tournament_week = (TournamentWeek.query
+                           .filter_by(start_date=monday)
+                           .first())
+        if tournament_week is None:
+            tournament_week = TournamentWeek(start_date=monday)
+            db.session.add(tournament_week)
+            db.session.commit()
+        tournament.name = form.name.data
+        tournament.started_at = form.start_date.data
+        tournament.category = form.category.data
+        tournament.week = tournament_week
+        db.session.add(tournament)
+        db.session.commit()
+        flash(f"Le tournoi {form.name.data} a été mis à jour", "info")
+        return redirect(url_for(".edit_tournament",
+                                tournament_id=tournament_id))
+    else:
+        return render_template("tournament/edit_tournament.html",
+                               title=title,
+                               form=form,
+                               tournament=tournament)
 
 
 @bp.route("/view")

@@ -88,8 +88,21 @@
     <div class="panel-body">
       <div class="row">
         <!-- Tournament -->
-        <div class="col-md-4 col-sm-4"><h4>Tournoi</h4></div>
-
+        <div class="col-md-4 col-sm-4">
+          <h4>Tournoi</h4>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="btn-group" role="group">
+                <a
+                  class="btn btn-secondary btn-outline"
+                  href="{{ url_for('.edit_tournament', tournament_id=tournament.id) }}"
+                >
+                  <span class="fa fa-pencil"></span> Editer le tournoi
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Registrations -->
         <div class="col-md-4 col-sm-4">
           <h4>Inscriptions et suivi</h4>

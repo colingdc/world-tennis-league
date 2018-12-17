@@ -25,6 +25,23 @@ class CreateTournamentForm(FlaskForm):
     submit = SubmitField("Valider")
 
 
+class EditTournamentForm(FlaskForm):
+    name = StringField('Nom',
+                       validators=[InputRequired(
+                           message="Ce champ est obligatoire")])
+    category = SelectField('Catégorie',
+                           validators=[Optional()])
+    start_date = DateTimeField('Date de début',
+                               format="%d/%m/%Y %H:%M",
+                               validators=[InputRequired(
+                                   message="Ce champ est obligatoire")])
+    week = DateTimeField('Semaine',
+                         format="%d/%m/%Y",
+                         validators=[InputRequired(
+                             message="Ce champ est obligatoire")])
+    submit = SubmitField("Valider")
+
+
 class PlayerTournamentDrawForm(FlaskForm):
     player1_name = SelectField("Joueur", coerce=int)
     player2_name = SelectField("Joueur", coerce=int)
