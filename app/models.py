@@ -260,6 +260,9 @@ class Tournament(db.Model):
     def is_open_to_registration(self):
         return self.status == TournamentStatus.REGISTRATION_OPEN
 
+    def is_ongoing(self):
+        return self.status == TournamentStatus.ONGOING
+
     def get_matches_first_round(self):
         return [m for m in self.matches if m.round == self.number_rounds]
 

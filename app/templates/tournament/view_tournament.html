@@ -102,7 +102,29 @@
               </div>
             </div>
           </div>
+
+          {% if tournament.is_ongoing() %}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="btn-group" role="group">
+                <div
+                  data-title="Clôturer le tournoi"
+                  data-action="{{ url_for('.close_tournament', tournament_id=tournament.id) }}"
+                  data-message="Confirmer la clôture du tournoi ?"
+                >
+                  <a
+                    class="btn btn-secondary btn-outline formConfirm"
+                    href="{{ url_for('.close_tournament', tournament_id=tournament.id) }}"
+                  >
+                    <span class="fa fa-lock"></span> Clôturer le tournoi
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
         </div>
+
         <!-- Registrations -->
         <div class="col-md-4 col-sm-4">
           <h4>Inscriptions et suivi</h4>

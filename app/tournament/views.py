@@ -414,3 +414,16 @@ def close_registrations(tournament_id):
     flash("Les inscriptions au tournoi sont closes", "info")
     return redirect(url_for(".view_tournament",
                             tournament_id=tournament.id))
+
+
+@bp.route("/<tournament_id>/close_tournament")
+@manager_required
+def close_tournament(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament.status = TournamentStatus.FINISHED
+    db.session.add(tournament)
+    db.session.commit()
+
+    flash("Le tournoi a bien été clos", "info")
+    return redirect(url_for(".view_tournament",
+                            tournament_id=tournament.id))
