@@ -22,7 +22,9 @@ def create_tournament():
     title = u"Créer un tournoi"
     form = CreateTournamentForm(request.form)
     form.category.choices = [("", "Choisissez une catégorie")]
-    form.category.choices += [(c, c) for c in TournamentCategory.categories]
+    form.category.choices += [(
+        i, c["full_name"])
+        for i, c in TournamentCategory.categories.items()]
 
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())
@@ -63,7 +65,9 @@ def edit_tournament(tournament_id):
     form = EditTournamentForm(request.form)
 
     form.category.choices = [("", "Choisissez une catégorie")]
-    form.category.choices += [(c, c) for c in TournamentCategory.categories]
+    form.category.choices += [(
+        i, c["full_name"])
+        for i, c in TournamentCategory.categories.items()]
 
     if request.method == "GET":
         form.name.data = tournament.name

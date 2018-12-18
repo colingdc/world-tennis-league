@@ -218,10 +218,41 @@ class TournamentStatus:
 
 class TournamentCategory:
     categories = {
-        "Grand Chelem": [2000, 1200, 720, 360, 180, 90, 45, 10],
-        "ATP 1000": [1000, 600, 360, 180, 90, 45, 25, 10],
-        "ATP 500": [500, 300, 180, 90, 45, 0],
-        "ATP 250": [250, 150, 90, 45, 20, 0],
+        "Grand Chelem": {
+            "full_name": "Grand Chelem",
+            "name": "Grand Chelem",
+            "points": [2000, 1200, 720, 360, 180, 90, 45, 10],
+        },
+        "ATP 1000 (7 tours)": {
+            "full_name": "ATP 1000 (7 tours)",
+            "name": "ATP 1000",
+            "points": [1000, 600, 360, 180, 90, 45, 25, 10],
+        },
+        "ATP 1000 (6 tours)": {
+            "full_name": "ATP 1000 (6 tours)",
+            "name": "ATP 1000",
+            "points": [1000, 600, 360, 180, 90, 45, 10],
+        },
+        "ATP 500 (6 tours)": {
+            "full_name": "ATP 500 (6 tours)",
+            "name": "ATP 500",
+            "points": [500, 300, 180, 90, 45, 20],
+        },
+        "ATP 500 (5 tours)": {
+            "full_name": "ATP 500 (5 tours)",
+            "name": "ATP 500",
+            "points": [500, 300, 180, 90, 45, 0],
+        },
+        "ATP 250 (6 tours)": {
+            "full_name": "ATP 250 (6 tours)",
+            "name": "ATP 250",
+            "points": [250, 150, 90, 45, 20, 10],
+        },
+        "ATP 250 (5 tours)": {
+            "full_name": "ATP 250 (5 tours)",
+            "name": "ATP 250",
+            "points": [250, 150, 90, 45, 20, 0],
+        },
     }
 
 
@@ -290,7 +321,7 @@ class Tournament(db.Model):
             return names[:self.number_rounds][::-1]
 
     def get_attributed_points(self):
-        return TournamentCategory.categories.get(self.category)
+        return TournamentCategory.categories.get(self.category)["points"]
 
 
 class Participation(db.Model):
@@ -425,13 +456,20 @@ class TournamentPlayer(db.Model):
         return final_match is not None
 
     @property
+    def ordered_matches(self):
+        return self.matches.order_by(Match.round.desc())
+
+    @property
     def first_match(self):
-        return self.matches.order_by(Match.round.desc()).first()
+        return self.ordered_matches.first()
 
     def has_lost_after_bye(self):
         if not self.get_opponent(self.first_match).is_bye():
             return False
-        return True
+        if self.ordered_matches.count() <= 1:
+            return False
+        next_match = self.ordered_matches.all()[1]
+        return next_match.winner and next_match.winner_id != self.id
 
 
 class Match(db.Model):
