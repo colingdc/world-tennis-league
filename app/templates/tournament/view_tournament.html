@@ -60,7 +60,8 @@
         <!-- Tournament draw -->
         {% if tournament.is_draw_created() %}
         <div class="col-md-6 col-sm-6">
-          <h4>Tableau du tournoi</h4>
+          <h4>Le tournoi</h4>
+          <p>Catégorie : {{ tournament.category }}</p>
           <p>
             <a
               href="{{ url_for('.view_tournament_draw', tournament_id=tournament.id) }}"
@@ -262,6 +263,7 @@
             <tr>
               <th>Participant</th>
               <th>Pronostic</th>
+              <th>Score</th>
             </tr>
           </thead>
           <tbody>
@@ -269,6 +271,7 @@
             <tr>
               <td>{{ participant.user.username }}</td>
               <td>{{ participant.tournament_player.player.get_name() }}</td>
+              <td>{{ participant.compute_score() }}</td>
             </tr>
             {% endfor %}
           </tbody>

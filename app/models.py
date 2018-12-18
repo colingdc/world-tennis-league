@@ -220,8 +220,8 @@ class TournamentCategory:
     categories = {
         "Grand Chelem": [2000, 1200, 720, 360, 180, 90, 45, 10],
         "ATP 1000": [1000, 600, 360, 180, 90, 45, 25, 10],
-        "ATP 500": [500, 300, 180, 90, 45, 20],
-        "ATP 250": [250, 150, 90, 45, 20, 10],
+        "ATP 500": [500, 300, 180, 90, 45, 0],
+        "ATP 250": [250, 150, 90, 45, 20, 0],
     }
 
 
@@ -289,6 +289,9 @@ class Tournament(db.Model):
         else:
             return names[:self.number_rounds][::-1]
 
+    def get_attributed_points(self):
+        return TournamentCategory.categories.get(self.category)
+
 
 class Participation(db.Model):
     __tablename__ = "participations"
@@ -305,6 +308,16 @@ class Participation(db.Model):
 
     def has_made_forecast(self):
         return self.tournament_player_id is not None
+
+    def compute_score(self):
+        points = self.tournament.get_attributed_points()
+        if self.tournament_player.has_won_tournament():
+            return points[0]
+        elif self.tournament_player.has_lost_after_bye():
+            return points[-1]
+        else:
+            last_match = self.tournament_player.get_last_match()
+            return points[last_match.round]
 
 
 class Player(db.Model):
@@ -357,6 +370,9 @@ class TournamentPlayer(db.Model):
     participations = db.relationship(
         "Participation", backref="tournament_player", lazy="dynamic")
 
+    def __repr__(self):
+        return f"{self.id}, {self.get_name()}"
+
     def get_name(self, format="full"):
         if self.player is None:
             full_name = ""
@@ -377,10 +393,45 @@ class TournamentPlayer(db.Model):
         else:
             return self.player.get_name(format)
 
+    def get_opponent(self, match):
+        if self.id == match.tournament_player1_id:
+            return match.tournament_player2
+        elif self.id == match.tournament_player2_id:
+            return match.tournament_player1
+        else:
+            raise ValueError("This player did not play this match")
+
     def is_bye(self):
         return (self.player and
                 self.player.last_name == "Bye" and
                 self.player.first_name == "")
+
+    def get_last_match(self):
+        lost_match = (self.matches
+                      .order_by(Match.round)
+                      .first())
+        return lost_match
+
+    def has_lost(self):
+        last_match = self.get_last_match()
+        return (last_match.winner is not None and
+                last_match.winner_id == self.id)
+
+    def has_won_tournament(self):
+        final_match = (self.matches
+                       .filter(Match.round == 1)
+                       .filter(Match.winner_id == self.id)
+                       .first())
+        return final_match is not None
+
+    @property
+    def first_match(self):
+        return self.matches.order_by(Match.round.desc()).first()
+
+    def has_lost_after_bye(self):
+        if not self.get_opponent(self.first_match).is_bye():
+            return False
+        return True
 
 
 class Match(db.Model):
