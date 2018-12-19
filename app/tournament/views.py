@@ -115,7 +115,7 @@ def view_tournament(tournament_id):
     if current_user.can_make_forecast(tournament):
         form = MakeForecastForm()
         participation = current_user.participation(tournament)
-        form.player.choices = [(0, "Choisir un joueur")]
+        form.player.choices = [(-1, "Choisir un joueur")]
         form.player.choices += [(p.id, p.get_name("standard"))
                                 for p in tournament.get_allowed_forecasts()]
         forbidden_forecasts = participation.get_forbidden_forecasts()
@@ -324,10 +324,23 @@ def make_forecast(tournament_id):
 
     if int(request.form["player"]) == -1:
         forecast = None
+        current_user.make_forecast(tournament, forecast)
+        flash("Ton pronostic a bien été pris en compte.", "success")
+        return redirect(url_for(".view_tournament",
+                                tournament_id=tournament_id))
+
+    forecast = int(request.form["player"])
+    participation = current_user.participation(tournament)
+    forbidden_forecasts = participation.get_forbidden_forecasts()
+    allowed_forecasts = [x.id for x in tournament.get_allowed_forecasts()]
+    print(forecast)
+
+    if forecast in allowed_forecasts and forecast not in forbidden_forecasts:
+        current_user.make_forecast(tournament, forecast)
+        flash("Ton pronostic a bien été pris en compte.", "success")
     else:
-        forecast = int(request.form["player"])
-    current_user.make_forecast(tournament, forecast)
-    flash("Ton pronostic a bien été pris en compte.", "success")
+        flash("Ce pronostic est invalide.", "warning")
+
     return redirect(url_for(".view_tournament",
                             tournament_id=tournament_id))
 
