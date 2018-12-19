@@ -39,7 +39,9 @@
             <div
               class="form-group {% if form.player.errors %} has-error {% endif %}"
             >
-              <div>{{form.player(class="form-control")}}</div>
+              <div id="player-choice">
+                {{form.player(class="form-control")}}
+              </div>
               <p class="help-block">{{ form.player.errors[0] }}</p>
             </div>
             <div class="form-group">
@@ -52,7 +54,7 @@
             {{
               current_user
                 .participation(tournament)
-                .tournament_player.player.get_name()
+                .tournament_player.get_name("standard")
             }}
           </p>
           {% endif %}
@@ -286,6 +288,17 @@
 
 {% if data %} {{ data }} {% endif %} {% endblock %} {% block extrajs %}
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var forbidden_forecasts = "{{ forbidden_forecasts }}";
+    $("#player-choice option").each(function(i, x) {
+      if (forbidden_forecasts.indexOf(x.value) > -1) {
+        x.disabled = true;
+      }
+    });
+  });
+</script>
 
 <script type="text/javascript">
   $(document).ready(function() {

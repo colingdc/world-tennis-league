@@ -2,6 +2,7 @@ import datetime
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from sqlalchemy import func
 from . import db, bcrypt, login_manager
 
 
@@ -220,36 +221,43 @@ class TournamentCategory:
     categories = {
         "Grand Chelem": {
             "full_name": "Grand Chelem",
+            "number_rounds": 7,
             "name": "Grand Chelem",
             "points": [2000, 1200, 720, 360, 180, 90, 45, 10],
         },
         "ATP 1000 (7 tours)": {
             "full_name": "ATP 1000 (7 tours)",
+            "number_rounds": 7,
             "name": "ATP 1000",
             "points": [1000, 600, 360, 180, 90, 45, 25, 10],
         },
         "ATP 1000 (6 tours)": {
             "full_name": "ATP 1000 (6 tours)",
+            "number_rounds": 6,
             "name": "ATP 1000",
             "points": [1000, 600, 360, 180, 90, 45, 10],
         },
         "ATP 500 (6 tours)": {
             "full_name": "ATP 500 (6 tours)",
+            "number_rounds": 6,
             "name": "ATP 500",
             "points": [500, 300, 180, 90, 45, 20],
         },
         "ATP 500 (5 tours)": {
             "full_name": "ATP 500 (5 tours)",
+            "number_rounds": 5,
             "name": "ATP 500",
             "points": [500, 300, 180, 90, 45, 0],
         },
         "ATP 250 (6 tours)": {
             "full_name": "ATP 250 (6 tours)",
+            "number_rounds": 6,
             "name": "ATP 250",
             "points": [250, 150, 90, 45, 20, 10],
         },
         "ATP 250 (5 tours)": {
             "full_name": "ATP 250 (5 tours)",
+            "number_rounds": 5,
             "name": "ATP 250",
             "points": [250, 150, 90, 45, 20, 0],
         },
@@ -323,6 +331,11 @@ class Tournament(db.Model):
     def get_attributed_points(self):
         return TournamentCategory.categories.get(self.category)["points"]
 
+    def get_allowed_forecasts(self):
+        players = [p for p in self.players
+                   if not p.is_bye() and p.player_id]
+        return players
+
 
 class Participation(db.Model):
     __tablename__ = "participations"
@@ -339,6 +352,23 @@ class Participation(db.Model):
 
     def has_made_forecast(self):
         return self.tournament_player_id is not None
+
+    def get_forbidden_forecasts(self):
+        players = self.tournament.get_allowed_forecasts()
+        current_year = func.year(self.tournament.week.start_date)
+        current_year_participations = (
+            self.user.participations
+            .join(Tournament)
+            .join(TournamentWeek)
+            .filter(func.year(TournamentWeek.start_date) == current_year)
+        )
+        players_already_picked = [
+            p.tournament_player.player_id
+            for p in current_year_participations
+            if p.tournament_player
+        ]
+        return [p.id for p in players
+                if p.player_id in players_already_picked]
 
     def compute_score(self):
         points = self.tournament.get_attributed_points()

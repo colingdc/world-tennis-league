@@ -21,7 +21,7 @@ from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
 def create_tournament():
     title = u"Créer un tournoi"
     form = CreateTournamentForm(request.form)
-    form.category.choices = [("", "Choisissez une catégorie")]
+    form.category.choices = [("", "Choisir une catégorie")]
     form.category.choices += [(
         i, c["full_name"])
         for i, c in TournamentCategory.categories.items()]
@@ -35,10 +35,13 @@ def create_tournament():
             tournament_week = TournamentWeek(start_date=monday)
             db.session.add(tournament_week)
             db.session.commit()
+
+        category = TournamentCategory.categories.get(form.category.data)
+        number_rounds = category["number_rounds"]
         tournament = Tournament(name=form.name.data,
                                 started_at=form.start_date.data,
                                 week_id=tournament_week.id,
-                                number_rounds=form.number_rounds.data,
+                                number_rounds=number_rounds,
                                 category=form.category.data,
                                 )
         db.session.add(tournament)
@@ -64,14 +67,8 @@ def edit_tournament(tournament_id):
     title = tournament.name
     form = EditTournamentForm(request.form)
 
-    form.category.choices = [("", "Choisissez une catégorie")]
-    form.category.choices += [(
-        i, c["full_name"])
-        for i, c in TournamentCategory.categories.items()]
-
     if request.method == "GET":
         form.name.data = tournament.name
-        form.category.data = tournament.category
         form.start_date.data = tournament.started_at
         form.week.data = tournament.week.start_date
     if form.validate_on_submit():
@@ -85,7 +82,6 @@ def edit_tournament(tournament_id):
             db.session.commit()
         tournament.name = form.name.data
         tournament.started_at = form.start_date.data
-        tournament.category = form.category.data
         tournament.week = tournament_week
         db.session.add(tournament)
         db.session.commit()
@@ -118,18 +114,23 @@ def view_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if current_user.can_make_forecast(tournament):
         form = MakeForecastForm()
-        form.player.choices = [(p.id, p.player.get_name())
-                               for p in tournament.players]
-        p = current_user.participation(tournament)
-        if p:
-            form.player.data = p.tournament_player_id
+        participation = current_user.participation(tournament)
+        form.player.choices = [(0, "Choisir un joueur")]
+        form.player.choices += [(p.id, p.get_name("standard"))
+                                for p in tournament.get_allowed_forecasts()]
+        forbidden_forecasts = participation.get_forbidden_forecasts()
+        forbidden_forecasts = ";".join([str(x) for x in forbidden_forecasts])
+        if participation.tournament_player_id:
+            form.player.data = participation.tournament_player_id
     else:
         form = None
+        forbidden_forecasts = ""
     title = tournament.name
     return render_template("tournament/view_tournament.html",
                            title=title,
                            tournament=tournament,
-                           form=form)
+                           form=form,
+                           forbidden_forecasts=forbidden_forecasts)
 
 
 @bp.route("/<tournament_id>/register")
@@ -168,7 +169,7 @@ def create_tournament_draw(tournament_id):
     else:
         form = CreateTournamentDrawForm(request.form)
 
-    player_names = [(-1, "Choisir un joueur...")] + Player.get_all()
+    player_names = [(-1, "Choisir un joueur")] + Player.get_all()
 
     for p in form.player:
         p.player1_name.choices = player_names
@@ -242,7 +243,7 @@ def edit_tournament_draw(tournament_id):
     else:
         form = CreateTournamentDrawForm(request.form)
 
-    player_names = [(-1, "Choisir un joueur...")] + Player.get_all()
+    player_names = [(-1, "Choisir un joueur")] + Player.get_all()
 
     for p in form.player:
         p.player1_name.choices = player_names
@@ -309,6 +310,7 @@ def edit_tournament_draw(tournament_id):
 @login_required
 def make_forecast(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
     if not current_user.can_make_forecast(tournament):
         flash("Tu n'es pas autorisé à faire un pronostic pour ce tournoi",
               "warning")
@@ -320,7 +322,11 @@ def make_forecast(tournament_id):
         return redirect(url_for(".view_tournament",
                                 tournament_id=tournament_id))
 
-    current_user.make_forecast(tournament, int(request.form["player"]))
+    if int(request.form["player"]) == -1:
+        forecast = None
+    else:
+        forecast = int(request.form["player"])
+    current_user.make_forecast(tournament, forecast)
     flash("Ton pronostic a bien été pris en compte.", "success")
     return redirect(url_for(".view_tournament",
                             tournament_id=tournament_id))
