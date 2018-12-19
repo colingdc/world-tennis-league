@@ -17,6 +17,20 @@
   <div id="collapse1" class="panel-collapse collapse in">
     <div class="panel-body">
       <div class="row">
+        <!-- Tournament draw -->
+        {% if tournament.is_draw_created() %}
+        <div class="col-md-6 col-sm-6">
+          <h4>Le tournoi</h4>
+          <p>Catégorie : {{ tournament.category }}</p>
+          <p>
+            <a
+              href="{{ url_for('.view_tournament_draw', tournament_id=tournament.id) }}"
+            >
+              <span class="fa fa-chevron-right"></span> Voir le tableau
+            </a>
+          </p>
+        </div>
+        {% endif %}
         <div class="col-md-6">
           <!-- Registration -->
           {% if current_user.can_register_to_tournament(tournament) %}
@@ -59,20 +73,6 @@
           </p>
           {% endif %}
         </div>
-        <!-- Tournament draw -->
-        {% if tournament.is_draw_created() %}
-        <div class="col-md-6 col-sm-6">
-          <h4>Le tournoi</h4>
-          <p>Catégorie : {{ tournament.category }}</p>
-          <p>
-            <a
-              href="{{ url_for('.view_tournament_draw', tournament_id=tournament.id) }}"
-            >
-              <span class="fa fa-chevron-right"></span> Voir le tableau
-            </a>
-          </p>
-        </div>
-        {% endif %}
       </div>
     </div>
   </div>
@@ -130,7 +130,7 @@
 
         <!-- Registrations -->
         <div class="col-md-4 col-sm-4">
-          <h4>Inscriptions et suivi</h4>
+          <h4>Inscriptions</h4>
 
           {% if tournament.is_open_to_registration() %}
           <div class="row">

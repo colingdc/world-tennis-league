@@ -219,6 +219,12 @@ class TournamentStatus:
 
 class TournamentCategory:
     categories = {
+        "Test 3 tours": {
+            "full_name": "Test 3 tours",
+            "number_rounds": 3,
+            "name": "Test 3 tours",
+            "points": [100, 50, 20, 5],
+        },
         "Grand Chelem": {
             "full_name": "Grand Chelem",
             "number_rounds": 7,
@@ -342,8 +348,8 @@ class Participation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
     deleted_at = db.Column(db.DateTime, default=None)
-    round_reached = db.Column(db.Integer, default=0)
-    points = db.Column(db.Integer, default=0)
+    round_reached = db.Column(db.Integer)
+    points = db.Column(db.Integer)
 
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -386,6 +392,8 @@ class Participation(db.Model):
         round_name = round_names[::-1][last_match.round - 1]
         if self.tournament_player.has_lost():
             return f"Eliminé ({round_name})"
+        if self.tournament_player.has_won_tournament():
+            return f"Vainqueur"
         return f"En course ({round_name})"
 
 
@@ -398,6 +406,12 @@ class Player(db.Model):
     last_name = db.Column(db.String(64))
     tournament_players = db.relationship(
         "TournamentPlayer", backref="player", lazy="dynamic")
+
+    @staticmethod
+    def create(first_name, last_name):
+        p = Player(first_name=first_name, last_name=last_name)
+        db.session.add(p)
+        db.session.commit()
 
     def get_name(self, format="standard"):
         if format == "standard":

@@ -116,7 +116,7 @@ def view_tournament(tournament_id):
         form = MakeForecastForm()
         participation = current_user.participation(tournament)
         form.player.choices = [(-1, "Choisir un joueur")]
-        form.player.choices += [(p.id, p.get_name("standard"))
+        form.player.choices += [(p.id, p.get_name())
                                 for p in tournament.get_allowed_forecasts()]
         forbidden_forecasts = participation.get_forbidden_forecasts()
         forbidden_forecasts = ";".join([str(x) for x in forbidden_forecasts])
@@ -138,8 +138,9 @@ def view_tournament(tournament_id):
 def register(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if not current_user.can_register_to_tournament(tournament):
-        flash("Tu n'es pas autorisé à t'inscrire à ce tournoi, sans "
-              "doute car tu es déjà inscrit à un autre tournoi cette semaine.",
+        flash("Tu n'es pas autorisé à t'inscrire à ce tournoi, soit "
+              "doute car tu es déjà inscrit à un autre tournoi cette semaine,"
+              "soit car les inscriptions sont fermées.",
               "warning")
         return redirect(url_for(".view_tournament",
                                 tournament_id=tournament_id))
@@ -445,6 +446,12 @@ def close_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     tournament.status = TournamentStatus.FINISHED
     db.session.add(tournament)
+    db.session.commit()
+
+    for p in tournament.participations:
+        p.points = p.compute_score()
+        p.round_reached = p.tournament_player.get_last_match().round - 1
+        db.session.add(p)
     db.session.commit()
 
     flash("Le tournoi a bien été clos", "info")
