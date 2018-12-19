@@ -265,6 +265,7 @@
             <tr>
               <th>Participant</th>
               <th>Pronostic</th>
+              <th>Statut</th>
               <th>Score</th>
             </tr>
           </thead>
@@ -273,6 +274,7 @@
             <tr>
               <td>{{ participant.user.username }}</td>
               <td>{{ participant.tournament_player.player.get_name() }}</td>
+              <td>{{ participant.get_status() }}</td>
               <td>{{ participant.compute_score() }}</td>
             </tr>
             {% endfor %}

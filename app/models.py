@@ -380,6 +380,14 @@ class Participation(db.Model):
             last_match = self.tournament_player.get_last_match()
             return points[last_match.round]
 
+    def get_status(self):
+        last_match = self.tournament_player.get_last_match()
+        round_names = self.tournament.get_round_names()
+        round_name = round_names[::-1][last_match.round - 1]
+        if self.tournament_player.has_lost():
+            return f"Eliminé ({round_name})"
+        return f"En course ({round_name})"
+
 
 class Player(db.Model):
     __tablename__ = "players"
@@ -476,7 +484,7 @@ class TournamentPlayer(db.Model):
     def has_lost(self):
         last_match = self.get_last_match()
         return (last_match.winner is not None and
-                last_match.winner_id == self.id)
+                last_match.winner_id != self.id)
 
     def has_won_tournament(self):
         final_match = (self.matches
