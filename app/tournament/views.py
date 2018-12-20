@@ -8,7 +8,7 @@ from flask_login import current_user, login_required
 from . import bp
 from .. import db
 from ..decorators import manager_required
-from ..models import (Match, Participation, Player, Tournament,
+from ..models import (Match, Participation, Player, Ranking, Tournament,
                       TournamentCategory, TournamentPlayer, TournamentWeek,
                       TournamentStatus)
 from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
@@ -401,6 +401,8 @@ def update_tournament_draw(tournament_id):
             db.session.add(match)
         db.session.commit()
 
+        tournament.compute_scores()
+
         return redirect(url_for(".view_tournament",
                                 tournament_id=tournament_id))
 
@@ -448,11 +450,8 @@ def close_tournament(tournament_id):
     db.session.add(tournament)
     db.session.commit()
 
-    for p in tournament.participations:
-        p.points = p.compute_score()
-        p.round_reached = p.tournament_player.get_last_match().round - 1
-        db.session.add(p)
-    db.session.commit()
+    tournament.compute_scores()
+    Ranking.compute_rankings(tournament)
 
     flash("Le tournoi a bien été clos", "info")
     return redirect(url_for(".view_tournament",

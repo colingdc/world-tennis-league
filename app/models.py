@@ -18,6 +18,7 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     participations = db.relationship(
         "Participation", backref="user", lazy="dynamic")
+    rankings = db.relationship("Ranking", backref="user", lazy="dynamic")
 
     def __repr__(self):
         return "<User %r>" % self.username
@@ -288,6 +289,10 @@ class Tournament(db.Model):
         "TournamentPlayer", backref="tournament", lazy="dynamic")
     matches = db.relationship(
         "Match", backref="tournament", lazy="dynamic")
+    rankings = db.relationship("Ranking", backref="tournament", lazy="dynamic")
+
+    def __repr__(self):
+        return self.name
 
     def delete(self):
         db.session.delete(self)
@@ -341,6 +346,13 @@ class Tournament(db.Model):
         players = [p for p in self.players
                    if not p.is_bye() and p.player_id]
         return players
+
+    def compute_scores(self):
+        for p in self.participations:
+            p.points = p.compute_score()
+            p.round_reached = p.tournament_player.get_last_match().round - 1
+            db.session.add(p)
+        db.session.commit()
 
 
 class Participation(db.Model):
@@ -580,3 +592,78 @@ class Match(db.Model):
                  self.tournament_player1.is_bye()) or
                 (self.tournament_player2 and
                  self.tournament_player2.is_bye()))
+
+
+class Ranking(db.Model):
+    __tablename__ = "rankings"
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    deleted_at = db.Column(db.DateTime)
+
+    year_to_date_points = db.Column(db.Integer)
+    year_to_date_ranking = db.Column(db.Integer)
+    year_to_date_number_tournaments = db.Column(db.Integer)
+
+    tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return (f"User {self.user_id}, {self.year_to_date_points} points " +
+                f"(#{self.year_to_date_ranking})")
+
+    @staticmethod
+    def compute_rankings(tournament=None):
+        if tournament is None:
+            # Get last finished tournament
+            tournament = (
+                Tournament.query
+                .order_by(Tournament.started_at.desc())
+                .filter(Tournament.deleted_at.is_(None))
+                .filter(Tournament.status == TournamentStatus.FINISHED)
+                .first())
+
+        year = func.year(tournament.week.start_date)
+
+        participations = (
+            Participation.query
+            .join(Tournament)
+            .join(TournamentWeek)
+            .filter(Tournament.deleted_at.is_(None))
+            .filter(Tournament.started_at <= tournament.started_at)
+            .filter(func.year(TournamentWeek.start_date) == year)
+            .filter(Tournament.status == TournamentStatus.FINISHED)
+        )
+
+        scoreboard = {}
+        for p in participations:
+            if p.user_id in scoreboard:
+                scoreboard[p.user_id]["points"] += p.points
+                scoreboard[p.user_id]["number_tournaments"] += 1
+            else:
+                scoreboard[p.user_id] = {
+                    "points": p.points,
+                    "number_tournaments": 1
+                }
+
+        scoreboard = [{
+            "user_id": k,
+            "points": v["points"],
+            "number_tournaments": v["number_tournaments"],
+        } for k, v in scoreboard.items()]
+
+        scoreboard = sorted(scoreboard, key=lambda x: -x["points"])
+
+        for rank, score in enumerate(scoreboard):
+            r = (Ranking.query
+                 .filter(Ranking.tournament_id == tournament.id)
+                 .filter(Ranking.user_id == score["user_id"]).first())
+            if r is None:
+                r = Ranking(user_id=score["user_id"],
+                            tournament_id=tournament.id)
+
+            r.year_to_date_points = score["points"]
+            r.year_to_date_ranking = rank + 1
+            r.year_to_date_number_tournaments = score["number_tournaments"]
+            db.session.add(r)
+
+        db.session.commit()

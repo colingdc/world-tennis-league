@@ -1,22 +1,29 @@
+from commands import (CreateByePlayer, CreateFakePlayers,
+                      CreateFakeTournaments, CreateFakeUsers,
+                      CreateSpecialUsers)
+
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
 
 from app import create_app, db
-from commands import (CreateFakeUsers, CreateSpecialUsers,
-                      CreateFakeTournaments, CreateFakePlayers,
-                      CreateByePlayer)
-from app.models import (User, Role, Tournament,
-                        TournamentWeek, TournamentStatus)
+from app.models import (Match, Participation, Player, Ranking, Role,
+                        Tournament, TournamentPlayer, TournamentStatus,
+                        TournamentWeek, User)
 
 
 def make_shell_context():
     return dict(app=app,
                 db=db,
-                User=User,
+                Match=Match,
+                Participation=Participation,
+                Player=Player,
+                Ranking=Ranking,
                 Role=Role,
                 Tournament=Tournament,
-                TournamentWeek=TournamentWeek,
+                TournamentPlayer=TournamentPlayer,
                 TournamentStatus=TournamentStatus,
+                TournamentWeek=TournamentWeek,
+                User=User,
                 )
 
 
