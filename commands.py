@@ -37,6 +37,19 @@ class CreateFakeUsers(Command):
         db.session.commit()
 
 
+class CreateUsers(Command):
+    def run(self):
+        with open("data/users.csv") as f:
+            for row in f.readlines():
+                username = row.strip()
+                u = User(username=username,
+                         email=f"{username}@test.com",
+                         password="password")
+                db.session.add(u)
+                print(f"Added user {username}")
+            db.session.commit()
+
+
 class CreateSpecialUsers(Command):
     def run(self):
         Role.insert_roles()
@@ -120,6 +133,20 @@ class CreateFakePlayers(Command):
             db.session.add(p)
             print(f"Player #{i + 1} {p.get_name()} created")
         db.session.commit()
+
+
+class CreateATPPlayers(Command):
+    def run(self):
+        with open("data/atp_players.csv") as f:
+            for row in f.readlines():
+                first_name, last_name = row.strip().split(",")
+                p = Player(
+                    first_name=first_name,
+                    last_name=last_name,
+                )
+                db.session.add(p)
+                print(f"Player {p.get_name()} created")
+            db.session.commit()
 
 
 class CreateByePlayer(Command):
