@@ -12,11 +12,11 @@ class Config:
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    MAIL_SENDER = os.environ.get('MAIL_SENDER')
+    MAIL_USERNAME = os.environ.get('WTL_MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('WTL_MAIL_PASSWORD')
+    MAIL_SENDER = os.environ.get('WTL_MAIL_SENDER')
     MAIL_SUBJECT_PREFIX = "[WTL]"
-    ADMIN_WTL = os.environ.get('MAIL_SENDER')
+    ADMIN_WTL = os.environ.get('WTL_ADMIN')
     BABEL_DEFAULT_LOCALE = "fr"
 
 

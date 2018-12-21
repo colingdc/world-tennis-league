@@ -1,9 +1,11 @@
 import datetime
+
 from flask import current_app
-from flask_login import UserMixin, AnonymousUserMixin
+from flask_login import AnonymousUserMixin, UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy import func
-from . import db, bcrypt, login_manager
+
+from . import bcrypt, db, login_manager
 
 
 class User(UserMixin, db.Model):
@@ -313,6 +315,9 @@ class Tournament(db.Model):
     def is_ongoing(self):
         return self.status == TournamentStatus.ONGOING
 
+    def is_finished(self):
+        return self.status == TournamentStatus.FINISHED
+
     def get_matches_first_round(self):
         return [m for m in self.matches if m.round == self.number_rounds]
 
@@ -353,6 +358,16 @@ class Tournament(db.Model):
             p.round_reached = p.tournament_player.get_last_match().round - 1
             db.session.add(p)
         db.session.commit()
+
+    @staticmethod
+    def get_latest_finished_tournament():
+        tournament = (
+            Tournament.query
+            .order_by(Tournament.started_at.desc())
+            .filter(Tournament.deleted_at.is_(None))
+            .filter(Tournament.status == TournamentStatus.FINISHED)
+            .first())
+        return tournament
 
 
 class Participation(db.Model):
@@ -614,13 +629,7 @@ class Ranking(db.Model):
     @staticmethod
     def compute_rankings(tournament=None):
         if tournament is None:
-            # Get last finished tournament
-            tournament = (
-                Tournament.query
-                .order_by(Tournament.started_at.desc())
-                .filter(Tournament.deleted_at.is_(None))
-                .filter(Tournament.status == TournamentStatus.FINISHED)
-                .first())
+            tournament = Tournament.get_latest_finished_tournament()
 
         year = func.year(tournament.week.start_date)
 
@@ -667,3 +676,12 @@ class Ranking(db.Model):
             db.session.add(r)
 
         db.session.commit()
+
+    @staticmethod
+    def get_ranking(tournament=None):
+        if tournament is None:
+            tournament = Tournament.get_latest_finished_tournament()
+        ranking = (Ranking.query
+                   .filter(Ranking.tournament_id == tournament.id)
+                   )
+        return ranking
