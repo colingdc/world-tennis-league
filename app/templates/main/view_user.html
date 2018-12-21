@@ -8,6 +8,11 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-md-12">
+        <div
+          id="ranking-chart"
+          class="chart"
+          style="margin-bottom: 20px;"
+        ></div>
         <div class="table">
           <table class="table table-striped table-bordered table-hover">
             <thead>
@@ -15,6 +20,7 @@
                 <th>Tournoi</th>
                 <th>Stade atteint</th>
                 <th>Points</th>
+                <th>Classement ATP</th>
               </tr>
             </thead>
             <tbody>
@@ -29,6 +35,7 @@
                 </td>
                 <td>{{ participation.get_status() }}</td>
                 <td>{{ participation.points }}</td>
+                <td>{{ participation.get_ranking() or "" }}</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -39,4 +46,39 @@
   </div>
 </div>
 
+{% endblock %} {% block extrajs %}
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script>
+  var series = {{ series | safe }}
+  Highcharts.setOptions({
+    lang: {
+      months: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+      weekdays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+      shortMonths: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sept', 'Oct', 'Nov', 'Déc']
+    }
+  });
+  $(document).ready(function () {
+    $("#ranking-chart").highcharts({
+      credits: { enabled: false },
+      chart: {
+        renderTo: "ranking-chart",
+        type: "spline",
+        height: 400
+      },
+      title: { text: "Historique du classement" },
+      xAxis: { type: "datetime" },
+      yAxis: {
+        title: { text: "Classement" },
+        reversed: true
+      },
+      tooltip: {
+        formatter: function () {
+          return this.point.tournament_name + " : <b>#" + this.point.y + "</b>"
+        }
+      },
+      series: series,
+      plotOptions: { spline: { marker: { enabled: true } } }
+    });
+  });
+</script>
 {% endblock %}

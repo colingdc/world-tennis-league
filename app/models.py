@@ -433,6 +433,15 @@ class Participation(db.Model):
             return f"Vainqueur"
         return f"En course ({round_name})"
 
+    def get_ranking(self):
+        ranking = (Ranking.query
+                   .filter(Ranking.tournament_id == self.tournament_id)
+                   .filter(Ranking.user_id == self.user_id)
+                   ).first()
+        if ranking:
+            return ranking.year_to_date_ranking
+        return None
+
 
 class Player(db.Model):
     __tablename__ = "players"
@@ -695,3 +704,14 @@ class Ranking(db.Model):
                    .filter(Ranking.tournament_id == tournament.id)
                    )
         return ranking
+
+    @classmethod
+    def generate_chart(cls, user):
+        return (Tournament.query
+                .outerjoin(cls, cls.tournament_id == Tournament.id)
+                .filter(cls.user_id == user.id)
+                .order_by(Tournament.started_at)
+                .with_entities(Tournament.id,
+                               Tournament.name,
+                               Tournament.started_at,
+                               Ranking.year_to_date_ranking))
