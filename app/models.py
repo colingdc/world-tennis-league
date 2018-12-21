@@ -146,6 +146,13 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def get_participations(self):
+        return (self.participations
+                .filter(Participation.tournament_id.isnot(None))
+                .join(Tournament)
+                .order_by(Tournament.started_at.desc())
+                )
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):

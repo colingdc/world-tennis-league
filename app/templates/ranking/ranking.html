@@ -28,7 +28,9 @@
           <tr>
             <td>{{ loop.index }}</td>
             <td>
-              <a href="#"> {{ r.user.username }}</a>
+              <a href="{{ url_for('main.view_user', user_id=r.user.id) }}">
+                {{ r.user.username }}</a
+              >
             </td>
             <td>
               {% if r.year_to_date_points is none %} 0 {% else %}

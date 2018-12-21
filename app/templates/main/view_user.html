@@ -1,0 +1,42 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Profil de {{ user.username }}</h3>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table">
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Tournoi</th>
+                <th>Stade atteint</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for participation in user.get_participations() %}
+              <tr>
+                <td>
+                  <a
+                    href="{{ url_for('tournament.view_tournament', tournament_id = participation.tournament.id, _external = True) }}"
+                  >
+                    {{ participation.tournament.name }}</a
+                  >
+                </td>
+                <td>{{ participation.get_status() }}</td>
+                <td>{{ participation.points }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
