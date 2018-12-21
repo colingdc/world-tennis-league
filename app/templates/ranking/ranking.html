@@ -4,7 +4,7 @@
 <div class="panel panel-default panel-table">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <a href="#">Classement Race</a> après le tournoi
+      <a href="{{ url_for('ranking.index') }}">Classement</a> après le tournoi
       <a
         href="{{ url_for('tournament.view_tournament', tournament_id=tournament.id) }}"
         >{{ tournament.name }}</a
