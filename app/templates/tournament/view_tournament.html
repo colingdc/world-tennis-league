@@ -16,6 +16,10 @@
   </div>
   <div id="collapse1" class="panel-collapse collapse in">
     <div class="panel-body">
+      {% if tournament.is_finished() %}
+      <div class="alert alert-info">Ce tournoi est désormais terminé.</div>
+      {% endif %}
+
       <div class="row">
         <!-- Tournament draw -->
         {% if tournament.is_draw_created() %}
