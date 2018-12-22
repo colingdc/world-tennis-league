@@ -249,7 +249,12 @@
           <tbody>
             {% for participant in tournament.participations %}
             <tr>
-              <td>{{ participant.user.username }}</td>
+              <td>
+                <a
+                  href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
+                  >{{ participant.user.username }}</a
+                >
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -272,7 +277,12 @@
           <tbody>
             {% for participant in tournament.participations %}
             <tr>
-              <td>{{ participant.user.username }}</td>
+              <td>
+                <a
+                  href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
+                  >{{ participant.user.username }}</a
+                >
+              </td>
               <td>{{ participant.tournament_player.player.get_name() }}</td>
               <td>{{ participant.get_status() }}</td>
               <td>{{ participant.compute_score() }}</td>
