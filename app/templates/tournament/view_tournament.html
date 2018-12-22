@@ -33,6 +33,14 @@
               <span class="fa fa-chevron-right"></span> Voir le tableau
             </a>
           </p>
+          {% if tournament.is_finished() or tournament.is_ongoing() %}
+          <p>
+            <a href="{{ url_for('.stats', tournament_id=tournament.id) }}">
+              <span class="fa fa-chevron-right"></span> Statistiques sur les
+              pronostics
+            </a>
+          </p>
+          {% endif %}
         </div>
         {% endif %}
         <div class="col-md-6">
@@ -288,7 +296,7 @@
                 >
               </td>
               <td>{{ participant.tournament_player.player.get_name() }}</td>
-              <td>{{ participant.get_status() }}</td>
+              <td>{{ participant.get_status() | safe }}</td>
               <td>{{ participant.compute_score() }}</td>
             </tr>
             {% endfor %}

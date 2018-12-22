@@ -456,3 +456,11 @@ def close_tournament(tournament_id):
     flash("Le tournoi a bien été clos", "info")
     return redirect(url_for(".view_tournament",
                             tournament_id=tournament.id))
+
+
+@bp.route("/<tournament_id>/stats")
+@login_required
+def stats(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    return render_template("tournament/stats.html",
+                           tournament=tournament)

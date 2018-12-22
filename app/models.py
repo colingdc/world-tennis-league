@@ -424,15 +424,8 @@ class Participation(db.Model):
             return points[last_match.round]
 
     def get_status(self):
-        last_match = self.tournament_player.get_last_match()
-        round_names = self.tournament.get_round_names()
-        round_name = round_names[::-1][last_match.round - 1]
-        if self.tournament_player.has_lost():
-            return f"Eliminé ({round_name})"
-        if self.tournament_player.has_won_tournament():
-            return f"Vainqueur"
-        return f"En course ({round_name})"
-
+        return self.tournament_player.get_status()
+        
     def get_ranking(self):
         ranking = (Ranking.query
                    .filter(Ranking.tournament_id == self.tournament_id)
@@ -568,6 +561,16 @@ class TournamentPlayer(db.Model):
             return False
         next_match = self.ordered_matches.all()[1]
         return next_match.winner and next_match.winner_id != self.id
+
+    def get_status(self):
+        last_match = self.get_last_match()
+        round_names = self.tournament.get_round_names()
+        round_name = round_names[::-1][last_match.round - 1]
+        if self.has_lost():
+            return f"Eliminé ({round_name}) <span class='fa fa-times'></span>"
+        if self.has_won_tournament():
+            return "Vainqueur <span class='fa fa-trophy'></span>"
+        return f"En course ({round_name})"
 
 
 class Match(db.Model):
