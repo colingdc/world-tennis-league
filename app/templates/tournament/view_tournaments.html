@@ -18,17 +18,16 @@
       <table class="table table-striped table-bordered table-hover">
         <thead>
           <tr>
-            <th>id</th>
             <th>Tournoi</th>
             <th>Semaine</th>
-            <th>Date limite d'inscription</th>
+            <th>Catégorie</th>
             <th>Statut</th>
+            <th>Date limite d'inscription</th>
           </tr>
         </thead>
         <tbody>
           {% for tournament in tournaments | reverse %}
           <tr>
-            <td>{{ tournament.id }}</td>
             <td>
               <a
                 href="{{ url_for('tournament.view_tournament', 
@@ -36,9 +35,13 @@
                 >{{ tournament.name }}</a
               >
             </td>
-            <td>{{ tournament.week.get_name() }}</td>
-            <td>{{ tournament.started_at | dt }}</td>
+            <td>{{ tournament.week.get_name("short") }}</td>
+            <td>{{ tournament.category }}</td>
             <td>{{ tournament.get_status() }}</td>
+            <td>
+              {% if tournament.is_open_to_registration() %}
+              {{ tournament.started_at | dt }} {% endif %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>

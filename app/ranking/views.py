@@ -28,6 +28,7 @@ def index():
 
     form = RankingForm()
     tournaments = Tournament.get_finished_tournaments()
+    tournaments = tournaments.order_by(Tournament.started_at.desc())
     form.tournament_name.choices = [
         (-1, "Choisir un tournoi")] + [(t.id, t.name) for t in tournaments]
 
