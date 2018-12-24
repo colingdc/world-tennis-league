@@ -3,27 +3,22 @@ from flask_login import login_required
 
 from . import bp
 from .forms import RankingForm
-from ..models import Ranking, Tournament
+from ..models import Ranking, Tournament, TournamentWeek
 
 
-@bp.route("/<tournament_id>")
+@bp.route("/<tournament_week_id>")
 @login_required
-def ranking(tournament_id):
-    tournament = Tournament.query.get_or_404(tournament_id)
-    if tournament.deleted_at:
+def ranking(tournament_week_id):
+    week = TournamentWeek.query.get_or_404(tournament_week_id)
+    if week.deleted_at:
         abort(404)
 
-    if not tournament.is_finished():
-        flash("Ce tournoi n'est pas terminé", "info")
-        redirect(url_for("tournament.view_tournament",
-                         tournament_id=tournament_id))
-
     title = "Classement"
-    ranking = Ranking.get_ranking(tournament)
+    ranking = Ranking.get_ranking(week)
     return render_template("ranking/ranking.html",
                            title=title,
                            ranking=ranking,
-                           tournament=tournament)
+                           week=week)
 
 
 @bp.route("/", methods=["GET", "POST"])
@@ -39,7 +34,7 @@ def index():
     if form.validate_on_submit():
         tournament = Tournament.query.get(form.tournament_name.data)
         return redirect(url_for(".ranking",
-                                tournament_id=tournament.id))
+                                tournament_week_id=tournament.week.id))
 
     return render_template("ranking/index.html",
                            title=title,

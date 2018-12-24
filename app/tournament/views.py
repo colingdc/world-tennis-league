@@ -451,7 +451,7 @@ def close_tournament(tournament_id):
     db.session.commit()
 
     tournament.compute_scores()
-    Ranking.compute_rankings(tournament)
+    Ranking.compute_rankings(tournament.week)
 
     flash("Le tournoi a bien été clos", "info")
     return redirect(url_for(".view_tournament",

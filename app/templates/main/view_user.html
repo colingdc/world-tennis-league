@@ -33,7 +33,7 @@
                     {{ participation.tournament.name }}</a
                   >
                 </td>
-                <td>{{ participation.get_status() }}</td>
+                <td>{{ participation.get_status() | safe }}</td>
                 <td>{{ participation.points }}</td>
                 <td>{{ participation.get_ranking() or "" }}</td>
               </tr>
