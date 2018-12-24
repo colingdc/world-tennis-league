@@ -53,10 +53,23 @@
             <span class="fa fa-trophy" aria-hidden="true"></span> Tournois
           </a>
         </li>
-        <li>
-          <a href="{{ url_for('ranking.index') }}">
-            <span class="fa fa-list" aria-hidden="true"></span> Classements
-          </a>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-list-ol" aria-hidden="true"></span> Classements
+            <b class="caret"></b
+          ></a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="{{ url_for('ranking.latest_ranking') }}">
+                Classement actuel
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('ranking.index') }}">
+                Tous les classements
+              </a>
+            </li>
+          </ul>
         </li>
         {% endif %}
       </ul>

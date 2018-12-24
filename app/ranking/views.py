@@ -1,4 +1,4 @@
-from flask import abort, flash, redirect, render_template, url_for
+from flask import abort, redirect, render_template, url_for
 from flask_login import login_required
 
 from . import bp
@@ -19,6 +19,16 @@ def ranking(tournament_week_id):
                            title=title,
                            ranking=ranking,
                            week=week)
+
+
+@bp.route("/latest")
+@login_required
+def latest_ranking():
+    week = Tournament.get_latest_finished_tournament().week
+    if week.deleted_at:
+        abort(404)
+
+    return redirect(url_for(".ranking", tournament_week_id=week.id))
 
 
 @bp.route("/", methods=["GET", "POST"])
