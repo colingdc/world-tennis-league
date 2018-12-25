@@ -25,6 +25,13 @@ class ConfigDev(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('WTL_DATABASE_URL_DEV')
 
 
+class ConfigProd(Config):
+    DEBUG = False
+    PRODUCTION = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('WTL_DATABASE_URL_PROD')
+
+
 config = {
     "dev": ConfigDev,
+    "prod": ConfigProd,
 }

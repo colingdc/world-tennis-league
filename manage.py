@@ -9,6 +9,7 @@ from app import create_app, db
 from app.models import (Match, Participation, Player, Ranking, Role,
                         Tournament, TournamentPlayer, TournamentStatus,
                         TournamentWeek, User)
+from instance import instance
 
 
 def make_shell_context():
@@ -27,7 +28,7 @@ def make_shell_context():
                 )
 
 
-app = create_app("dev")
+app = create_app(instance)
 migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command("db", MigrateCommand)

@@ -432,8 +432,9 @@ class Participation(db.Model):
         return self.tournament_player.get_status()
 
     def get_ranking(self):
+        week_id = self.tournament.week_id
         ranking = (Ranking.query
-                   .filter(Ranking.tournament_week_id == self.tournament.week_id)
+                   .filter(Ranking.tournament_week_id == week_id)
                    .filter(Ranking.user_id == self.user_id)
                    ).first()
         if ranking:
