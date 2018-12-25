@@ -111,7 +111,7 @@ instance.py
 run.sh
 
 # csv files used to migrate data
-*.csv*
+data/users.csv
 *.sql
 
 # List of fontawesome icons
