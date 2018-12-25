@@ -1,0 +1,76 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Nous suivre</h3></div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-12">
+        <img
+          class="banner"
+          src="{{ url_for('static', filename='images/banner.jpeg') }}"
+        />
+
+        <p>
+          Retrouve l'équipe de Game Set & Talk sur les réseaux sociaux :
+          <a href="https://twitter.com/GameSetAndTalk"
+            ><span class="fa fa-twitter"></span> Twitter</a
+          >,
+          <a href="https://www.youtube.com/channel/UC36ZsZyLP1eyCJ5m5GQ1kAQ"
+            ><span class="fa fa-youtube"></span> Youtube</a
+          >,
+          <a href="https://www.facebook.com/gamesetandtalk"
+            ><span class="fa fa-facebook"></span> Facebook</a
+          >
+          et
+          <a href="https://www.instagram.com/gamesetandtalk/?hl=fr"
+            ><span class="fa fa-instagram"></span> Instagram</a
+          >.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-info">
+  <p>
+    Un bug à signaler ? Une remarque, une question, une proposition
+    d'amélioration ? Envoie-nous un message
+  </p>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Contact</h3></div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <form action="{{ url_for('main.contact') }}" method="POST">
+          {{ form.hidden_tag() }}
+
+          <div
+            class="form-group {% if form.email.errors %} has-error {% endif %}"
+          >
+            {{ form.email.label() }}
+            <div>{{form.email(class="form-control", rows = "10")}}</div>
+            <p class="help-block">{{ form.email.errors[0] }}</p>
+          </div>
+
+          <div
+            class="form-group {% if form.message.errors %} has-error {% endif %}"
+          >
+            {{ form.message.label() }}
+            <div>{{form.message(class="form-control", rows = "10")}}</div>
+            <p class="help-block">{{ form.message.errors[0] }}</p>
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-success" type="submit">Envoyer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
