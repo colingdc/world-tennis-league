@@ -54,6 +54,11 @@ def edit_player(player_id):
 @manager_required
 def delete_player(player_id):
     player = Player.query.get_or_404(player_id)
+    if player.tournament_players.count() > 0:
+        tournament = player.tournament_players.first().tournament
+        flash("Ce joueur ne peut pas être supprimé car il apparait dans le "
+              f"tableau d'au moins un tournoi ({tournament.name})", "danger")
+        return redirect(url_for(".view_players"))
     player.delete()
     flash(f"Le joueur {player.get_name()} a été supprimé", "info")
     return redirect(url_for(".view_players"))
