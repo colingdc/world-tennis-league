@@ -24,6 +24,11 @@ footer .navbar-nav > li {
   margin-bottom: 20px;
 }
 
+.table {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 .btn {
   border-radius: 10px;
   margin-bottom: 10px;
