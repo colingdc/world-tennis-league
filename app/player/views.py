@@ -1,0 +1,80 @@
+import datetime
+
+from flask import flash, redirect, render_template, request, url_for
+
+from . import bp
+from .. import db
+from ..decorators import manager_required
+from ..models import Player
+from .forms import CreatePlayerForm, EditPlayerForm
+
+
+@bp.route("/create", methods=["GET", "POST"])
+@manager_required
+def create_player():
+    title = "Créer un joueur"
+    form = CreatePlayerForm(request.form)
+    if form.validate_on_submit():
+        player = Player(first_name=form.first_name.data,
+                        last_name=form.last_name.data)
+        db.session.add(player)
+        db.session.commit()
+        flash(f"Le joueur {player.get_name()} a été créé", "info")
+        return redirect(url_for(".create_player"))
+    else:
+        return render_template("player/create_player.html",
+                               title=title,
+                               form=form)
+
+
+@bp.route("/<player_id>/edit", methods=["GET", "POST"])
+@manager_required
+def edit_player(player_id):
+    player = Player.query.get_or_404(player_id)
+    title = player.get_name()
+    form = EditPlayerForm(request.form)
+    if request.method == "GET":
+        form.first_name.data = player.first_name
+        form.last_name.data = player.last_name
+    if form.validate_on_submit():
+        player.first_name = form.first_name.data
+        player.last_name = form.last_name.data
+        db.session.add(player)
+        db.session.commit()
+        flash(f"Le joueur {player.get_name()} a été mis à jour", "info")
+        return redirect(url_for(".view_players"))
+    else:
+        return render_template("player/edit_player.html",
+                               title=title,
+                               form=form,
+                               player=player)
+
+
+@bp.route("/<player_id>/delete")
+@manager_required
+def delete_player(player_id):
+    player = Player.query.get_or_404(player_id)
+    player.delete()
+    flash(f"Le joueur {player.get_name()} a été supprimé", "info")
+    return redirect(url_for(".view_players"))
+
+
+@bp.route("/<player_id>")
+@manager_required
+def view_player(player_id):
+    player = Player.query.get_or_404(player_id)
+    title = player.get_name()
+    return render_template("player/view_player.html",
+                           title=title,
+                           player=player)
+
+
+@bp.route("/view")
+@manager_required
+def view_players():
+    title = "Joueurs"
+    players = Player.query.order_by(Player.last_name,
+                                    Player.first_name)
+    return render_template("player/view_players.html",
+                           title=title,
+                           players=players)

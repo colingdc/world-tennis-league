@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, flash, current_app
 from flask_login import current_user, login_required
 
 from . import bp
+from ..decorators import manager_required
 from .forms import ContactForm
 from ..email import send_email
 from ..models import User, Ranking
@@ -57,3 +58,13 @@ def view_user(user_id):
                            title=title,
                            series=series,
                            user=user)
+
+
+@bp.route("/user/view")
+@manager_required
+def view_users():
+    title = "Utilisateurs"
+    users = User.query.order_by(User.username)
+    return render_template("main/view_users.html",
+                           title=title,
+                           users=users)

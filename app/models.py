@@ -458,6 +458,10 @@ class Player(db.Model):
         db.session.add(p)
         db.session.commit()
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
     def get_name(self, format="standard"):
         if format == "standard":
             return f"{self.first_name} {self.last_name.upper()}"

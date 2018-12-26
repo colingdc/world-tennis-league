@@ -64,6 +64,9 @@ def create_app(config_name):
     from .ranking import bp as ranking_blueprint
     app.register_blueprint(ranking_blueprint, url_prefix="/ranking")
 
+    from .player import bp as player_blueprint
+    app.register_blueprint(player_blueprint, url_prefix="/player")
+
     from .errors import (forbidden, page_not_found, bad_request,
                          internal_server_error, unhandled_exception)
 

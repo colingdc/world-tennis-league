@@ -1,0 +1,11 @@
+.dataTables_paginate,
+.dataTables_length,
+.dataTables_filter {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.dataTables_length label,
+.dataTables_filter label {
+  font-weight: normal;
+}

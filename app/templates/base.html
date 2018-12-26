@@ -79,7 +79,35 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        {% if current_user.is_authenticated %}
+        {% if current_user.is_manager() %}
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-cogs" aria-hidden="true"></span> Admin
+            <b class="caret"></b
+          ></a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="{{ url_for('tournament.create_tournament') }}">
+                <span class="fa fa-trophy" aria-hidden="true"></span> Créer un
+                tournoi
+              </a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a href="{{ url_for('main.view_users') }}">
+                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs
+              </a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a href="{{ url_for('player.view_players') }}">
+                <span class="fa fa-racket" aria-hidden="true"></span> Joueurs
+                ATP
+              </a>
+            </li>
+          </ul>
+        </li>
+        {% endif %} {% if current_user.is_authenticated %}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-user" aria-hidden="true"></span>

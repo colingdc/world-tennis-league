@@ -39,12 +39,15 @@ class CreateFakeUsers(Command):
 
 class CreateUsers(Command):
     def run(self):
+        role = Role.query.filter_by(name="User").first()
         with open("data/users.csv") as f:
             for row in f.readlines():
                 username = row.strip()
                 u = User(username=username,
                          email=f"{username}@test.com",
-                         password="password")
+                         password="password",
+                         role=role,
+                         confirmed=True)
                 db.session.add(u)
                 print(f"Added user {username}")
             db.session.commit()
