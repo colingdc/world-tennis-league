@@ -153,6 +153,21 @@ def register(tournament_id):
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
 
+@bp.route("/<tournament_id>/withdraw")
+@login_required
+def withdraw(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+    if not current_user.participation(tournament):
+        flash("Tu n'es pas inscrit à ce tournoi", "warning")
+        return redirect(url_for(".view_tournament",
+                                tournament_id=tournament_id))
+
+    participation = current_user.participation(tournament)
+    participation.delete()
+    flash(f"Tu es bien désinscrit du tournoi {tournament.name}", "success")
+    return redirect(url_for(".view_tournament", tournament_id=tournament_id))
+
+
 @bp.route("/<tournament_id>/draw/create", methods=["GET", "POST"])
 @manager_required
 def create_tournament_draw(tournament_id):

@@ -22,7 +22,18 @@
     <div class="panel-body">
       {% if tournament.is_finished() %}
       <div class="alert alert-info">Ce tournoi est désormais terminé.</div>
-      {% endif %}
+      {% endif %} {% with participation =
+      current_user.is_registered_to_other_tournament(tournament) %} {% if
+      participation %}
+      <div class="alert alert-info">
+        Tu es déjà inscrit au tournoi
+        <a
+          href="{{ url_for('tournament.view_tournament', tournament_id=participation.tournament_id) }}"
+          >{{ participation.tournament.name }}</a
+        >
+        cette semaine et ne peux donc pas t'inscrire à ce tournoi.
+      </div>
+      {% endif %} {% endwith %}
 
       <div class="row">
         <!-- Tournament draw -->
@@ -78,6 +89,20 @@
               <button class="btn btn-success" type="submit">Valider</button>
             </div>
           </form>
+          <div class="btn-group" role="group">
+            <div
+              data-title="Me retirer du tournoi"
+              data-action="{{ url_for('.withdraw', tournament_id=tournament.id) }}"
+              data-message="Confirmer la désinscription du tournoi ?"
+            >
+              <a
+                class="btn btn-secondary btn-outline formConfirm"
+                href="{{ url_for('.withdraw', tournament_id=tournament.id) }}"
+              >
+                <span class="fa fa-sign-out"></span> Me retirer du tournoi
+              </a>
+            </div>
+          </div>
           {% elif current_user.participation(tournament) %}
           <h4>Mon pronostic</h4>
           <p>
@@ -87,6 +112,20 @@
                 .tournament_player.get_name("standard")
             }}
           </p>
+          <div class="btn-group" role="group">
+            <div
+              data-title="Me retirer du tournoi"
+              data-action="{{ url_for('.withdraw', tournament_id=tournament.id) }}"
+              data-message="Confirmer la désinscription du tournoi ?"
+            >
+              <a
+                class="btn btn-secondary btn-outline formConfirm"
+                href="{{ url_for('.withdraw', tournament_id=tournament.id) }}"
+              >
+                <span class="fa fa-sign-out"></span> Me retirer du tournoi
+              </a>
+            </div>
+          </div>
           {% endif %}
         </div>
       </div>

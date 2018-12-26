@@ -124,6 +124,19 @@ class User(UserMixin, db.Model):
             return False
         return True
 
+    def is_registered_to_other_tournament(self, tournament):
+        start_date = tournament.week.start_date
+        participations = (
+            self.participations
+            .join(Tournament)
+            .join(TournamentWeek)
+            .filter(TournamentWeek.start_date == start_date)
+            .filter(Tournament.id != tournament.id)
+        )
+        if participations.first():
+            return participations.first()
+        return False
+
     def is_registered_to_tournament(self, tournament):
         return self.participation(tournament) is not None
 
@@ -423,6 +436,10 @@ class Participation(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     tournament_player_id = db.Column(
         db.Integer, db.ForeignKey('tournament_players.id'))
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
     def has_made_forecast(self):
         return self.tournament_player_id is not None
