@@ -1,5 +1,16 @@
-{% extends "base.html" %} {% import "_macros.html" as macros %} {% block content
+{% extends "base.html" %} {% import "_macros.html" as macros %} {% block styles
 %}
+
+{{ super() }}
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/tables.css') }}"
+/>
+{% endblock %} {% block content %}
 
 <div class="panel panel-default panel-table">
   <div class="panel-heading">
@@ -11,7 +22,10 @@
 
   <div class="panel-body">
     <div class="table">
-      <table class="table table-striped table-bordered table-hover">
+      <table
+        id="ranking-table"
+        class="table table-striped table-bordered table-hover"
+      >
         <thead>
           <tr>
             <th>#</th>
@@ -41,5 +55,28 @@
     </div>
   </div>
 </div>
+
+{% endblock %} {% block extrajs %}
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#ranking-table").DataTable({
+      language: {
+        search: "Rechercher",
+        lengthMenu: "Montrer _MENU_ lignes",
+        paginate: {
+          next: "Suivante",
+          previous: "Précédente"
+        }
+      },
+      dom: "ftlp",
+      searching: true,
+      paging: true,
+      responsive: true,
+      info: false
+    });
+  });
+</script>
 
 {% endblock %}

@@ -6,6 +6,10 @@
   rel="stylesheet"
   href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
 />
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/tables.css') }}"
+/>
 {% endblock %} {% block content %}
 
 <div class="panel panel-default">
@@ -327,8 +331,18 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $("#participants-table").DataTable({
-      searching: false,
-      paging: false,
+      language: {
+        search: "Rechercher",
+        lengthMenu: "Montrer _MENU_ lignes",
+        paginate: {
+          next: "Suivante",
+          previous: "Précédente"
+        }
+      },
+      dom: "ftlp",
+      searching: true,
+      paging: true,
+      pageLength: 100,
       responsive: true,
       info: false,
       order: [[3, "desc"]]
