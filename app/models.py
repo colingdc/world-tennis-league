@@ -153,6 +153,15 @@ class User(UserMixin, db.Model):
                 .order_by(Tournament.started_at.desc())
                 )
 
+    def get_ranking(self, tournament=None):
+        if tournament is None:
+            tournament = Tournament.get_latest_finished_tournament()
+        ranking = (Ranking.query
+                   .filter(Ranking.user_id == self.id)
+                   .order_by(Ranking.tournament_week_id.desc())
+                   )
+        return ranking.first()
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
@@ -381,6 +390,24 @@ class Tournament(db.Model):
             .order_by(Tournament.started_at.desc())
             .filter(Tournament.deleted_at.is_(None))
             .filter(Tournament.status == TournamentStatus.FINISHED))
+        return tournaments
+
+    @staticmethod
+    def get_ongoing_tournaments():
+        tournaments = (
+            Tournament.query
+            .order_by(Tournament.started_at.desc())
+            .filter(Tournament.deleted_at.is_(None))
+            .filter(Tournament.status == TournamentStatus.ONGOING))
+        return tournaments
+
+    @staticmethod
+    def get_open_tournaments():
+        tournaments = (
+            Tournament.query
+            .order_by(Tournament.started_at.desc())
+            .filter(Tournament.deleted_at.is_(None))
+            .filter(Tournament.status == TournamentStatus.REGISTRATION_OPEN))
         return tournaments
 
 

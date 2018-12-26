@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 import os
 from config import config
+from datetime import datetime
 
 babel = Babel()
 db = SQLAlchemy()
@@ -50,7 +51,33 @@ def create_app(config_name):
         dt = format_datetime(value, "EEEE d MMMM yyyy à H:mm")
         return dt.capitalize()
 
+    def custom_datetime_difference_filter(value):
+        interval = value - datetime.now()
+        duration = interval.total_seconds()
+        if duration < 0:
+            return "imminente"
+        minutes = int((duration // 60) % 60)
+        hours = int((duration // 3600) % 24)
+        days = int(duration // 86400)
+        if days > 1:
+            return f"dans {days} jours"
+        if days == 1:
+            if hours > 1:
+                return f"dans 1 jour et {hours} heures"
+            if hours == 1:
+                return "dans 1 jour et 1 heure"
+            return "dans 1 jour"
+        if hours > 1:
+            if minutes > 1:
+                return f"dans {hours} heures et {minutes} minutes"
+            if minutes == 1:
+                return f"dans {hours} heures"
+        if minutes > 1:
+            return f"dans {minutes} minutes"
+        return "dans moins de 2 minutes"
+
     app.jinja_env.filters["dt"] = custom_datetime_filter
+    app.jinja_env.filters["dt_diff"] = custom_datetime_difference_filter
 
     from .auth import bp as auth_blueprint
     app.register_blueprint(auth_blueprint)

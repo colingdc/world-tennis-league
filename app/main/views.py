@@ -1,17 +1,21 @@
-from flask import render_template, redirect, url_for, flash, current_app
+from flask import current_app, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
 from . import bp
 from ..decorators import manager_required
-from .forms import ContactForm
 from ..email import send_email
-from ..models import User, Ranking
+from ..models import Ranking, Tournament, User
+from .forms import ContactForm
 
 
 @bp.route("/")
 def index():
     if current_user.is_authenticated:
+        ongoing_tournaments = Tournament.get_ongoing_tournaments()
+        open_tournaments = Tournament.get_open_tournaments()
         return render_template("main/dashboard.html",
+                               ongoing_tournaments=ongoing_tournaments,
+                               open_tournaments=open_tournaments,
                                user=current_user)
     return render_template("main/index.html")
 

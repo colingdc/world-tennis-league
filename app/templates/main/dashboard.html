@@ -1,3 +1,96 @@
-{% extends "base.html" %} {% block content %} Tu es connecté {{ user.username }}
+{% extends "base.html" %} {% block styles %}
 
+{{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/dashboard.css') | autoversion }}"
+/>
+
+{% endblock %} {% block content %}
+
+<div class="row">
+  <div class="col-sm-6 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Mon classement</h3>
+      </div>
+      <div class="panel-body">
+        {% with ranking = current_user.get_ranking() %} {% if ranking is not
+        none %}
+        <div class="row">
+          <div class="col-xs-6 dashboard-column">
+            <p class="dashboard-ranking">#{{ ranking.year_to_date_ranking }}</p>
+          </div>
+          <div class="col-xs-6 dashboard-column dashboard-number-tournaments">
+            <p class="dashboard-text">
+              {% with number_tournaments =
+              ranking.year_to_date_number_tournaments %} {% if
+              number_tournaments == 1 %} 1 tournoi joué cette année {% else %}
+              {{ number_tournaments }} tournois joués cette année {% endif %} {%
+              endwith %}
+            </p>
+            <p class="dashboard-text">
+              {{ ranking.year_to_date_points }} points
+            </p>
+          </div>
+        </div>
+        {% else %} Aucun tournoi joué cette année {% endif %}{% endwith %}
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Les tournois du moment</h3>
+      </div>
+      <div class="panel-body">
+        {% with number_ongoing_tournaments = ongoing_tournaments.count() %} 
+          {% if number_ongoing_tournaments == 1 %} 
+            <p>1 tournoi est en cours actuellement :
+              <a href="{{ url_for('tournament.view_tournament', 
+                                  tournament_id=ongoing_tournaments.first().id) }}">
+                {{ ongoing_tournaments.first().name }}
+              </a>. 
+            </p>
+          {% elif number_ongoing_tournaments > 1 %}
+            <p>{{ number_ongoing_tournaments }} tournois sont en cours actuellement :
+            {% for t in ongoing_tournaments %}
+              <a href="{{ url_for('tournament.view_tournament', tournament_id=t.id) }}">
+                {{ t.name }}</a>{% if loop.index < number_ongoing_tournaments %}, {% endif %}
+            {% endfor %}.
+            </p>
+          {% endif %}
+        {% endwith %} 
+        {% with number_open_tournaments = open_tournaments.count() %}
+          {% if number_open_tournaments == 1 %}
+            Les inscriptions sont toujours ouvertes pour le tournoi
+            <a href="{{ url_for('tournament.view_tournament', 
+                                tournament_id=open_tournaments.first().id) }}">
+            {{ open_tournaments.first().name }}
+            </a>(fermeture {{ open_tournaments.first().started_at | dt_diff }}).
+          {% elif number_open_tournaments > 1 %}
+          <p>Les inscriptions sont toujours ouvertes pour les tournois </p>
+          {% for t in open_tournaments %}
+            <a href="{{ url_for('tournament.view_tournament', 
+                                    tournament_id=t.id) }}">
+              {{ t.name }} 
+            </a>(fermeture {{ t.started_at | dt_diff }}).
+            {% if loop.index < number_ongoing_tournaments %}, {% endif %}
+          </p>
+          {% endfor %}.
+          {% endif %} 
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title">Actualités</h3></div>
+      <div class="panel-body"></div>
+    </div>
+  </div>
+</div>
+</p>
 {% endblock %}

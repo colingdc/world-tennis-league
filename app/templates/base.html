@@ -115,6 +115,13 @@
           ></a>
           <ul class="dropdown-menu">
             <li>
+              <a
+                href="{{ url_for('main.view_user', user_id=current_user.id) }}"
+              >
+                <span class="fa fa-user" aria-hidden="true"></span> Mon profil
+              </a>
+            </li>
+            <li>
               <a href="{{ url_for('auth.logout') }}">
                 <span class="fa fa-sign-out" aria-hidden="true"></span> Me
                 déconnecter
