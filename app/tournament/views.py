@@ -163,8 +163,11 @@ def withdraw(tournament_id):
                                 tournament_id=tournament_id))
 
     participation = current_user.participation(tournament)
-    participation.delete()
-    flash(f"Tu es bien désinscrit du tournoi {tournament.name}", "success")
+    if not tournament.is_open_to_registration():
+        flash("Tu ne peux plus te retirer de ce tournoi", "warning")
+    else:
+        participation.delete()
+        flash(f"Tu es bien désinscrit du tournoi {tournament.name}", "success")
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
 

@@ -89,6 +89,7 @@
               <button class="btn btn-success" type="submit">Valider</button>
             </div>
           </form>
+          {% if tournament.is_open_to_registration() %}
           <div class="btn-group" role="group">
             <div
               data-title="Me retirer du tournoi"
@@ -103,7 +104,7 @@
               </a>
             </div>
           </div>
-          {% elif current_user.participation(tournament) %}
+          {% endif %} {% elif current_user.participation(tournament) %}
           <h4>Mon pronostic</h4>
           <p>
             {{
@@ -112,6 +113,7 @@
                 .tournament_player.get_name("standard")
             }}
           </p>
+          {% if tournament.is_open_to_registration() %}
           <div class="btn-group" role="group">
             <div
               data-title="Me retirer du tournoi"
@@ -126,7 +128,7 @@
               </a>
             </div>
           </div>
-          {% endif %}
+          {% endif %} {% endif %}
         </div>
       </div>
     </div>
