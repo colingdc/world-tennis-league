@@ -1,0 +1,107 @@
+{% extends "base.html" %} {% block styles %}
+
+{{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/homepage.css') | autoversion }}"
+/>
+
+{% endblock %}{% block content %}
+
+<div class="row">
+  <div class="col-sm-8 col-xs-12">
+    <div class="row">
+      <div class="col-xs-12">
+        <img
+          class="banner"
+          src="{{ url_for('static', filename='images/banner.jpeg') }}"
+        />
+      </div>
+      <div class="col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">La World Tennis League</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-8 col-xs-12">
+                <p>
+                  Participe à notre jeu de pronostics :
+                  <strong>la World Tennis League</strong> !
+                </p>
+                <ol class="ordered-list">
+                  <li>
+                    A chaque semaine de tournoi, tu choisis un joueur différent
+                  </li>
+                  <li>
+                    A la fin du tournoi, tu remportes autant de points ATP que
+                    ton joueur
+                  </li>
+                  <li>
+                    Termine dans le trio de tête en fin d'année et remporte
+                    <strong>un t-shirt</strong> offert par notre partenaire
+                    <strong
+                      ><a href="https://www.tennislegend.fr"
+                        >Tennis Legend</a
+                      ></strong
+                    >
+                    !
+                  </li>
+                </ol>
+              </div>
+              <div class="col-sm-4 col-xs-12">
+                <a href="https://www.tennislegend.fr">
+                  <img
+                    class="banner"
+                    src="{{ url_for('static', filename='images/tennis-legend.png') }}"
+                  />
+                </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">
+                <a
+                  href="{{ url_for('auth.signup') }}"
+                  class="btn btn-success"
+                  role="button"
+                >
+                  Je m'inscris</a
+                >
+              </div>
+              <div class="col-xs-6">
+                <a
+                  href="{{ url_for('auth.login') }}"
+                  class="btn btn-success"
+                  role="button"
+                >
+                  Je me connecte</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title">Actualités</h3></div>
+      <div class="panel-body">
+        <a
+          class="twitter-timeline"
+          data-lang="fr"
+          data-height="1000"
+          href="https://twitter.com/GameSetAndTalk?ref_src=twsrc%5Etfw"
+        ></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block extrajs %}
+<script
+  async
+  src="https://platform.twitter.com/widgets.js"
+  charset="utf-8"
+></script>
+{% endblock %}

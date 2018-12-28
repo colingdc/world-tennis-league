@@ -44,51 +44,58 @@
         <h3 class="panel-title">Les tournois du moment</h3>
       </div>
       <div class="panel-body">
-        {% with number_ongoing_tournaments = ongoing_tournaments.count() %} 
-          {% if number_ongoing_tournaments == 1 %} 
-            <p>1 tournoi est en cours actuellement :</p>
-            <p>
-              <span class="fa fa-chevron-right"></span>
-              <a href="{{ url_for('tournament.view_tournament', 
-                                  tournament_id=ongoing_tournaments.first().id) }}">
-                {{ ongoing_tournaments.first().name }}
-              </a>
-            </p>
-          {% elif number_ongoing_tournaments > 1 %}
-            <p>{{ number_ongoing_tournaments }} tournois sont en cours actuellement :</p>
-            {% for t in ongoing_tournaments %}
-              <p>
-                <span class="fa fa-chevron-right"></span>
-                <a href="{{ url_for('tournament.view_tournament', tournament_id=t.id) }}">
-                  {{ t.name }}
-                </a>
-              </p>
-            {% endfor %}            
-          {% endif %}
-        {% endwith %} 
-        {% with number_open_tournaments = open_tournaments.count() %}
-          {% if number_open_tournaments == 1 %}
-            <p>Les inscriptions sont toujours ouvertes pour un tournoi :</p>
-            <p>
-              <span class="fa fa-chevron-right"></span>
-              <a href="{{ url_for('tournament.view_tournament', 
-                                  tournament_id=open_tournaments.first().id) }}">
-              {{ open_tournaments.first().name }}
-              </a>(fermeture {{ open_tournaments.first().started_at | dt_diff }}).
-            </p>
-          {% elif number_open_tournaments > 1 %}
-          <p>Les inscriptions sont toujours ouvertes pour les tournois suivants:</p>
-          {% for t in open_tournaments %}
-          <p>
-            <span class="fa fa-chevron-right"></span>
-            <a href="{{ url_for('tournament.view_tournament', 
-                                    tournament_id=t.id) }}">
-              {{ t.name }} 
-            </a>(fermeture {{ t.started_at | dt_diff }})
-          </p>
-          {% endfor %}
-          {% endif %} 
-        {% endwith %}
+        {% with number_ongoing_tournaments = ongoing_tournaments.count() %} {%
+        if number_ongoing_tournaments == 1 %}
+        <p>1 tournoi est en cours actuellement :</p>
+        <p>
+          <span class="fa fa-chevron-right"></span>
+          <a
+            href="{{ url_for('tournament.view_tournament', 
+                                  tournament_id=ongoing_tournaments.first().id) }}"
+          >
+            {{ ongoing_tournaments.first().name }}
+          </a>
+        </p>
+        {% elif number_ongoing_tournaments > 1 %}
+        <p>
+          {{ number_ongoing_tournaments }} tournois sont en cours actuellement :
+        </p>
+        {% for t in ongoing_tournaments %}
+        <p>
+          <span class="fa fa-chevron-right"></span>
+          <a
+            href="{{ url_for('tournament.view_tournament', tournament_id=t.id) }}"
+          >
+            {{ t.name }}
+          </a>
+        </p>
+        {% endfor %} {% endif %} {% endwith %} {% with number_open_tournaments =
+        open_tournaments.count() %} {% if number_open_tournaments == 1 %}
+        <p>Les inscriptions sont toujours ouvertes pour un tournoi :</p>
+        <p>
+          <span class="fa fa-chevron-right"></span>
+          <a
+            href="{{ url_for('tournament.view_tournament', 
+                                  tournament_id=open_tournaments.first().id) }}"
+          >
+            {{ open_tournaments.first().name }} </a
+          >(fermeture {{ open_tournaments.first().started_at | dt_diff }}).
+        </p>
+        {% elif number_open_tournaments > 1 %}
+        <p>
+          Les inscriptions sont toujours ouvertes pour les tournois suivants:
+        </p>
+        {% for t in open_tournaments %}
+        <p>
+          <span class="fa fa-chevron-right"></span>
+          <a
+            href="{{ url_for('tournament.view_tournament', 
+                                    tournament_id=t.id) }}"
+          >
+            {{ t.name }} </a
+          >(fermeture {{ t.started_at | dt_diff }})
+        </p>
+        {% endfor %} {% endif %} {% endwith %}
       </div>
     </div>
   </div>
@@ -101,5 +108,4 @@
     </div>
   </div>
 </div>
-</p>
 {% endblock %}

@@ -79,20 +79,23 @@ def create_app(config_name):
     app.jinja_env.filters["dt"] = custom_datetime_filter
     app.jinja_env.filters["dt_diff"] = custom_datetime_difference_filter
 
+    from .public import bp as public_blueprint
+    app.register_blueprint(public_blueprint)
+
     from .auth import bp as auth_blueprint
-    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(auth_blueprint, url_prefix="/wtl")
 
     from .main import bp as main_blueprint
-    app.register_blueprint(main_blueprint)
+    app.register_blueprint(main_blueprint, url_prefix="/wtl")
 
     from .tournament import bp as tournament_blueprint
-    app.register_blueprint(tournament_blueprint, url_prefix="/tournament")
+    app.register_blueprint(tournament_blueprint, url_prefix="/wtl/tournament")
 
     from .ranking import bp as ranking_blueprint
-    app.register_blueprint(ranking_blueprint, url_prefix="/ranking")
+    app.register_blueprint(ranking_blueprint, url_prefix="/wtl/ranking")
 
     from .player import bp as player_blueprint
-    app.register_blueprint(player_blueprint, url_prefix="/player")
+    app.register_blueprint(player_blueprint, url_prefix="/wtl/player")
 
     from .errors import (forbidden, page_not_found, bad_request,
                          internal_server_error, unhandled_exception)

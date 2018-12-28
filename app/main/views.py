@@ -17,7 +17,7 @@ def index():
                                ongoing_tournaments=ongoing_tournaments,
                                open_tournaments=open_tournaments,
                                user=current_user)
-    return render_template("main/index.html")
+    return render_template("public/index.html")
 
 
 @bp.route("/contact", methods=['GET', 'POST'])

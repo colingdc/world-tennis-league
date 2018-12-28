@@ -21,7 +21,7 @@ class Config:
 
 
 class ConfigDev(Config):
-    DEBUG = False
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('WTL_DATABASE_URL_DEV')
 
 
