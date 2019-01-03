@@ -99,9 +99,9 @@
       <div class="panel-body">
         <div class="video-container">
           <iframe
+            id="youtube_video"
             width="600"
             height="340"
-            src="http://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=user_uploads&list=O9_4DUNqhPA"
             frameborder="0"
             allowfullscreen
           ></iframe>
@@ -123,4 +123,24 @@
   src="https://platform.twitter.com/widgets.js"
   charset="utf-8"
 ></script>
+
+<script>
+  var channelID = "UC36ZsZyLP1eyCJ5m5GQ1kAQ";
+  var reqURL = "https://www.youtube.com/feeds/videos.xml?channel_id=";
+  $.getJSON(
+    "https://api.rss2json.com/v1/api.json?rss_url=" +
+      encodeURIComponent(reqURL) +
+      channelID,
+    function(data) {
+      var link = data.items[0].link;
+      var id = link.substr(link.indexOf("=") + 1);
+      console.log(id);
+      $("#youtube_video").attr(
+        "src",
+        "https://youtube.com/embed/" + id + "?controls=0&showinfo=0&rel=0"
+      );
+    }
+  );
+</script>
+
 {% endblock %}
