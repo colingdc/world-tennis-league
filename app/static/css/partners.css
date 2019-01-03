@@ -1,0 +1,11 @@
+.partners-column {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.partners-text {
+  text-align: center;
+}
