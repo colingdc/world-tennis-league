@@ -41,8 +41,15 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="{{ url_for('public.index') }}">
-        Game, Set & Talk</a
-      >
+        Game, Set & Talk
+      </a>
+      <a href="{{ url_for('public.index') }}">
+        <img
+          class="logo"
+          src="{{ url_for('static', filename='images/logo_square.png') }}"
+          height="45px"
+        />
+      </a>
     </div>
 
     <div class="collapse navbar-collapse" id="navbar">
@@ -72,6 +79,17 @@
           </ul>
         </li>
         {% endif %}
+        <li>
+          <a href="{{ url_for('public.networks') }}"
+            ><span class="fab fa-twitter" aria-hidden="true"></span> Nous suivre
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('public.partners') }}"
+            ><span class="fa fa-handshake" aria-hidden="true"></span> Nos
+            partenaires
+          </a>
+        </li>
         <li>
           <a href="{{ url_for('main.contact') }}"
             ><span class="fa fa-pencil-alt" aria-hidden="true"></span> Contact
@@ -136,22 +154,31 @@
           </ul>
         </li>
         {% else %}
-        <li>
-          <a href="{{ url_for('auth.signup') }}">
-            <span class="fa fa-user-plus" aria-hidden="true"></span> Inscription
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('auth.login') }}">
-            <span class="fa fa-sign-in-alt" aria-hidden="true"></span> Connexion
-          </a>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            La World Tennis League <b class="caret"></b
+          ></a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="{{ url_for('auth.signup') }}">
+                <span class="fa fa-user-plus" aria-hidden="true"></span>
+                Inscription
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('auth.login') }}">
+                <span class="fa fa-sign-in-alt" aria-hidden="true"></span>
+                Connexion
+              </a>
+            </li>
+          </ul>
         </li>
         {% endif %}
       </ul>
     </div>
   </div>
 </nav>
-{% endblock %}
+{% endblock %} {% if "/wtl" in request.url %} {% endif %}
 
 <div class="container-fluid wrap-content">
   {% for category, message in get_flashed_messages(with_categories=True) %}
@@ -191,6 +218,8 @@
           <span class="fab fa-discord fa-lg" aria-hidden="true"></span>
         </a>
       </li>
+      <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+      <li><a href="{{ url_for('public.partners') }}">Nos partenaires</a></li>
     </ul>
   </div>
 </footer>

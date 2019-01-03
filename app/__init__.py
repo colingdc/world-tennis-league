@@ -1,3 +1,8 @@
+import logging
+import os
+from datetime import datetime
+from logging.handlers import RotatingFileHandler
+
 from flask import Flask
 from flask_babel import Babel, format_datetime
 from flask_bcrypt import Bcrypt
@@ -6,9 +11,8 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
-import os
+
 from config import config
-from datetime import datetime
 
 babel = Babel()
 db = SQLAlchemy()
@@ -35,6 +39,12 @@ def create_app(config_name):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.filter(User.id == int(user_id)).first()
+
+    error_handler = RotatingFileHandler(
+        "logs/app.log", maxBytes=1000000, backupCount=1)
+    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+    error_handler.setFormatter(formatter)
+    app.logger.addHandler(error_handler)
 
     @app.template_filter('autoversion')
     def autoversion_filter(filename):

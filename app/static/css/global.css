@@ -6,6 +6,48 @@ body {
   background: #f0f0f0;
 }
 
+@media (max-width: 1000px) {
+  .navbar-header {
+    float: none;
+  }
+  .navbar-left,
+  .navbar-right {
+    float: none !important;
+  }
+  .navbar-toggle {
+    display: block;
+  }
+  .navbar-collapse {
+    border-top: 1px solid transparent;
+  }
+  .navbar-fixed-top {
+    top: 0;
+    border-width: 0 0 1px;
+  }
+  .navbar-collapse.collapse {
+    display: none !important;
+  }
+  .navbar-nav {
+    float: none !important;
+    margin-top: 7.5px;
+  }
+  .navbar-nav > li {
+    float: none;
+  }
+  .navbar-nav > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .collapse.in {
+    display: block !important;
+  }
+}
+
+.logo {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 .navbar {
   background: rgba(224, 99, 51);
 }
@@ -19,7 +61,7 @@ body {
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-nav li > a:focus,
 .navbar-default .navbar-nav li > a:hover {
-  background: #f0f0f0;
+  background: rgba(241, 243, 36);
 }
 
 .panel-default > .panel-heading {
