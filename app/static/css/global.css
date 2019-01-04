@@ -48,22 +48,6 @@ body {
   padding-right: 5px;
 }
 
-.navbar {
-  background: rgba(224, 99, 51);
-}
-
-.navbar-default .navbar-brand,
-.navbar-default .navbar-nav > li > a {
-  color: #ffffff;
-}
-
-.navbar-default .navbar-brand:focus,
-.navbar-default .navbar-brand:hover,
-.navbar-default .navbar-nav li > a:focus,
-.navbar-default .navbar-nav li > a:hover {
-  background: rgba(241, 243, 36);
-}
-
 .panel-default > .panel-heading {
   background: rgba(39, 39, 39, 0.9);
   color: #ffffff;

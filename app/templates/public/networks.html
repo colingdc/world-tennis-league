@@ -1,51 +1,45 @@
 {% extends "base.html" %} {% block content %}
 
-<div class="row">
-  <div class="col-sm-4 col-xs-12">
-    <div class="panel panel-default">
-      <div class="panel-heading"><h3 class="panel-title">Nous suivre</h3></div>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Nous suivre</h3></div>
 
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-md-12">
-            <p>
-              Retrouve l'équipe de Game Set & Talk sur les réseaux sociaux :
-            </p>
-            <p>
-              <a href="https://twitter.com/GameSetAndTalk"
-                ><span class="fab fa-twitter fa-lg"></span> Twitter</a
-              >
-            </p>
-            <p>
-              <a href="https://www.youtube.com/channel/UC36ZsZyLP1eyCJ5m5GQ1kAQ"
-                ><span class="fab fa-youtube fa-lg"></span> Youtube</a
-              >
-            </p>
-            <p>
-              <a href="https://www.facebook.com/gamesetandtalk"
-                ><span class="fab fa-facebook fa-lg"></span> Facebook</a
-              >
-            </p>
-            <p>
-              <a href="https://www.instagram.com/gamesetandtalk/?hl=fr"
-                ><span class="fab fa-instagram fa-lg"></span> Instagram</a
-              >
-            </p>
-            <p>
-              <a href="https://discord.gg/8g4Ajra">
-                <span class="fab fa-discord fa-lg"></span> Discord</a
-              >
-            </p>
-          </div>
-        </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-lg-6 col-xs-12">
+        <img
+          class="banner"
+          src="{{ url_for('static', filename='images/banner-faces.png') }}"
+        />
+      </div>
+      <div class="col-lg-6 col-xs-12">
+        <p>Retrouve l'équipe de Game Set & Talk sur les réseaux sociaux :</p>
+        <p>
+          <a href="https://twitter.com/GameSetAndTalk"
+            ><span class="fab fa-twitter fa-lg"></span> Twitter</a
+          >
+        </p>
+        <p>
+          <a href="https://www.youtube.com/channel/UC36ZsZyLP1eyCJ5m5GQ1kAQ"
+            ><span class="fab fa-youtube fa-lg"></span> Youtube</a
+          >
+        </p>
+        <p>
+          <a href="https://www.facebook.com/gamesetandtalk"
+            ><span class="fab fa-facebook fa-lg"></span> Facebook</a
+          >
+        </p>
+        <p>
+          <a href="https://www.instagram.com/gamesetandtalk/?hl=fr"
+            ><span class="fab fa-instagram fa-lg"></span> Instagram</a
+          >
+        </p>
+        <p>
+          <a href="https://discord.gg/8g4Ajra">
+            <span class="fab fa-discord fa-lg"></span> Discord</a
+          >
+        </p>
       </div>
     </div>
-  </div>
-  <div class="col-sm-8 col-xs-12">
-    <img
-      class="banner"
-      src="{{ url_for('static', filename='images/banner.jpeg') }}"
-    />
   </div>
 </div>
 
