@@ -1,3 +1,9 @@
+.logo {
+  margin-right: 10px;
+  margin-top: -5px;
+  height: 30px;
+}
+
 .navbar-default {
   background-color: #e06333;
   border-color: #efc522;
