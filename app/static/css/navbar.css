@@ -1,7 +1,12 @@
 .logo {
   margin-right: 10px;
-  margin-top: -5px;
+  height: 18px;
+  margin-top: -2px;
+}
+
+.navbar-brand .logo {
   height: 30px;
+  margin-top: -5px;
 }
 
 .navbar-default {
