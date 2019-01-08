@@ -1,11 +1,9 @@
-from flask import current_app, flash, redirect, render_template, url_for
+from flask import redirect, render_template, url_for
 from flask_login import current_user, login_required
 
 from . import bp
 from ..decorators import manager_required
-from ..email import send_email
 from ..models import Ranking, Tournament, User
-from .forms import ContactForm
 
 
 @bp.route("/")
@@ -18,30 +16,6 @@ def index():
                                open_tournaments=open_tournaments,
                                user=current_user)
     return redirect(url_for("public.index"))
-
-
-@bp.route("/contact", methods=['GET', 'POST'])
-def contact():
-    title = "Contact"
-    form = ContactForm()
-    if form.validate_on_submit():
-        message = form.message.data
-        if current_user:
-            sender = current_user.username
-        else:
-            sender = "un utilisateur non connecté"
-        send_email(to=current_app.config["ADMIN_WTL"],
-                   subject="Nouveau message de la part de {}".format(sender),
-                   template="email/contact",
-                   message=message,
-                   email=form.email.data,
-                   user=current_user)
-        flash(u"Ton message a bien été envoyé.", "success")
-        return redirect(url_for(".contact"))
-
-    return render_template("main/contact.html",
-                           form=form,
-                           title=title)
 
 
 @bp.route("/user/<user_id>")

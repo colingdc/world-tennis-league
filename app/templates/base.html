@@ -92,7 +92,7 @@ block head %} {{ super() }}
           </a>
         </li>
         <li>
-          <a href="{{ url_for('main.contact') }}"
+          <a href="{{ url_for('public.contact') }}"
             ><span class="fa fa-pencil-alt" aria-hidden="true"></span> Contact
           </a>
         </li>
@@ -185,7 +185,7 @@ block head %} {{ super() }}
     </div>
   </div>
 </nav>
-{% endblock %} {% if "/wtl" in request.url %} {% endif %}
+{% endblock %}
 
 <div class="container-fluid wrap-content">
   {% for category, message in get_flashed_messages(with_categories=True) %}
