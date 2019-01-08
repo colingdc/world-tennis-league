@@ -33,7 +33,7 @@ block head %} {{ super() }}
 {% endblock %} {% block body %} {% block navbar %}
 <nav class="navbar navbar-default navbar-static-top navbar-fixed-top">
   <div class="container-fluid">
-    {% if "/wtl" in request.url %}
+    {% if "/wtl" in request.path %}
     <div class="navbar-header">
       <button
         type="button"
