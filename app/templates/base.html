@@ -99,33 +99,7 @@ block head %} {{ super() }}
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        {% if current_user.is_manager() %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-cogs" aria-hidden="true"></span> Admin
-            <b class="caret"></b
-          ></a>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="{{ url_for('tournament.create_tournament') }}">
-                <span class="fa fa-trophy" aria-hidden="true"></span> Créer un
-                tournoi
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('main.view_users') }}">
-                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('player.view_players') }}">
-                <span class="fa fa-racket" aria-hidden="true"></span> Joueurs
-                ATP
-              </a>
-            </li>
-          </ul>
-        </li>
-        {% endif %} {% if current_user.is_authenticated %}
+        {% if current_user.is_authenticated %}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-user" aria-hidden="true"></span>
@@ -151,6 +125,26 @@ block head %} {{ super() }}
                 mot de passe
               </a>
             </li>
+            {% if current_user.is_manager() %}
+            <li role="separator" class="divider"></li>
+            <li>
+              <a href="{{ url_for('tournament.create_tournament') }}">
+                <span class="fa fa-trophy" aria-hidden="true"></span> Créer un
+                tournoi
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('main.view_users') }}">
+                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('player.view_players') }}">
+                <span class="fa fa-racket" aria-hidden="true"></span> Joueurs
+                ATP
+              </a>
+            </li>
+            {% endif %}
           </ul>
         </li>
         {% else %}
@@ -239,6 +233,11 @@ block head %} {{ super() }}
             La World Tennis League <b class="caret"></b
           ></a>
           <ul class="dropdown-menu">
+            <li>
+              <a href="{{ url_for('main.index') }}">
+                <span class="fa fa-home" aria-hidden="true"></span> Accueil
+              </a>
+            </li>
             <li>
               <a
                 href="{{ url_for('main.view_user', user_id=current_user.id) }}"
