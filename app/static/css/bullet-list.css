@@ -1,0 +1,41 @@
+ol.ordered-list {
+  list-style: none;
+  counter-reset: item;
+}
+
+ol.ordered-list li {
+  counter-increment: item;
+  margin-bottom: 5px;
+}
+
+ol.ordered-list li:before {
+  margin-right: 10px;
+  content: counter(item);
+  background: rgba(241, 243, 36);
+  border-radius: 100%;
+  color: black;
+  width: 1.2em;
+  text-align: center;
+  display: inline-block;
+}
+
+ul.ordered-list {
+  list-style: none;
+  counter-reset: item;
+}
+
+ul.ordered-list > li {
+  counter-increment: item;
+  margin-bottom: 5px;
+}
+
+ul.ordered-list > li:before {
+  margin-right: 10px;
+  content: counter(item);
+  background: rgba(241, 243, 36);
+  border-radius: 100%;
+  color: black;
+  width: 1.2em;
+  text-align: center;
+  display: inline-block;
+}

@@ -1,0 +1,71 @@
+{% extends "base.html" %} {% block styles %}
+
+{{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/bullet-list.css') | autoversion }}"
+/>
+{% endblock %} {% block content %}
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Les règles</h3></div>
+
+  <div class="panel-body">
+    <p>
+      La World Tennis League est un jeu de pronostics 100% tennis basé sur le
+      principe d’une Fantasy League.
+    </p>
+    <p>Les règles sont très simples :</p>
+    <ol class="ordered-list">
+      <li>Chaque semaine tu choisis 1 tournoi.</li>
+      <li>Dans ce tournoi, tu choisis 1 joueur.</li>
+      <li>
+        Tu gagnes autant de points que le joueur en a gagnés dans le tournoi en
+        question.
+      </li>
+    </ol>
+    <p>
+      La seule contrainte est que tu dois prendre
+      <strong>un joueur différent</strong> à chaque tournoi.
+    </p>
+    <p>
+      Exemple : je prends Rafael Nadal pour Roland-Garros. L’Espagnol s’impose
+      dans le Grand-Chelem parisien. Ainsi, je gagne 2000 points et je ne
+      pourrai plus utiliser le Majorquin le reste de l’année.
+    </p>
+    <p>
+      Après le Masters 1000 de Paris-Bercy, les 8 meilleurs seront qualifiés
+      pour les ATP Finals pour s’affronter dans un ultime tournoi et espérer
+      décrocher la place de n°1 tant convoitée. Pour ce dernier événement, les
+      règles changent et tu retrouveras un système de pronostics classiques.
+    </p>
+    <p>Remarques :</p>
+    <ul class="ordered-list">
+      <li>
+        Tu as jusqu’au 1er point du 1er match du tournoi en question pour
+        inscrire ton pronostic. Une fois ce délai dépassé, il sera trop tard.
+      </li>
+      <li>
+        Concernant les forfaits, 3 cas de figure se présentent :
+        <ul>
+          <li>
+            Ton joueur choisi est forfait avant le début du tournoi. Pas de
+            soucis, tu as encore le temps de changer ton pronostic.
+          </li>
+          <li>
+            Ton joueur choisi déclare forfait après le début du tournoi, avant
+            son 1er match. Tu récolteras 0 point <strong>mais</strong> tu
+            pourras l’utiliser une fois de plus dans l’année.
+          </li>
+          <li>
+            Ton joueur choisi déclare forfait après le début du tournoi, pendant
+            ou après son 1er match. Tu récolteras 0 point <strong>et</strong> tu
+            ne pourras plus l’utiliser le reste de l’année.
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

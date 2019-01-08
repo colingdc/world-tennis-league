@@ -72,3 +72,10 @@ def view_users():
     return render_template("main/view_users.html",
                            title=title,
                            users=users)
+
+
+@bp.route("/rules")
+def rules():
+    title = "FAQ"
+    return render_template("main/rules.html",
+                           title=title)
