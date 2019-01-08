@@ -67,11 +67,6 @@ block head %} {{ super() }}
             <span class="fa fa-gavel" aria-hidden="true"></span> Les règles
           </a>
         </li>
-        <li>
-          <a href="{{ url_for('public.contact') }}"
-            ><span class="fa fa-pencil-alt" aria-hidden="true"></span> Contact
-          </a>
-        </li>
         {% if current_user.is_authenticated %}
         <li>
           <a href="{{ url_for('tournament.view_tournaments') }}">
@@ -97,6 +92,11 @@ block head %} {{ super() }}
           </ul>
         </li>
         {% endif %}
+        <li>
+          <a href="{{ url_for('public.contact') }}"
+            ><span class="fa fa-pencil-alt" aria-hidden="true"></span> Contact
+          </a>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_authenticated %}
