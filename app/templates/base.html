@@ -46,7 +46,8 @@ block head %} {{ super() }}
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="{{ url_for('main.index') }}">
-        La World Tennis League
+        <span class="fa fa-medal" aria-hidden="true"></span> La World Tennis
+        League
       </a>
     </div>
 
@@ -184,31 +185,6 @@ block head %} {{ super() }}
 
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav">
-        {% if current_user.is_authenticated %}
-        <li>
-          <a href="{{ url_for('tournament.view_tournaments') }}">
-            <span class="fa fa-trophy" aria-hidden="true"></span> Tournois
-          </a>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-list-ol" aria-hidden="true"></span> Classements
-            <b class="caret"></b
-          ></a>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="{{ url_for('ranking.latest_ranking') }}">
-                Classement actuel
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('ranking.index') }}">
-                Tous les classements
-              </a>
-            </li>
-          </ul>
-        </li>
-        {% endif %}
         <li>
           <a href="{{ url_for('public.networks') }}"
             ><span class="fab fa-twitter" aria-hidden="true"></span> Nous suivre
@@ -230,7 +206,8 @@ block head %} {{ super() }}
         {% if current_user.is_authenticated %}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            La World Tennis League <b class="caret"></b
+            <span class="fa fa-medal" aria-hidden="true"></span> La World Tennis
+            League <b class="caret"></b
           ></a>
           <ul class="dropdown-menu">
             <li>
@@ -268,9 +245,15 @@ block head %} {{ super() }}
         {% else %}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            La World Tennis League <b class="caret"></b
+            <span class="fa fa-medal" aria-hidden="true"></span> La World Tennis
+            League <b class="caret"></b
           ></a>
           <ul class="dropdown-menu">
+            <li>
+              <a href="{{ url_for('main.index') }}">
+                <span class="fa fa-home" aria-hidden="true"></span> Accueil
+              </a>
+            </li>
             <li>
               <a href="{{ url_for('auth.signup') }}">
                 <span class="fa fa-user-plus" aria-hidden="true"></span>

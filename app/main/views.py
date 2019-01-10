@@ -15,7 +15,7 @@ def index():
                                ongoing_tournaments=ongoing_tournaments,
                                open_tournaments=open_tournaments,
                                user=current_user)
-    return redirect(url_for("public.index"))
+    return redirect(url_for("auth.login"))
 
 
 @bp.route("/user/<user_id>")
