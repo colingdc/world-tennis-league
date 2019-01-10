@@ -34,7 +34,7 @@ def signup():
             db.session.commit()
             token = user.generate_confirmation_token()
             send_email(to=user.email,
-                       subject="Confirmation de votre adresse mail",
+                       subject="Confirmation de ton adresse mail",
                        template="email/confirm",
                        user=user,
                        token=token)
@@ -68,7 +68,7 @@ def unconfirmed():
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
     send_email(to=current_user.email,
-               subject="Confirmation de votre adresse mail",
+               subject="Confirmation de ton adresse mail",
                template="email/confirm",
                user=current_user,
                token=token)

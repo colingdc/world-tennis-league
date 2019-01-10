@@ -112,6 +112,7 @@ run.sh
 
 # csv files used to migrate data
 data/users.csv
+data/*.xlsx
 *.sql
 
 # List of fontawesome icons
