@@ -5,7 +5,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from . import bp
 from .. import db
 from ..email import send_email
-from ..models import User
+from ..models import User, Role
 from .forms import (LoginForm, SignupForm, ChangePasswordForm,
                     PasswordResetRequestForm, PasswordResetForm)
 
@@ -27,9 +27,11 @@ def signup():
                                    form=form,
                                    title=title)
         else:
+            role = Role.query.filter(Role.name == "User").first()
             user = User(username=form.username.data,
                         email=form.email.data,
-                        password=form.password.data)
+                        password=form.password.data,
+                        role=role)
             db.session.add(user)
             db.session.commit()
             token = user.generate_confirmation_token()
