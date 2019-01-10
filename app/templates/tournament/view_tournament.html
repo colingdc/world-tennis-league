@@ -341,9 +341,15 @@
                   >{{ participant.user.username }}</a
                 >
               </td>
+              {% if participant.tournament_player %}
               <td>{{ participant.tournament_player.player.get_name() }}</td>
               <td>{{ participant.get_status() | safe }}</td>
               <td>{{ participant.compute_score() }}</td>
+              {% else %}
+              <td></td>
+              <td></td>
+              <td></td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>

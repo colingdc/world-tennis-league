@@ -7,6 +7,7 @@ from flask_login import current_user, login_required
 
 from . import bp
 from .. import db
+from ..email import send_email
 from ..decorators import manager_required
 from ..models import (Match, Participation, Player, Ranking, Tournament,
                       TournamentCategory, TournamentPlayer, TournamentWeek,
@@ -252,6 +253,9 @@ def edit_tournament_draw(tournament_id):
     title = f"{tournament.name} - Tableau"
 
     matches = tournament.get_matches_first_round()
+    participations = {p: p.tournament_player.player
+                      for p in tournament.participations
+                      if p.tournament_player}
 
     if not request.form:
         form = CreateTournamentDrawForm()
@@ -281,6 +285,7 @@ def edit_tournament_draw(tournament_id):
 
     if form.validate_on_submit():
         qualifier_count = 0
+        modified_players = []
         for match, p in zip(matches, form.player):
             if p.data["player1_name"] >= 0:
                 player_id = p.data["player1_name"]
@@ -291,6 +296,8 @@ def edit_tournament_draw(tournament_id):
                 qualifier_id = qualifier_count
 
             t1 = match.tournament_player1
+            if t1.player_id != player_id:
+                modified_players.append(t1.player)
             t1.player_id = player_id
             t1.seed = p.data["player1_seed"]
             t1.status = p.data["player1_status"]
@@ -305,6 +312,8 @@ def edit_tournament_draw(tournament_id):
                 qualifier_id = qualifier_count
 
             t2 = match.tournament_player2
+            if t2.player_id != player_id:
+                modified_players.append(t2.player)
             t2.player_id = player_id
             t2.seed = p.data["player2_seed"]
             t2.status = p.data["player2_status"]
@@ -314,6 +323,18 @@ def edit_tournament_draw(tournament_id):
             db.session.add(t1)
             db.session.add(t2)
             db.session.commit()
+
+        if tournament.is_open_to_registration():
+            for participation, forecast in participations.items():
+                if forecast in modified_players:
+                    participation.tournament_player = None
+                    send_email(
+                        participation.user.email,
+                        f"Tableau du tournoi {tournament.name} modifié",
+                        "email/draw_updated",
+                        user=participation.user,
+                        tournament=tournament,
+                        forecast=forecast)
 
         flash(f"Le tableau du tournoi {tournament.name} a été modifié", "info")
         return redirect(url_for(".view_tournament",

@@ -1,0 +1,8 @@
+Bonjour {{ user.username }},
+
+Le tableau du tournoi {{ tournament.name }} auquel tu es inscrit a été modifié.
+Le joueur que tu as choisi ({{ forecast.get_name() }}) a déclaré forfait ou a changé de place dans le tableau, 
+et ton pronostic a été annulé. Pour participer à ce tournoi tu dois effectuer un nouveau pronostic sur cette page :
+{{ url_for('tournament.view_tournament', tournament_id=tournament.id, _external=True) }}
+
+L'équipe de la WTL
