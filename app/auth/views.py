@@ -1,13 +1,14 @@
 from flask import (current_app, flash, redirect, render_template, request,
                    session, url_for)
-from flask_login import current_user, login_user, logout_user, login_required
+from flask_login import current_user, login_user, logout_user
 
 from . import bp
 from .. import db
+from ..decorators import login_required
 from ..email import send_email
-from ..models import User, Role
-from .forms import (LoginForm, SignupForm, ChangePasswordForm,
-                    PasswordResetRequestForm, PasswordResetForm)
+from ..models import Role, User
+from .forms import (ChangePasswordForm, LoginForm, PasswordResetForm,
+                    PasswordResetRequestForm, SignupForm)
 
 
 @bp.route("/signup", methods=["GET", "POST"])
@@ -61,6 +62,10 @@ def signup():
 @bp.route("/unconfirmed")
 def unconfirmed():
     if current_user.confirmed:
+        if session.get("next"):
+            next_page = session.get("next")
+            session.pop("next")
+            return redirect(next_page)
         return redirect(url_for("main.index"))
     return render_template("auth/unconfirmed.html")
 
@@ -114,13 +119,7 @@ def login():
         session["username"] = user.username
         flash("Tu es à présent connecté", "success")
 
-        # Redirect the user to the page he initially wanted to access
-        if session.get("next"):
-            next_page = session.get("next")
-            session.pop("next")
-            return redirect(next_page)
-        else:
-            return redirect(url_for("main.index"))
+        return redirect(url_for("auth.unconfirmed"))
 
     session["next"] = request.args.get("next")
     return render_template("auth/login.html",

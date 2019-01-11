@@ -1,4 +1,15 @@
-from flask import render_template, request, jsonify, current_app
+from flask import (render_template, request, jsonify,
+                   current_app, redirect, url_for)
+
+
+def unauthorized(e):
+    if (request.accept_mimetypes.accept_json and
+            not request.accept_mimetypes.accept_html):
+        response = jsonify({'error': 'unauthorized'})
+        response.status_code = 401
+        return response
+    current_app.logger.error('Unauthorized: %s', (request.path))
+    return redirect(url_for("auth.login"))
 
 
 def forbidden(e):
