@@ -1,8 +1,8 @@
 from flask import redirect, render_template, url_for
-from flask_login import current_user, login_required
+from flask_login import current_user
 
 from . import bp
-from ..decorators import manager_required
+from ..decorators import manager_required, login_required
 from ..models import Ranking, Tournament, User
 
 

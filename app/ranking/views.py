@@ -1,9 +1,9 @@
 from flask import abort, redirect, render_template, url_for
-from flask_login import login_required
 
 from . import bp
-from .forms import RankingForm
+from ..decorators import login_required
 from ..models import Ranking, Tournament, TournamentWeek
+from .forms import RankingForm
 
 
 @bp.route("/<tournament_week_id>")

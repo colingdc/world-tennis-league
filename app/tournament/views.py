@@ -3,15 +3,15 @@ from datetime import timedelta
 from math import floor, log
 
 from flask import abort, flash, redirect, render_template, request, url_for
-from flask_login import current_user, login_required
+from flask_login import current_user
 
 from . import bp
 from .. import db
+from ..decorators import login_required, manager_required
 from ..email import send_email
-from ..decorators import manager_required
 from ..models import (Match, Participation, Player, Ranking, Tournament,
-                      TournamentCategory, TournamentPlayer, TournamentWeek,
-                      TournamentStatus)
+                      TournamentCategory, TournamentPlayer, TournamentStatus,
+                      TournamentWeek)
 from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
                     EditTournamentForm, FillTournamentDrawForm,
                     MakeForecastForm)
