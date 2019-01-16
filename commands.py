@@ -173,7 +173,7 @@ class CreateTemporaryAccounts(Command):
             reader = csv.DictReader(csv_file, delimiter=";")
             for row in reader:
                 email = "TEMPORARY_" + row["\ufeffMail"]
-                username = row["Pseudo"] + " [compte temporaire]"
+                username = row["Pseudo"] + " [*]"
                 u = User(username=username,
                          email=email,
                          password=f.password(),
