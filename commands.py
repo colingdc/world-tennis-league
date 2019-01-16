@@ -206,3 +206,34 @@ class CloseTournament(Command):
         db.session.commit()
         tournament.compute_scores()
         Ranking.compute_rankings(tournament.week)
+
+
+class MergeAccounts(Command):
+    option_list = (
+        Option('--real_user', '-r', dest='real_user_id'),
+        Option('--tmp_user', '-t', dest='tmp_user_id'),
+    )
+
+    def run(self, real_user_id, tmp_user_id):
+        real_user = User.query.get(real_user_id)
+        tmp_user = User.query.get(tmp_user_id)
+        if real_user and tmp_user:
+            for p in tmp_user.participations:
+                p.user_id = real_user.id
+                db.session.add(p)
+            db.session.commit()
+
+
+class MergeAllAccounts(Command):
+    def run(self):
+        with open("data/accounts_to_merge.csv") as csv_file:
+            reader = csv.DictReader(csv_file, delimiter=";")
+            for row in reader:
+                real_user = User.query.get(row["real_user_id"])
+                tmp_user = User.query.get(row["tmp_user_id"])
+                if real_user and tmp_user:
+                    print(real_user.username, tmp_user.username)
+                    # for p in tmp_user.participations:
+                    #     p.user_id = real_user.id
+                    #     db.session.add(p)
+                    # db.session.commit()
