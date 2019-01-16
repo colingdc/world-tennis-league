@@ -1,3 +1,4 @@
+import csv
 import random
 from datetime import datetime, timedelta
 
@@ -5,7 +6,8 @@ from faker import Faker
 from flask_script import Command, Option
 
 from app import db
-from app.models import Role, Tournament, TournamentWeek, User, Player
+from app.models import (Participation, Player, Ranking, Role, Tournament,
+                        TournamentStatus, TournamentWeek, User)
 
 
 class CreateFakeUsers(Command):
@@ -161,3 +163,46 @@ class CreateByePlayer(Command):
         db.session.add(p)
         db.session.commit()
         print(f"Player BYE created")
+
+
+class CreateTemporaryAccounts(Command):
+    def run(self):
+        f = Faker()
+        role = Role.query.filter_by(name="User").first()
+        with open("data/WTL.csv") as csv_file:
+            reader = csv.DictReader(csv_file, delimiter=";")
+            for row in reader:
+                email = "TEMPORARY_" + row["\ufeffMail"]
+                username = row["Pseudo"] + " [compte temporaire]"
+                u = User(username=username,
+                         email=email,
+                         password=f.password(),
+                         role=role,
+                         confirmed=True)
+                db.session.add(u)
+                db.session.commit()
+                print(f"Added user {username}")
+
+                for (t_id, p_id) in (("T1", "P1"), ("T2", "P2"), ("T3", "P3")):
+                    if row[t_id]:
+                        p = Participation(
+                            user_id=u.id,
+                            tournament_id=int(row[t_id]),
+                            tournament_player_id=int(row[p_id]),
+                        )
+                        db.session.add(p)
+                        print(f"---Tournament {t_id} added")
+
+
+class CloseTournament(Command):
+    option_list = (
+        Option('--tournament_id', '-i', dest='tournament_id'),
+    )
+
+    def run(self, tournament_id):
+        tournament = Tournament.query.get(tournament_id)
+        tournament.status = TournamentStatus.FINISHED
+        db.session.add(tournament)
+        db.session.commit()
+        tournament.compute_scores()
+        Ranking.compute_rankings(tournament.week)

@@ -286,7 +286,11 @@
 <div class="panel panel-default panel-table">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <a data-toggle="collapse" href="#collapse3"> Participants</a>
+      <a data-toggle="collapse" href="#collapse3">
+        Participants{% if tournament.participations.count() %} ({{
+          tournament.participations.count()
+        }}){% endif %}</a
+      >
     </h3>
   </div>
 
@@ -307,12 +311,21 @@
           <tbody>
             {% for participant in tournament.participations %}
             <tr>
+              {% if current_user.id == participant.user_id %}
+              <th>
+                <a
+                  href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
+                  >{{ participant.user.username }}</a
+                >
+              </th>
+              {% else %}
               <td>
                 <a
                   href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
                   >{{ participant.user.username }}</a
                 >
               </td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>
@@ -335,13 +348,21 @@
           <tbody>
             {% for participant in tournament.participations %}
             <tr>
+              {% if current_user.id == participant.user_id %}
+              <th>
+                <a
+                  href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
+                  >{{ participant.user.username }}</a
+                >
+              </th>
+              {% else %}
               <td>
                 <a
                   href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
                   >{{ participant.user.username }}</a
                 >
               </td>
-              {% if participant.tournament_player %}
+              {% endif %} {% if participant.tournament_player %}
               <td>{{ participant.tournament_player.player.get_name() }}</td>
               <td>{{ participant.get_status() | safe }}</td>
               <td>{{ participant.compute_score() }}</td>

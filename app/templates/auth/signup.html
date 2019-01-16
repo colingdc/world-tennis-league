@@ -36,9 +36,17 @@
 
           <div class="form-group">
             <button class="btn btn-success" type="submit">Valider</button>
-            <span class="pull-right">
+            <br />
+            <br />
+            <span>
               Déjà inscrit ?
-              <a href="{{ url_for('auth.login') }}"> Me connecter </a>
+              <a href="{{ url_for('auth.login') }}"> Me connecter </a> </span
+            ><br />
+            <span>
+              Mot de passe oublié ?
+              <a href="{{ url_for('auth.reset_password_request') }}">
+                Réinitialiser mon mot de passe
+              </a>
             </span>
           </div>
         </div>

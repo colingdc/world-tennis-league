@@ -106,12 +106,14 @@ __pycache__/
 migrations/
 tmp/coverage/
 
+.DS_Store
+
 # instance and run files
 instance.py
 run.sh
 
 # csv files used to migrate data
-data/users.csv
+data/*.csv
 data/*.xlsx
 *.sql
 

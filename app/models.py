@@ -708,7 +708,7 @@ class Ranking(db.Model):
         if week is None:
             week = Tournament.get_latest_finished_tournament().week
 
-        year = func.year(week.start_date)
+        year = week.start_date.year
 
         participations = (
             Participation.query
@@ -716,7 +716,7 @@ class Ranking(db.Model):
             .join(TournamentWeek)
             .filter(Tournament.deleted_at.is_(None))
             .filter(TournamentWeek.start_date <= week.start_date)
-            .filter(func.year(TournamentWeek.start_date) == year)
+            .filter(TournamentWeek.start_date >= datetime.date(year-1, 12, 25))
             .filter(Tournament.status == TournamentStatus.FINISHED)
         )
 
