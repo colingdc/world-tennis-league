@@ -102,7 +102,6 @@ def view_tournaments():
     title = "Tournois"
     tournaments = (Tournament.query
                    .filter(Tournament.deleted_at.is_(None))
-                   .order_by(Tournament.started_at.desc())
                    )
     return render_template("tournament/view_tournaments.html",
                            title=title,

@@ -8,7 +8,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-md-12">
-        {% if user.get_participations().count() > 1 %}
+        {% if user.get_participations().count() > 3 %}
         <div
           id="ranking-chart"
           class="chart"
@@ -20,6 +20,7 @@
             <thead>
               <tr>
                 <th>Tournoi</th>
+                <th>Joueur choisi</th>
                 <th>Stade atteint</th>
                 <th>Points</th>
                 <th>Classement ATP</th>
@@ -34,6 +35,9 @@
                   >
                     {{ participation.tournament.name }}</a
                   >
+                </td>
+                <td>
+                  {{ participation.tournament_player.get_name(format="standard") }}
                 </td>
                 <td>{{ participation.get_status() | safe }}</td>
                 <td>{{ participation.points }}</td>

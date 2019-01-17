@@ -54,7 +54,8 @@
             <td>{{ tournament.get_status() }}</td>
             <td>
               {% if tournament.is_open_to_registration() %}
-              {{ tournament.started_at | dt }} {% endif %}
+              {{ tournament.started_at | dt }} (fermeture
+              {{ tournament.started_at | dt_diff }}) {% endif %}
             </td>
           </tr>
           {% endfor %}
