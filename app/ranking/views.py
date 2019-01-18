@@ -2,7 +2,7 @@ from flask import abort, redirect, render_template, url_for
 
 from . import bp
 from ..decorators import login_required
-from ..models import Ranking, Tournament, TournamentWeek
+from ..models import Ranking, Tournament, TournamentWeek, TournamentStatus
 from .forms import RankingForm
 
 
@@ -37,15 +37,18 @@ def index():
     title = "Classements"
 
     form = RankingForm()
-    tournaments = Tournament.get_finished_tournaments()
-    tournaments = tournaments.order_by(Tournament.started_at.desc())
-    form.tournament_name.choices = [
-        (-1, "Choisir un tournoi")] + [(t.id, t.name) for t in tournaments]
+    weeks = (TournamentWeek.query
+             .join(Tournament)
+             .filter(Tournament.status == TournamentStatus.FINISHED)
+             .order_by(TournamentWeek.start_date.desc()))
+
+    form.week_name.choices = [
+        (-1, "Choisir une semaine")] + [(w.id, w.get_name("ranking"))
+                                        for w in weeks]
 
     if form.validate_on_submit():
-        tournament = Tournament.query.get(form.tournament_name.data)
         return redirect(url_for(".ranking",
-                                tournament_week_id=tournament.week.id))
+                                tournament_week_id=form.week_name.data))
 
     return render_template("ranking/index.html",
                            title=title,

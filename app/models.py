@@ -244,6 +244,10 @@ class TournamentWeek(db.Model):
             name = f"{week_number} {year} - "
             name += ", ".join([t.name for t in self.tournaments])
             return name
+        if format == "ranking":
+            name = f"Semaine {week_number} {year} - "
+            name += ", ".join([t.name for t in self.tournaments])
+            return name
         return f"{year} Semaine {week_number}"
 
 

@@ -3,4 +3,4 @@ from wtforms import SelectField
 
 
 class RankingForm(FlaskForm):
-    tournament_name = SelectField("Tournoi", coerce=int)
+    week_name = SelectField("Semaine", coerce=int)
