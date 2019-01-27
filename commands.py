@@ -221,6 +221,9 @@ class MergeAccounts(Command):
             for p in tmp_user.participations:
                 p.user_id = real_user.id
                 db.session.add(p)
+            for r in Ranking.query.filter_by(user_id=tmp_user.id):
+                r.user_id = real_user.id
+                db.session.add(r)
             db.session.commit()
 
 
@@ -233,7 +236,10 @@ class MergeAllAccounts(Command):
                 tmp_user = User.query.get(row["tmp_user_id"])
                 if real_user and tmp_user:
                     print(real_user.username, tmp_user.username)
-                    # for p in tmp_user.participations:
-                    #     p.user_id = real_user.id
-                    #     db.session.add(p)
-                    # db.session.commit()
+                    for p in tmp_user.participations:
+                        p.user_id = real_user.id
+                        db.session.add(p)
+                    for r in Ranking.query.filter_by(user_id=tmp_user.id):
+                        r.user_id = real_user.id
+                        db.session.add(r)
+                    db.session.commit()
