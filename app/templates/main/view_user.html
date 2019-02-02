@@ -27,7 +27,8 @@
               </tr>
             </thead>
             <tbody>
-              {% for participation in user.get_participations() %}
+              {% for participation in user.get_participations() %} {% if not
+              participation.tournament.is_open_to_registration() %}
               <tr>
                 <td>
                   <a
@@ -43,7 +44,7 @@
                 <td>{{ participation.points }}</td>
                 <td>{{ participation.get_ranking() or "" }}</td>
               </tr>
-              {% endfor %}
+              {% endif %} {% endfor %}
             </tbody>
           </table>
         </div>
