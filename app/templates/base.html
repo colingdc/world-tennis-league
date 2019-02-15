@@ -126,6 +126,11 @@ block head %} {{ super() }}
                 mot de passe
               </a>
             </li>
+            <li>
+              <a href="{{ url_for('tournament.view_tournaments') }}">
+                <span class="fa fa-lock" aria-hidden="true"></span> Tournois
+              </a>
+            </li>
             {% if current_user.is_manager() %}
             <li role="separator" class="divider"></li>
             <li>
