@@ -2,7 +2,7 @@ from commands import (CloseTournament, CreateATPPlayers, CreateByePlayer,
                       CreateFakePlayers, CreateFakeTournaments,
                       CreateFakeUsers, CreateSpecialUsers,
                       CreateTemporaryAccounts, CreateUsers, MergeAccounts,
-                      MergeAllAccounts)
+                      MergeAllAccounts, SendNewTournamentsEmail)
 
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
@@ -48,6 +48,7 @@ manager.add_command("create_temporary_accounts", CreateTemporaryAccounts())
 manager.add_command("close_tournament", CloseTournament())
 manager.add_command("merge_accounts", MergeAccounts())
 manager.add_command("merge_all_accounts", MergeAllAccounts())
+manager.add_command("send_new_tournaments_email", SendNewTournamentsEmail())
 
 
 if __name__ == "__main__":

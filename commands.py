@@ -6,6 +6,7 @@ from faker import Faker
 from flask_script import Command, Option
 
 from app import db
+from app.email import send_email
 from app.models import (Participation, Player, Ranking, Role, Tournament,
                         TournamentStatus, TournamentWeek, User)
 
@@ -243,3 +244,21 @@ class MergeAllAccounts(Command):
                         r.user_id = real_user.id
                         db.session.add(r)
                     db.session.commit()
+
+
+class SendNewTournamentsEmail(Command):
+    def run(self):
+        tournaments = Tournament.query.all()
+        tournaments = [t for t in tournaments
+                       if datetime.now() - t.created_at < timedelta(hours=1)
+                       and t.status == TournamentStatus.REGISTRATION_OPEN
+                       ]
+        if not tournaments:
+            print("No new tournaments")
+            return
+        for user in User.query.filter_by(username="admin"):
+            send_email(to=user.email,
+                       subject="Nouveaux tournois disponibles",
+                       template="email/new_tournaments",
+                       user=user,
+                       tournaments=tournaments)

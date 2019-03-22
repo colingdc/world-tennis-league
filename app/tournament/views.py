@@ -177,6 +177,14 @@ def create_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     title = f"{tournament.name} - Tableau"
 
+    matches_with_tournament_player = [m for m in tournament.matches
+                                      if m.tournament_player1_id
+                                      or m.tournament_player2_id]
+
+    if len(matches_with_tournament_player) > 0:
+        return redirect(url_for(
+            ".edit_tournament_draw", tournament_id=tournament_id))
+
     matches = tournament.get_matches_first_round()
 
     if not request.form:

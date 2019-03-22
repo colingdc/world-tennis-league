@@ -114,7 +114,7 @@ def create_app(config_name):
     app.register_error_handler(403, forbidden)
     app.register_error_handler(404, page_not_found)
     app.register_error_handler(400, bad_request)
-    app.register_error_handler(500, internal_server_error)
-    app.register_error_handler(Exception, unhandled_exception)
+    # app.register_error_handler(500, internal_server_error)
+    # app.register_error_handler(Exception, unhandled_exception)
 
     return app
