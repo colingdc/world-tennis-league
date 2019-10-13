@@ -308,6 +308,12 @@ class TournamentCategory:
             "name": "ATP 250",
             "points": [250, 150, 90, 45, 20, 0],
         },
+        "World Tour Finals": {
+            "full_name": "World Tour Finals",
+            "number_rounds": 3,
+            "name": "World Tour Finals",
+            "points": [0, 0, 0, 0],
+        },
     }
 
 
@@ -449,6 +455,8 @@ class Participation(db.Model):
         return self.tournament_player_id is not None
 
     def get_forbidden_forecasts(self):
+        if self.tournament.category == "World Tour Finals":
+            return []
         players = self.tournament.get_allowed_forecasts()
         current_year = func.year(self.tournament.week.start_date)
         current_year_participations = (
