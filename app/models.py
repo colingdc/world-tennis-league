@@ -288,7 +288,7 @@ class TournamentCategory:
             "full_name": "ATP 500 (6 tours)",
             "number_rounds": 6,
             "name": "ATP 500",
-            "points": [500, 300, 180, 90, 45, 20],
+            "points": [500, 300, 180, 90, 45, 20, 0],
         },
         "ATP 500 (5 tours)": {
             "full_name": "ATP 500 (5 tours)",
@@ -300,7 +300,7 @@ class TournamentCategory:
             "full_name": "ATP 250 (6 tours)",
             "number_rounds": 6,
             "name": "ATP 250",
-            "points": [250, 150, 90, 45, 20, 10],
+            "points": [250, 150, 90, 45, 20, 10, 0],
         },
         "ATP 250 (5 tours)": {
             "full_name": "ATP 250 (5 tours)",
