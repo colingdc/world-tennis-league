@@ -475,6 +475,8 @@ class Participation(db.Model):
                 if p.player_id in players_already_picked]
 
     def compute_score(self):
+        if self.tournament.category == "World Tour Finals":
+            return self.points or 0
         points = self.tournament.get_attributed_points()
         if self.tournament_player.has_won_tournament():
             return points[0]
