@@ -380,7 +380,6 @@ def make_forecast(tournament_id):
     participation = current_user.participation(tournament)
     forbidden_forecasts = participation.get_forbidden_forecasts()
     allowed_forecasts = [x.id for x in tournament.get_allowed_forecasts()]
-    print(forecast)
 
     if forecast in allowed_forecasts and forecast not in forbidden_forecasts:
         current_user.make_forecast(tournament, forecast)
@@ -448,6 +447,10 @@ def update_tournament_draw(tournament_id):
         db.session.commit()
 
         tournament.compute_scores()
+
+        if all(results[str(match.id)] != "None" for match in matches):
+            return redirect(url_for(".close_tournament",
+                                    tournament_id=tournament_id))
 
         return redirect(url_for(".view_tournament",
                                 tournament_id=tournament_id))
