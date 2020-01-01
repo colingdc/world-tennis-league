@@ -1,0 +1,12 @@
+Bonjour {{ user.username }},
+
+Les tournois de la semaine sont ouverts aux inscriptions :
+
+{% for tournament in tournaments %}
+    - {{ tournament.name}} : {{ url_for('tournament.view_tournament', tournament_id=tournament.id, _external=True) }}
+{% endfor %}
+
+
+L'équipe de la WTL
+
+Tu peux à tout moment te désinscrire de ce type de notifications dans les paramètres de ton profil : {{ url_for('main.settings', _external=True) }}.

@@ -1,0 +1,18 @@
+<p>Bonjour {{ user.username }},</p>
+
+<p>
+  Les tournois de la semaine sont ouverts aux inscriptions :
+</p>
+<ul>
+    {% for tournament in tournaments %}
+    <li><a href="{{ url_for('tournament.view_tournament', tournament_id=tournament.id, _external=True) }}">{{ tournament.name}}</a></li>
+    {% endfor %}
+</ul>
+
+<br />
+
+<em>L'équipe de la WTL</em>
+
+<br />
+
+Tu peux à tout moment te désinscrire de ce type de notifications dans <a href="{{ url_for('main.settings', _external=True) }}">les paramètres de ton profil</a>.

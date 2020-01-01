@@ -329,6 +329,8 @@ class Tournament(db.Model):
     number_rounds = db.Column(db.Integer)
     category = db.Column(db.String(64))
     status = db.Column(db.Integer, default=TournamentStatus.CREATED)
+    notification_sent_at = db.Column(db.DateTime)
+
     week_id = db.Column(db.Integer, db.ForeignKey('tournament_weeks.id'))
     participations = db.relationship(
         "Participation", backref="tournament", lazy="dynamic")

@@ -1,5 +1,5 @@
 import json
-from datetime import timedelta
+from datetime import datetime, timedelta
 from math import floor, log
 
 from flask import abort, flash, redirect, render_template, request, url_for
@@ -11,7 +11,7 @@ from ..decorators import login_required, manager_required
 from ..email import send_email
 from ..models import (Match, Participation, Player, Ranking, Tournament,
                       TournamentCategory, TournamentPlayer, TournamentStatus,
-                      TournamentWeek)
+                      TournamentWeek, User)
 from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
                     EditTournamentForm, FillTournamentDrawForm,
                     MakeForecastForm)
@@ -510,3 +510,33 @@ def stats(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     return render_template("tournament/stats.html",
                            tournament=tournament)
+
+
+@bp.route("/<tournament_id>/send_notification_email")
+@manager_required
+def send_notification_email(tournament_id):
+    tournament = Tournament.query.get_or_404(tournament_id)
+
+    if all(t.notification_sent_at is not None for t in tournament.week.tournaments):
+        flash("La notification par mail a déjà été envoyée pour tous les tournois de la semaine", "info")
+        return redirect(url_for(".view_tournament",
+                                tournament_id=tournament.id))
+
+    for t in tournament.week.tournaments:
+        t.notification_sent_at = datetime.now()
+        db.session.add(t)
+    db.session.commit()
+
+    users_to_notify = User.query.filter(User.notifications_activated).filter(User.confirmed)
+
+    for user in users_to_notify:
+        send_email(
+            user.email,
+            f"Les tournois de la semaine sont ouverts aux inscriptions !",
+            "email/registrations_open",
+            user=user,
+            tournaments=tournament.week.tournaments)
+
+    flash("Les participants ont été notifiés par mail de l'ouverture des tournois de la semaine", "info")
+    return redirect(url_for(".view_tournament",
+                            tournament_id=tournament.id))
