@@ -495,6 +495,11 @@ def close_registrations(tournament_id):
 @manager_required
 def close_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
+    if tournament.status == TournamentStatus.FINISHED:
+        return redirect(url_for(".view_tournament",
+                                tournament_id=tournament.id))
+
     tournament.status = TournamentStatus.FINISHED
     db.session.add(tournament)
     db.session.commit()
