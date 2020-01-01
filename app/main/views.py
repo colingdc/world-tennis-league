@@ -1,7 +1,9 @@
-from flask import redirect, render_template, url_for
+from flask import redirect, render_template, url_for, request, flash
 from flask_login import current_user
 
 from . import bp
+from .forms import SettingsForm
+from .. import db
 from ..decorators import manager_required, login_required
 from ..models import Ranking, Tournament, User
 
@@ -36,6 +38,26 @@ def view_user(user_id):
                            title=title,
                            series=series,
                            user=user)
+
+
+@bp.route("/user/settings", methods=["GET", "POST"])
+@login_required
+def settings():
+    title = "Paramètres"
+    form = SettingsForm(request.form)
+
+    if request.method == "GET":
+        form.notifications_activated.data = current_user.notifications_activated
+    if form.validate_on_submit():
+        current_user.notifications_activated = form.notifications_activated.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash(f"Tes préférences de notifications ont été mises à jour", "info")
+    return render_template("main/settings.html",
+                           title=title,
+                           form=form,
+                           user=current_user
+                           )
 
 
 @bp.route("/user/view")

@@ -115,6 +115,13 @@ block head %} {{ super() }}
               </a>
             </li>
             <li>
+              <a
+                href="{{ url_for('main.settings') }}"
+              >
+                <span class="fa fa-cog" aria-hidden="true"></span> Paramètres
+              </a>
+            </li>
+            <li>
               <a href="{{ url_for('auth.logout') }}">
                 <span class="fa fa-sign-out-alt" aria-hidden="true"></span> Me
                 déconnecter
@@ -226,6 +233,13 @@ block head %} {{ super() }}
               >
                 <span class="fa fa-user" aria-hidden="true"></span> Mon profil
                 [{{ current_user.username }}]
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ url_for('main.settings') }}"
+              >
+                <span class="fa fa-cog" aria-hidden="true"></span> Paramètres
               </a>
             </li>
             <li>
