@@ -2,360 +2,370 @@
 block head %} {{ super() }}
 
 <title>
-  {% block title %} Game, Set & Talk {% if title %} - {{ title }}{% endif %} {%
-  endblock %}
+    {% block title %} Game, Set & Talk {% if title %} - {{ title }}{% endif %} {%
+    endblock %}
 </title>
 
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <link
-  rel="shortcut icon"
-  type="image/png"
-  href="{{ url_for('static', filename='images/logo-resized.png') }}"
+        rel="shortcut icon"
+        type="image/png"
+        href="{{ url_for('static', filename='images/logo-resized.png') }}"
 />
 
 {% endblock %} {% block styles %}
 
 {{ super() }}
 <link
-  rel="stylesheet"
-  href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
 />
 <link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/global.css') | autoversion }}"
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/global.css') | autoversion }}"
 />
 <link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/navbar.css') | autoversion }}"
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/navbar.css') | autoversion }}"
 />
 
 {% endblock %} {% block body %} {% block navbar %}
 <nav class="navbar navbar-default navbar-static-top navbar-fixed-top">
-  <div class="container-fluid">
-    {% if "/wtl" in request.path %}
-    <div class="navbar-header">
-      <button
-        type="button"
-        class="navbar-toggle"
-        data-toggle="collapse"
-        data-target="#navbar"
-      >
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span> <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{{ url_for('main.index') }}">
-        <span class="fa fa-medal" aria-hidden="true"></span> La World Tennis
-        League
-      </a>
-    </div>
+    <div class="container-fluid">
+        {% if "/wtl" in request.path %}
+        <div class="navbar-header">
+            <button
+                    type="button"
+                    class="navbar-toggle"
+                    data-toggle="collapse"
+                    data-target="#navbar"
+            >
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <span class="fa fa-medal" aria-hidden="true"></span> La World Tennis
+                League
+            </a>
+        </div>
 
-    <div class="collapse navbar-collapse" id="navbar">
-      <ul class="nav navbar-nav">
-        <li>
-          <a href="{{ url_for('public.index') }}">
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{{ url_for('public.index') }}">
             <span
-              ><img
-                class="logo"
-                src="{{ url_for('static', filename='images/logo-resized.png') }}"
+            ><img
+                    class="logo"
+                    src="{{ url_for('static', filename='images/logo-resized.png') }}"
             /></span>
-            Game, Set & Talk
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('main.rules') }}">
-            <span class="fa fa-gavel" aria-hidden="true"></span> Les règles
-          </a>
-        </li>
-        {% if current_user.is_authenticated %}
-        <li>
-          <a href="{{ url_for('tournament.view_tournaments') }}">
-            <span class="fa fa-trophy" aria-hidden="true"></span> Tournois
-          </a>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-list-ol" aria-hidden="true"></span> Classements
-            <b class="caret"></b
-          ></a>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="{{ url_for('ranking.latest_ranking') }}">
-                Classement actuel
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('ranking.index') }}">
-                Tous les classements
-              </a>
-            </li>
-          </ul>
-        </li>
-        {% endif %}
-        <li>
-          <a href="{{ url_for('public.contact') }}"
-            ><span class="fa fa-pencil-alt" aria-hidden="true"></span> Contact
-          </a>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        {% if current_user.is_authenticated %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-user" aria-hidden="true"></span>
-            {{ current_user.username }} <b class="caret"></b
-          ></a>
-          <ul class="dropdown-menu">
-            <li>
-              <a
-                href="{{ url_for('main.view_user', user_id=current_user.id) }}"
-              >
-                <span class="fa fa-user" aria-hidden="true"></span> Mon profil
-              </a>
-            </li>
-            <li>
-              <a
-                href="{{ url_for('main.settings') }}"
-              >
-                <span class="fa fa-cog" aria-hidden="true"></span> Paramètres
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('auth.logout') }}">
-                <span class="fa fa-sign-out-alt" aria-hidden="true"></span> Me
-                déconnecter
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('auth.change_password') }}">
-                <span class="fa fa-lock" aria-hidden="true"></span> Modifier mon
-                mot de passe
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('tournament.view_tournaments') }}">
-                <span class="fa fa-lock" aria-hidden="true"></span> Tournois
-              </a>
-            </li>
-            {% if current_user.is_manager() %}
-            <li role="separator" class="divider"></li>
-            <li>
-              <a href="{{ url_for('tournament.create_tournament') }}">
-                <span class="fa fa-trophy" aria-hidden="true"></span> Créer un
-                tournoi
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('main.view_users') }}">
-                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('main.view_users_raw') }}">
-                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs (export brut)
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('player.view_players') }}">
-                <span class="fa fa-racket" aria-hidden="true"></span> Joueurs
-                ATP
-              </a>
-            </li>
-            {% endif %}
-          </ul>
-        </li>
+                        Game, Set & Talk
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('main.rules') }}">
+                        <span class="fa fa-gavel" aria-hidden="true"></span> Les règles
+                    </a>
+                </li>
+                {% if current_user.is_authenticated %}
+                <li>
+                    <a href="{{ url_for('tournament.view_tournaments') }}">
+                        <span class="fa fa-trophy" aria-hidden="true"></span> Tournois
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="fa fa-list-ol" aria-hidden="true"></span> Classements
+                        <b class="caret"></b
+                        ></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ url_for('ranking.latest_ranking') }}">
+                                Classement actuel
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('ranking.index') }}">
+                                Tous les classements
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
+                <li>
+                    <a href="{{ url_for('public.contact') }}"
+                    ><span class="fa fa-pencil-alt" aria-hidden="true"></span> Contact
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="fa fa-user" aria-hidden="true"></span>
+                        {{ current_user.username }} <b class="caret"></b
+                    ></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a
+                                    href="{{ url_for('main.view_user', user_id=current_user.id) }}"
+                            >
+                                <span class="fa fa-user" aria-hidden="true"></span> Mon profil
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                    href="{{ url_for('main.settings') }}"
+                            >
+                                <span class="fa fa-cog" aria-hidden="true"></span> Paramètres
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('auth.logout') }}">
+                                <span class="fa fa-sign-out-alt" aria-hidden="true"></span> Me
+                                déconnecter
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('auth.change_password') }}">
+                                <span class="fa fa-lock" aria-hidden="true"></span> Modifier mon
+                                mot de passe
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('tournament.view_tournaments') }}">
+                                <span class="fa fa-lock" aria-hidden="true"></span> Tournois
+                            </a>
+                        </li>
+                        {% if current_user.is_manager() %}
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{ url_for('tournament.create_tournament') }}">
+                                <span class="fa fa-trophy" aria-hidden="true"></span> Créer un
+                                tournoi
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.view_users') }}">
+                                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.view_users_raw') }}">
+                                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs (export brut)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('player.view_players') }}">
+                                <span class="fa fa-racket" aria-hidden="true"></span> Joueurs
+                                ATP
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{{ url_for('auth.signup') }}">
+                        <span class="fa fa-user-plus" aria-hidden="true"></span> Inscription
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('auth.login') }}">
+                        <span class="fa fa-sign-in-alt" aria-hidden="true"></span> Connexion
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
         {% else %}
-        <li>
-          <a href="{{ url_for('auth.signup') }}">
-            <span class="fa fa-user-plus" aria-hidden="true"></span> Inscription
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('auth.login') }}">
-            <span class="fa fa-sign-in-alt" aria-hidden="true"></span> Connexion
-          </a>
-        </li>
-        {% endif %}
-      </ul>
-    </div>
-    {% else %}
-    <div class="navbar-header">
-      <button
-        type="button"
-        class="navbar-toggle"
-        data-toggle="collapse"
-        data-target="#navbar"
-      >
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span> <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{{ url_for('public.index') }}">
+        <div class="navbar-header">
+            <button
+                    type="button"
+                    class="navbar-toggle"
+                    data-toggle="collapse"
+                    data-target="#navbar"
+            >
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('public.index') }}">
         <span
-          ><img
-            class="logo"
-            src="{{ url_for('static', filename='images/logo-resized.png') }}"/></span
+        ><img
+                class="logo"
+                src="{{ url_for('static', filename='images/logo-resized.png') }}"/></span
         >Game, Set & Talk
-      </a>
-    </div>
+            </a>
+        </div>
 
-    <div class="collapse navbar-collapse" id="navbar">
-      <ul class="nav navbar-nav">
-        <li>
-          <a href="{{ url_for('public.networks') }}"
-            ><span class="fab fa-twitter" aria-hidden="true"></span> Nous suivre
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('public.support') }}"
-            ><span class="fa fa-heart" aria-hidden="true"></span> Nous soutenir
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('public.partners') }}"
-            ><span class="fa fa-handshake" aria-hidden="true"></span> Nos
-            partenaires
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('public.contact') }}"
-            ><span class="fa fa-pencil-alt" aria-hidden="true"></span> Contact
-          </a>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        {% if current_user.is_authenticated %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-medal" aria-hidden="true"></span> La World Tennis
-            League <b class="caret"></b
-          ></a>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="{{ url_for('main.index') }}">
-                <span class="fa fa-home" aria-hidden="true"></span> Accueil
-              </a>
-            </li>
-            <li>
-              <a
-                href="{{ url_for('main.view_user', user_id=current_user.id) }}"
-              >
-                <span class="fa fa-user" aria-hidden="true"></span> Mon profil
-                [{{ current_user.username }}]
-              </a>
-            </li>
-            <li>
-              <a
-                href="{{ url_for('main.settings') }}"
-              >
-                <span class="fa fa-cog" aria-hidden="true"></span> Paramètres
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('auth.logout') }}">
-                <span class="fa fa-sign-out-alt" aria-hidden="true"></span> Me
-                déconnecter
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('auth.change_password') }}">
-                <span class="fa fa-lock" aria-hidden="true"></span> Modifier mon
-                mot de passe
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('main.rules') }}">
-                <span class="fa fa-gavel" aria-hidden="true"></span> Les règles
-              </a>
-            </li>
-          </ul>
-        </li>
-        {% else %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-medal" aria-hidden="true"></span> La World Tennis
-            League <b class="caret"></b
-          ></a>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="{{ url_for('main.index') }}">
-                <span class="fa fa-home" aria-hidden="true"></span> Accueil
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('auth.signup') }}">
-                <span class="fa fa-user-plus" aria-hidden="true"></span>
-                Inscription
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('auth.login') }}">
-                <span class="fa fa-sign-in-alt" aria-hidden="true"></span>
-                Connexion
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('main.rules') }}">
-                <span class="fa fa-gavel" aria-hidden="true"></span> Les règles
-              </a>
-            </li>
-          </ul>
-        </li>
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{{ url_for('public.networks') }}"
+                    ><span class="fab fa-twitter" aria-hidden="true"></span> Nous suivre
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('public.support') }}"
+                    ><span class="fa fa-heart" aria-hidden="true"></span> Nous soutenir
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('public.partners') }}"
+                    ><span class="fa fa-handshake" aria-hidden="true"></span> Nos
+                        partenaires
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('public.contact') }}"
+                    ><span class="fa fa-pencil-alt" aria-hidden="true"></span> Contact
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="fa fa-medal" aria-hidden="true"></span> La World Tennis
+                        League <b class="caret"></b
+                    ></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ url_for('main.index') }}">
+                                <span class="fa fa-home" aria-hidden="true"></span> Accueil
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                    href="{{ url_for('main.view_user', user_id=current_user.id) }}"
+                            >
+                                <span class="fa fa-user" aria-hidden="true"></span> Mon profil
+                                [{{ current_user.username }}]
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                    href="{{ url_for('main.settings') }}"
+                            >
+                                <span class="fa fa-cog" aria-hidden="true"></span> Paramètres
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('auth.logout') }}">
+                                <span class="fa fa-sign-out-alt" aria-hidden="true"></span> Me
+                                déconnecter
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('auth.change_password') }}">
+                                <span class="fa fa-lock" aria-hidden="true"></span> Modifier mon
+                                mot de passe
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.rules') }}">
+                                <span class="fa fa-gavel" aria-hidden="true"></span> Les règles
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="fa fa-medal" aria-hidden="true"></span> La World Tennis
+                        League <b class="caret"></b
+                    ></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ url_for('main.index') }}">
+                                <span class="fa fa-home" aria-hidden="true"></span> Accueil
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('auth.signup') }}">
+                                <span class="fa fa-user-plus" aria-hidden="true"></span>
+                                Inscription
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('auth.login') }}">
+                                <span class="fa fa-sign-in-alt" aria-hidden="true"></span>
+                                Connexion
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.rules') }}">
+                                <span class="fa fa-gavel" aria-hidden="true"></span> Les règles
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
         {% endif %}
-      </ul>
     </div>
-    {% endif %}
-  </div>
 </nav>
 {% endblock %}
 
 <div class="container-fluid wrap-content">
-  {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{ category }} alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    {{ message }}
-  </div>
-  {% endfor %} {% block content %}{% endblock %}
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{ category }} alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %} {% block content %}{% endblock %}
 </div>
 
 {% block footer %}
 <footer class="navbar navbar-default navbar-static-bottom navbar-fixed-bottom">
-  <div class="container">
-    <ul class="nav navbar-nav">
-      <li>
-        <a href="https://twitter.com/GameSetAndTalk" target="_blank">
-          <span class="fab fa-twitter fa-lg" aria-hidden="true"></span>
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://www.youtube.com/channel/UC36ZsZyLP1eyCJ5m5GQ1kAQ"
-          target="_blank"
-        >
-          <span class="fab fa-youtube fa-lg" aria-hidden="true"></span>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.facebook.com/gamesetandtalk" target="_blank">
-          <span class="fab fa-facebook fa-lg" aria-hidden="true"></span>
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://www.instagram.com/gamesetandtalk/?hl=fr"
-          target="_blank"
-        >
-          <span class="fab fa-instagram fa-lg" aria-hidden="true"></span>
-        </a>
-      </li>
-      <li>
-        <a href="https://discord.gg/8g4Ajra" target="_blank">
-          <span class="fab fa-discord fa-lg" aria-hidden="true"></span>
-        </a>
-      </li>
-    </ul>
-  </div>
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="https://twitter.com/GameSetAndTalk" target="_blank">
+                    <span class="fab fa-twitter fa-lg" aria-hidden="true"></span>
+                </a>
+            </li>
+            <li>
+                <a
+                        href="https://www.youtube.com/channel/UC36ZsZyLP1eyCJ5m5GQ1kAQ"
+                        target="_blank"
+                >
+                    <span class="fab fa-youtube fa-lg" aria-hidden="true"></span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com/gamesetandtalk" target="_blank">
+                    <span class="fab fa-facebook fa-lg" aria-hidden="true"></span>
+                </a>
+            </li>
+            <li>
+                <a
+                        href="https://www.instagram.com/gamesetandtalk/?hl=fr"
+                        target="_blank"
+                >
+                    <span class="fab fa-instagram fa-lg" aria-hidden="true"></span>
+                </a>
+            </li>
+            <li>
+                <a href="https://discord.gg/8g4Ajra" target="_blank">
+                    <span class="fab fa-discord fa-lg" aria-hidden="true"></span>
+                </a>
+            </li>
+            <li>
+                <a href="https://podcasts.apple.com/fr/podcast/game-set-talk/id1489701384">
+                    <span class="fab fa-apple fa-lg" aria-hidden="true"></span>
+                </a>
+            </li>
+            <li>
+                <a href="https://open.spotify.com/show/1Hysz51FhG4VUD2Z06KYBt?si=-bd2lIowQzerrVSRwVVNzw">
+                    <span class="fab fa-spotify fa-lg" aria-hidden="true"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </footer>
 {% endblock footer %} {% block scripts %}{{ super() }}{% endblock %} {% block
 extrajs %}{% endblock %} {% endblock %}
