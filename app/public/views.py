@@ -21,6 +21,11 @@ def networks():
     return render_template("public/networks.html")
 
 
+@bp.route("/support")
+def support():
+    return render_template("public/support.html")
+
+
 @bp.route("/contact", methods=['GET', 'POST'])
 def contact():
     title = "Contact"
