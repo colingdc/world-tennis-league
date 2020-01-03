@@ -66,9 +66,17 @@ footer .navbar-nav > li {
   margin-bottom: 20px;
 }
 
-.partner-logo {
+.partner-logos {
   display: flex;
   align-items: center;
+}
+
+.partner-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  margin-bottom: 20px;
 }
 
 .table {
