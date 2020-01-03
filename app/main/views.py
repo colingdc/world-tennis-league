@@ -70,6 +70,17 @@ def view_users():
                            users=users)
 
 
+@bp.route("/user/raw")
+@manager_required
+def view_users_raw():
+    title = "Utilisateurs"
+    users = User.query.order_by(User.username)
+    users = [user for user in users if not user.email.startswith("TEMPORARY")]
+    return render_template("main/view_users_raw.html",
+                           title=title,
+                           users=users)
+
+
 @bp.route("/rules")
 def rules():
     title = "FAQ"

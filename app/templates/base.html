@@ -152,6 +152,11 @@ block head %} {{ super() }}
               </a>
             </li>
             <li>
+              <a href="{{ url_for('main.view_users_raw') }}">
+                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs (export brut)
+              </a>
+            </li>
+            <li>
               <a href="{{ url_for('player.view_players') }}">
                 <span class="fa fa-racket" aria-hidden="true"></span> Joueurs
                 ATP
