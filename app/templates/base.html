@@ -90,6 +90,11 @@ block head %} {{ super() }}
                                 Tous les classements
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ url_for('ranking.monthly_ranking') }}">
+                                Classements mensuels
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 {% endif %}

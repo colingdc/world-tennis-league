@@ -782,6 +782,27 @@ class Ranking(db.Model):
                    )
         return ranking
 
+    @staticmethod
+    def get_monthly_ranking(year, month):
+        tournaments = (Tournament
+                       .query
+                       .filter(func.year(Tournament.started_at) == year)
+                       .filter(func.month(Tournament.started_at) == month))
+        scores = {}
+
+        print(tournaments.count(), "tournaments")
+        for tournament in tournaments:
+            for participant in tournament.participations:
+                user = participant.user
+                if scores.get(user) is None:
+                    scores[user] = {
+                        "score": 0,
+                        "number_of_tournaments": 0
+                    }
+                scores[user]["score"] += participant.points
+                scores[user]["number_of_tournaments"] += 1
+        return sorted(scores.items(), key=lambda x: -x[1]["score"])
+
     @classmethod
     def generate_chart(cls, user):
         return (Tournament.query
