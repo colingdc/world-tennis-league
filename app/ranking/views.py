@@ -1,6 +1,7 @@
 from flask import abort, redirect, render_template, url_for
 
 from datetime import date
+from flask_babel import format_datetime
 from . import bp
 from ..decorators import login_required
 from ..models import Ranking, Tournament, TournamentWeek, TournamentStatus
@@ -43,7 +44,7 @@ def monthly_ranking(year=None, month=None):
     months = list(reversed(sorted(set((t.started_at.year, t.started_at.month) for t in Tournament.query))))
 
     def format_date(year, month):
-        return date(int(year), int(month), 1).strftime("%B %Y").capitalize()
+        return format_datetime(date(int(year), int(month), 1), "MMMM yyyy").capitalize()
 
     form.month_name.choices = [("", "Choisir un mois")] + [
         (f"{year}-{month}", format_date(year, month)) for year, month in months]

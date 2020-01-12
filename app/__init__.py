@@ -1,7 +1,6 @@
 import logging
 import os
 from datetime import datetime
-import locale
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
@@ -36,8 +35,6 @@ def create_app(config_name):
     mail.init_app(app)
 
     from .models import User
-
-    locale.setlocale(locale.LC_ALL, "fr_FR")
 
     @login_manager.user_loader
     def load_user(user_id):
