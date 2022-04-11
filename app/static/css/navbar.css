@@ -10,7 +10,7 @@
 }
 
 .navbar-default {
-  background-color: #e06333;
+  background-color: #bc4c00;
   border-color: #efc522;
 }
 .navbar-default .navbar-brand {
@@ -33,7 +33,7 @@
   background-color: #efc522;
 }
 .navbar-default .navbar-nav > li > .dropdown-menu {
-  background-color: #e06333;
+  background-color: #bc4c00;
 }
 .navbar-default .navbar-nav > li > .dropdown-menu > li > a {
   color: #ffffff;
