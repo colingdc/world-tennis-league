@@ -161,8 +161,8 @@ def register(tournament_id):
 
     if not current_user.can_register_to_tournament(tournament):
         display_warning_message("Tu n'es pas autorisé à t'inscrire à ce tournoi, soit "
-              "doute car tu es déjà inscrit à un autre tournoi cette semaine,"
-              "soit car les inscriptions sont fermées.")
+                                "car tu es déjà inscrit à un autre tournoi cette semaine,"
+                                "soit car les inscriptions sont fermées.")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     participant = Participation(
