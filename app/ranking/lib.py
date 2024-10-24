@@ -1,6 +1,6 @@
 from sqlalchemy import func
 
-from ..models import Tournament
+from ..models import Tournament, Ranking
 
 
 def get_monthly_ranking(year, month):
@@ -23,3 +23,13 @@ def get_monthly_ranking(year, month):
             if participant.points is not None:
                 scores[user]["score"] += participant.points
     return sorted(scores.items(), key=lambda x: -x[1]["score"])
+
+
+def get_weekly_ranking(week=None):
+    if week is None:
+        week = Tournament.get_latest_finished_tournament().week
+    ranking = (Ranking.query
+               .filter(Ranking.tournament_week_id == week.id)
+               .order_by(Ranking.year_to_date_ranking)
+               )
+    return ranking
