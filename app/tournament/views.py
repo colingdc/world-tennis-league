@@ -16,6 +16,7 @@ from ..decorators import login_required, manager_required
 from ..email import send_email
 from ..models import Participation, Player, Tournament, TournamentPlayer, User
 from ..notifications import display_success_message, display_info_message, display_warning_message
+from ..wordings import wordings
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -41,7 +42,7 @@ def create_tournament():
             category_name=form.category.data,
         )
 
-        display_info_message(f"Le tournoi {form.name.data} a été créé")
+        display_info_message(wordings["tournament_created"].format(form.name.data))
         return redirect(url_for(".create_tournament"))
     else:
         return render_template(
@@ -76,7 +77,7 @@ def edit_tournament(tournament_id):
         db.session.add(tournament)
         db.session.commit()
 
-        display_info_message(f"Le tournoi {form.name.data} a été mis à jour")
+        display_info_message(wordings["tournament_updated"].format(form.name.data))
         return redirect(url_for(".edit_tournament", tournament_id=tournament_id))
     else:
         return render_template(
