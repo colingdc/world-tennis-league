@@ -23,7 +23,7 @@ from ..wordings import wordings
 @manager_required
 def create_tournament():
     form = CreateTournamentForm(request.form)
-    form.category.choices = [("", "Choisir une catégorie")]
+    form.category.choices = [("", wordings["choose_a_category"])]
     form.category.choices += [(
         i, c["full_name"])
         for i, c in tournament_categories.items()]
@@ -110,7 +110,7 @@ def view_tournament(tournament_id):
 
         participation = current_user.participation(tournament)
 
-        form.player.choices = [(-1, "Choisir un joueur")]
+        form.player.choices = [(-1, wordings["choose_a_player"])]
         form.player.choices += [(p.id, p.get_name("last_name_first"))
                                 for p in tournament.get_allowed_forecasts()]
 
@@ -138,9 +138,7 @@ def register(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
     if not current_user.can_register_to_tournament(tournament):
-        display_warning_message("Tu n'es pas autorisé à t'inscrire à ce tournoi, soit "
-                                "car tu es déjà inscrit à un autre tournoi cette semaine,"
-                                "soit car les inscriptions sont fermées.")
+        display_warning_message(wordings["not_allowed_to_register"])
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     participant = Participation(
@@ -151,7 +149,7 @@ def register(tournament_id):
     db.session.add(participant)
     db.session.commit()
 
-    display_success_message(f"Tu es bien inscrit au tournoi {tournament.name}")
+    display_success_message(wordings["registration_confirmed"].format(tournament.name))
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
 
@@ -161,16 +159,16 @@ def withdraw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
     if not current_user.participation(tournament):
-        display_warning_message("Tu n'es pas inscrit à ce tournoi")
+        display_warning_message(wordings["not_registered_yet"])
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     participation = current_user.participation(tournament)
 
     if not tournament.is_open_to_registration():
-        display_warning_message("Tu ne peux plus te retirer de ce tournoi")
+        display_warning_message(wordings["not_allowed_to_withdraw"])
     else:
         participation.delete()
-        display_success_message(f"Tu es bien désinscrit du tournoi {tournament.name}")
+        display_success_message(wordings["withdrawal_confirmed"])
 
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
@@ -198,7 +196,7 @@ def create_tournament_draw(tournament_id):
     else:
         form = CreateTournamentDrawForm(request.form)
 
-    player_names = [(-1, "Choisir un joueur")] + Player.get_all()
+    player_names = [(-1, wordings["choose_a_player"])] + Player.get_all()
 
     for p in form.player:
         p.player1_name.choices = player_names
@@ -282,7 +280,7 @@ def edit_tournament_draw(tournament_id):
     else:
         form = CreateTournamentDrawForm(request.form)
 
-    player_names = [(-1, "Choisir un joueur")] + Player.get_all()
+    player_names = [(-1, wordings["choose_a_player"])] + Player.get_all()
 
     for p in form.player:
         p.player1_name.choices = player_names
@@ -349,7 +347,7 @@ def edit_tournament_draw(tournament_id):
 
                     send_email(
                         participation.user.email,
-                        f"Tableau du tournoi {tournament.name} modifié",
+                        wordings["tournament_draw_has_been_modified"].format(tournament.name),
                         "email/draw_updated",
                         user=participation.user,
                         tournament=tournament,
@@ -373,18 +371,18 @@ def make_forecast(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
     if not current_user.can_make_forecast(tournament):
-        display_warning_message("Tu n'es pas autorisé à faire un pronostic pour ce tournoi")
+        display_warning_message(wordings["not_allowed_to_make_a_forecast"])
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     if not request.form["player"]:
-        display_warning_message("Requête invalide")
+        display_warning_message(wordings["invalid_request"])
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     if int(request.form["player"]) == -1:
         forecast = None
         current_user.make_forecast(tournament, forecast)
 
-        display_success_message("Ton pronostic a bien été pris en compte.")
+        display_success_message(wordings["forecast_confirmed"])
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     forecast = int(request.form["player"])
@@ -394,9 +392,9 @@ def make_forecast(tournament_id):
 
     if forecast in allowed_forecasts and forecast not in forbidden_forecasts:
         current_user.make_forecast(tournament, forecast)
-        display_success_message("Ton pronostic a bien été pris en compte.")
+        display_success_message(wordings["forecast_confirmed"])
     else:
-        display_warning_message("Ce pronostic est invalide.")
+        display_warning_message(wordings["invalid_forecast"])
 
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
@@ -480,7 +478,7 @@ def open_registrations(tournament_id):
 
     open_tournament_registrations(tournament)
 
-    display_info_message("Les inscriptions au tournoi sont ouvertes")
+    display_info_message(wordings["registrations_opened"])
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
@@ -491,7 +489,7 @@ def close_registrations(tournament_id):
 
     close_tournament_registrations(tournament)
 
-    display_info_message("Les inscriptions au tournoi sont closes")
+    display_info_message(wordings["registrations_closed"])
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
@@ -502,7 +500,7 @@ def close_tournament(tournament_id):
 
     if not is_tournament_finished(tournament):
         finish_tournament(tournament)
-        display_info_message("Le tournoi a bien été clos")
+        display_info_message(wordings["tournament_closed"])
 
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
@@ -524,7 +522,7 @@ def send_notification_email(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
     if all(t.notification_sent_at is not None for t in tournament.week.tournaments):
-        display_info_message("La notification par mail a déjà été envoyée pour tous les tournois de la semaine")
+        display_info_message(wordings["participants_already_notified"])
         return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
     for t in tournament.week.tournaments:
@@ -537,11 +535,11 @@ def send_notification_email(tournament_id):
     for user in users_to_notify:
         send_email(
             user.email,
-            f"Les tournois de la semaine sont ouverts aux inscriptions !",
+            wordings["registrations_opened_this_week"],
             "email/registrations_open",
             user=user,
             tournaments=tournament.week.tournaments
         )
 
-    display_info_message("Les participants ont été notifiés par mail de l'ouverture des tournois de la semaine")
+    display_info_message(wordings["participants_notified"])
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
