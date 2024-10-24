@@ -56,12 +56,12 @@ class EditTournamentForm(FlaskForm):
 
 
 class PlayerTournamentDrawForm(FlaskForm):
-    player1_name = SelectField("Joueur", coerce=int)
-    player2_name = SelectField("Joueur", coerce=int)
-    player1_status = StringField("Statut")
-    player2_status = StringField("Statut")
-    player1_seed = IntegerField("Tête de série", validators=[Optional()])
-    player2_seed = IntegerField("Tête de série", validators=[Optional()])
+    player1_name = SelectField(coerce=int)
+    player2_name = SelectField(coerce=int)
+    player1_status = StringField()
+    player2_status = StringField()
+    player1_seed = IntegerField(validators=[Optional()])
+    player2_seed = IntegerField(validators=[Optional()])
 
 
 class CreateTournamentDrawForm(FlaskForm):
@@ -69,8 +69,8 @@ class CreateTournamentDrawForm(FlaskForm):
 
 
 class MakeForecastForm(FlaskForm):
-    player = SelectField("Mon pronostic", coerce=int)
+    player = SelectField(coerce=int)
 
 
 class FillTournamentDrawForm(FlaskForm):
-    forecast = StringField("forecast")
+    forecast = StringField()
