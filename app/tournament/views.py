@@ -1,6 +1,5 @@
 import json
 from datetime import datetime, timedelta
-from math import floor, log
 
 from flask import abort, redirect, render_template, request, url_for
 from flask_login import current_user
@@ -15,7 +14,7 @@ from .. import db
 from ..constants import tournament_categories
 from ..decorators import login_required, manager_required
 from ..email import send_email
-from ..models import Match, Participation, Player, Tournament, TournamentPlayer, User
+from ..models import Participation, Player, Tournament, TournamentPlayer, User
 from ..notifications import display_success_message, display_info_message, display_warning_message
 
 
@@ -38,22 +37,13 @@ def create_tournament():
         category = tournament_categories.get(form.category.data)
         number_rounds = category["number_rounds"]
 
-        tournament = insert_tournament(
+        insert_tournament(
             name=form.name.data,
             start_date=form.start_date.data,
             week_id=tournament_week.id,
             number_rounds=number_rounds,
             category=form.category.data,
         )
-
-        for i in range(1, 2 ** tournament.number_rounds):
-            match = Match(
-                position=i,
-                tournament_id=tournament.id,
-                round=floor(log(i) / log(2)) + 1
-            )
-            db.session.add(match)
-        db.session.commit()
 
         display_info_message(f"Le tournoi {form.name.data} a été créé")
         return redirect(url_for(".create_tournament"))

@@ -1,5 +1,7 @@
+from math import floor, log
+
 from .. import db
-from ..models import Tournament, TournamentStatus, TournamentWeek, Ranking
+from ..models import Tournament, TournamentStatus, TournamentWeek, Ranking, Match
 
 
 def insert_tournament_week(start_date):
@@ -25,7 +27,14 @@ def insert_tournament(name, start_date, week_id, number_rounds, category):
     db.session.add(tournament)
     db.session.commit()
 
-    return tournament
+    for i in range(1, 2 ** number_rounds):
+        match = Match(
+            position=i,
+            tournament_id=tournament.id,
+            round=floor(log(i) / log(2)) + 1
+        )
+        db.session.add(match)
+    db.session.commit()
 
 
 def open_tournament_registrations(tournament):
