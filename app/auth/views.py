@@ -35,16 +35,20 @@ def signup():
             db.session.add(user)
             db.session.commit()
             token = user.generate_confirmation_token()
-            send_email(to=user.email,
-                       subject="Confirmation de ton adresse mail",
-                       template="email/confirm",
-                       user=user,
-                       token=token)
+            send_email(
+                to=user.email,
+                subject="Confirmation de ton adresse mail",
+                template="email/confirm",
+                user=user,
+                token=token
+            )
 
-            send_email(to=current_app.config.get("ADMIN_WTL"),
-                       subject="Nouvel inscrit",
-                       template="email/new_user",
-                       user=user)
+            send_email(
+                to=current_app.config.get("ADMIN_WTL"),
+                subject="Nouvel inscrit",
+                template="email/new_user",
+                user=user
+            )
 
             flash("Un email de confirmation t'a été envoyé.", "info")
             session.pop("signed", None)
@@ -75,11 +79,13 @@ def unconfirmed():
 @auth_required
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
-    send_email(to=current_user.email,
-               subject="Confirmation de ton adresse mail",
-               template="email/confirm",
-               user=current_user,
-               token=token)
+    send_email(
+        to=current_user.email,
+        subject="Confirmation de ton adresse mail",
+        template="email/confirm",
+        user=current_user,
+        token=token
+    )
     flash("Un email de confirmation t'a été envoyé.", "info")
     return redirect(url_for("auth.unconfirmed"))
 
@@ -184,11 +190,14 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             token = user.generate_reset_token()
-            send_email(user.email, "Réinitialisation du mot de passe",
-                       "email/reset_password",
-                       user=user,
-                       token=token,
-                       next=request.args.get("next"))
+            send_email(
+                user.email,
+                "Réinitialisation du mot de passe",
+                "email/reset_password",
+                user=user,
+                token=token,
+                next=request.args.get("next")
+            )
         flash("Un email contenant des instructions pour réinitialiser "
               "ton mot de passe t'a été envoyé. Si tu n'as pas reçu d'email, "
               "vérifie dans ton dossier de spams et assure toi d'avoir rentré "

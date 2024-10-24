@@ -35,12 +35,14 @@ def contact():
             sender = current_user.username
         else:
             sender = "Anonyme"
-        send_email(to=current_app.config["ADMIN_WTL"],
-                   subject="Nouveau message de la part de {}".format(sender),
-                   template="email/contact",
-                   message=message,
-                   email=form.email.data,
-                   user=current_user)
+        send_email(
+            to=current_app.config["ADMIN_WTL"],
+            subject="Nouveau message de la part de {}".format(sender),
+            template="email/contact",
+            message=message,
+            email=form.email.data,
+            user=current_user
+        )
         flash(u"Ton message a bien été envoyé.", "success")
         return redirect(url_for(".contact"))
 

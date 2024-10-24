@@ -341,7 +341,8 @@ def edit_tournament_draw(tournament_id):
                         "email/draw_updated",
                         user=participation.user,
                         tournament=tournament,
-                        forecast=forecast)
+                        forecast=forecast
+                    )
 
         flash(f"Le tableau du tournoi {tournament.name} a été modifié", "info")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
