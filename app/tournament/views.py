@@ -517,12 +517,10 @@ def close_registrations(tournament_id):
 def close_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
-    if is_tournament_finished(tournament):
-        return redirect(url_for(".view_tournament", tournament_id=tournament.id))
+    if not is_tournament_finished(tournament):
+        finish_tournament(tournament)
+        display_info_message("Le tournoi a bien été clos")
 
-    finish_tournament(tournament)
-
-    display_info_message("Le tournoi a bien été clos")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
