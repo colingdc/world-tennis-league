@@ -3,7 +3,7 @@ from wtforms import StringField
 from wtforms.validators import InputRequired, Optional
 
 from ..models import Player
-
+from ..wordings import wordings
 
 class CreatePlayerForm(FlaskForm):
     first_name = StringField(
@@ -15,7 +15,7 @@ class CreatePlayerForm(FlaskForm):
     last_name = StringField(
         "Nom",
         validators=[
-            InputRequired(message="Ce champ est obligatoire")
+            InputRequired(message=wordings["mandatory_field"])
         ]
     )
 
@@ -26,7 +26,7 @@ class CreatePlayerForm(FlaskForm):
         if (Player.query.filter_by(first_name=self.first_name.data)
                         .filter_by(last_name=self.last_name.data).first()):
             self.first_name.errors.append("")
-            self.last_name.errors.append("Ce joueur existe déjà")
+            self.last_name.errors.append(wordings["player_already_exists"])
             return False
         return True
 
@@ -41,7 +41,7 @@ class EditPlayerForm(FlaskForm):
     last_name = StringField(
         "Nom",
         validators=[
-            InputRequired(message="Ce champ est obligatoire")
+            InputRequired(message=wordings["mandatory_field"])
         ]
     )
 
@@ -59,6 +59,6 @@ class EditPlayerForm(FlaskForm):
                              .filter_by(last_name=self.last_name.data)
                              .first())):
             self.first_name.errors.append("")
-            self.last_name.errors.append("Ce joueur existe déjà")
+            self.last_name.errors.append(wordings["player_already_exists"])
             return False
         return True
