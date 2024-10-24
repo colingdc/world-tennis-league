@@ -12,8 +12,10 @@ from ..models import Player
 def create_player():
     form = CreatePlayerForm(request.form)
     if form.validate_on_submit():
-        player = Player(first_name=form.first_name.data,
-                        last_name=form.last_name.data)
+        player = Player(
+            first_name=form.first_name.data,
+            last_name=form.last_name.data
+        )
         db.session.add(player)
         db.session.commit()
         flash(f"Le joueur {player.get_name()} a été créé", "info")

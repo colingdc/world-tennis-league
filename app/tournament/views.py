@@ -37,18 +37,21 @@ def create_tournament():
 
         category = tournament_categories.get(form.category.data)
         number_rounds = category["number_rounds"]
-        tournament = Tournament(name=form.name.data,
-                                started_at=form.start_date.data,
-                                week_id=tournament_week.id,
-                                number_rounds=number_rounds,
-                                category=form.category.data,
-                                )
+        tournament = Tournament(
+            name=form.name.data,
+            started_at=form.start_date.data,
+            week_id=tournament_week.id,
+            number_rounds=number_rounds,
+            category=form.category.data,
+        )
         db.session.add(tournament)
         db.session.commit()
         for i in range(1, 2 ** tournament.number_rounds):
-            match = Match(position=i,
-                          tournament_id=tournament.id,
-                          round=floor(log(i) / log(2)) + 1)
+            match = Match(
+                position=i,
+                tournament_id=tournament.id,
+                round=floor(log(i) / log(2)) + 1
+            )
             db.session.add(match)
         db.session.commit()
         flash(f"Le tournoi {form.name.data} a été créé", "info")
@@ -148,8 +151,10 @@ def register(tournament_id):
               "warning")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
-    participant = Participation(tournament_id=tournament_id,
-                                user_id=current_user.id)
+    participant = Participation(
+        tournament_id=tournament_id,
+        user_id=current_user.id
+    )
     db.session.add(participant)
     db.session.commit()
     flash(f"Tu es bien inscrit au tournoi {tournament.name}", "success")
@@ -212,12 +217,14 @@ def create_tournament_draw(tournament_id):
                 player_id = None
                 qualifier_count += 1
                 qualifier_id = qualifier_count
-            t1 = TournamentPlayer(player_id=player_id,
-                                  seed=p.data["player1_seed"],
-                                  status=p.data["player1_status"],
-                                  position=0,
-                                  qualifier_id=qualifier_id,
-                                  tournament_id=tournament_id)
+            t1 = TournamentPlayer(
+                player_id=player_id,
+                seed=p.data["player1_seed"],
+                status=p.data["player1_status"],
+                position=0,
+                qualifier_id=qualifier_id,
+                tournament_id=tournament_id
+            )
             if p.data["player2_name"] >= 0:
                 player_id = p.data["player2_name"]
                 qualifier_id = None
@@ -225,12 +232,14 @@ def create_tournament_draw(tournament_id):
                 player_id = None
                 qualifier_count += 1
                 qualifier_id = qualifier_count
-            t2 = TournamentPlayer(player_id=player_id,
-                                  seed=p.data["player2_seed"],
-                                  status=p.data["player2_status"],
-                                  position=1,
-                                  qualifier_id=qualifier_id,
-                                  tournament_id=tournament_id)
+            t2 = TournamentPlayer(
+                player_id=player_id,
+                seed=p.data["player2_seed"],
+                status=p.data["player2_status"],
+                position=1,
+                qualifier_id=qualifier_id,
+                tournament_id=tournament_id
+            )
 
             # Add tournament players
             db.session.add(t1)

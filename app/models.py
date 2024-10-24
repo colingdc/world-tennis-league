@@ -83,11 +83,13 @@ class User(UserMixin, db.Model):
         user = User.query.filter_by(email=email).first()
         email_exists = user is not None
         if not email_exists:
-            user = User(email=email,
-                        role=role,
-                        confirmed=confirmed,
-                        username=username,
-                        password=password)
+            user = User(
+                email=email,
+                role=role,
+                confirmed=confirmed,
+                username=username,
+                password=password
+            )
         try:
             db.session.add(user)
             db.session.commit()
@@ -119,9 +121,9 @@ class User(UserMixin, db.Model):
         start_date = tournament.week.start_date
         participations = (
             self.participations
-            .join(Tournament)
-            .join(TournamentWeek)
-            .filter(TournamentWeek.start_date == start_date)
+                .join(Tournament)
+                .join(TournamentWeek)
+                .filter(TournamentWeek.start_date == start_date)
         )
         if participations.first():
             return False
@@ -131,10 +133,10 @@ class User(UserMixin, db.Model):
         start_date = tournament.week.start_date
         participations = (
             self.participations
-            .join(Tournament)
-            .join(TournamentWeek)
-            .filter(TournamentWeek.start_date == start_date)
-            .filter(Tournament.id != tournament.id)
+                .join(Tournament)
+                .join(TournamentWeek)
+                .filter(TournamentWeek.start_date == start_date)
+                .filter(Tournament.id != tournament.id)
         )
         if participations.first():
             return participations.first()
@@ -356,27 +358,27 @@ class Tournament(db.Model):
     def get_finished_tournaments():
         tournaments = (
             Tournament.query
-            .order_by(Tournament.started_at.desc())
-            .filter(Tournament.deleted_at.is_(None))
-            .filter(Tournament.status == TournamentStatus.FINISHED))
+                .order_by(Tournament.started_at.desc())
+                .filter(Tournament.deleted_at.is_(None))
+                .filter(Tournament.status == TournamentStatus.FINISHED))
         return tournaments
 
     @staticmethod
     def get_ongoing_tournaments():
         tournaments = (
             Tournament.query
-            .order_by(Tournament.started_at.desc())
-            .filter(Tournament.deleted_at.is_(None))
-            .filter(Tournament.status == TournamentStatus.ONGOING))
+                .order_by(Tournament.started_at.desc())
+                .filter(Tournament.deleted_at.is_(None))
+                .filter(Tournament.status == TournamentStatus.ONGOING))
         return tournaments
 
     @staticmethod
     def get_open_tournaments():
         tournaments = (
             Tournament.query
-            .order_by(Tournament.started_at.desc())
-            .filter(Tournament.deleted_at.is_(None))
-            .filter(Tournament.status == TournamentStatus.REGISTRATION_OPEN))
+                .order_by(Tournament.started_at.desc())
+                .filter(Tournament.deleted_at.is_(None))
+                .filter(Tournament.status == TournamentStatus.REGISTRATION_OPEN))
         return tournaments
 
 
@@ -407,10 +409,10 @@ class Participation(db.Model):
         current_year = func.year(self.tournament.week.start_date)
         current_year_participations = (
             self.user.participations
-            .join(Tournament)
-            .join(TournamentWeek)
-            .filter(func.year(TournamentWeek.start_date) == current_year)
-            .filter(Participation.id != self.id)
+                .join(Tournament)
+                .join(TournamentWeek)
+                .filter(func.year(TournamentWeek.start_date) == current_year)
+                .filter(Participation.id != self.id)
         )
         players_already_picked = [
             p.tournament_player.player_id
@@ -458,7 +460,10 @@ class Player(db.Model):
 
     @staticmethod
     def create(first_name, last_name):
-        p = Player(first_name=first_name, last_name=last_name)
+        p = Player(
+            first_name=first_name,
+            last_name=last_name
+        )
         db.session.add(p)
         db.session.commit()
 
@@ -481,7 +486,7 @@ class Player(db.Model):
     def get_all(cls, format="last_name_first"):
         return [(p.id, p.get_name(format))
                 for p in cls.query.filter(cls.deleted_at.is_(None))
-                .order_by(cls.last_name, cls.first_name).all()]
+                    .order_by(cls.last_name, cls.first_name).all()]
 
 
 class TournamentPlayer(db.Model):
@@ -501,7 +506,7 @@ class TournamentPlayer(db.Model):
         "Match",
         backref="tournament_player",
         primaryjoin="or_(TournamentPlayer.id==Match.tournament_player1_id, "
-        "TournamentPlayer.id==Match.tournament_player2_id)",
+                    "TournamentPlayer.id==Match.tournament_player2_id)",
         lazy='dynamic')
     participations = db.relationship(
         "Participation", backref="tournament_player", lazy="dynamic")
@@ -672,12 +677,12 @@ class Ranking(db.Model):
 
         participations = (
             Participation.query
-            .join(Tournament)
-            .join(TournamentWeek)
-            .filter(Tournament.deleted_at.is_(None))
-            .filter(TournamentWeek.start_date <= week.start_date)
-            .filter(TournamentWeek.start_date >= datetime.date(year-1, 12, 25))
-            .filter(Tournament.status == TournamentStatus.FINISHED)
+                .join(Tournament)
+                .join(TournamentWeek)
+                .filter(Tournament.deleted_at.is_(None))
+                .filter(TournamentWeek.start_date <= week.start_date)
+                .filter(TournamentWeek.start_date >= datetime.date(year - 1, 12, 25))
+                .filter(Tournament.status == TournamentStatus.FINISHED)
         )
 
         scoreboard = {}
@@ -704,8 +709,10 @@ class Ranking(db.Model):
                  .filter(Ranking.tournament_week_id == week.id)
                  .filter(Ranking.user_id == score["user_id"]).first())
             if r is None:
-                r = Ranking(user_id=score["user_id"],
-                            tournament_week_id=week.id)
+                r = Ranking(
+                    user_id=score["user_id"],
+                    tournament_week_id=week.id
+                )
 
             r.year_to_date_points = score["points"]
             r.year_to_date_ranking = rank + 1
@@ -713,4 +720,3 @@ class Ranking(db.Model):
             db.session.add(r)
 
         db.session.commit()
-
