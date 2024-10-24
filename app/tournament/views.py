@@ -31,6 +31,7 @@ def create_tournament():
         tournament_week = (TournamentWeek.query
                            .filter_by(start_date=monday)
                            .first())
+
         if tournament_week is None:
             tournament_week = TournamentWeek(start_date=monday)
             db.session.add(tournament_week)
@@ -45,8 +46,10 @@ def create_tournament():
             number_rounds=number_rounds,
             category=form.category.data,
         )
+
         db.session.add(tournament)
         db.session.commit()
+
         for i in range(1, 2 ** tournament.number_rounds):
             match = Match(
                 position=i,
@@ -55,6 +58,7 @@ def create_tournament():
             )
             db.session.add(match)
         db.session.commit()
+
         display_info_message(f"Le tournoi {form.name.data} a été créé")
         return redirect(url_for(".create_tournament"))
     else:
@@ -75,20 +79,26 @@ def edit_tournament(tournament_id):
         form.name.data = tournament.name
         form.start_date.data = tournament.started_at
         form.week.data = tournament.week.start_date
+
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())
         tournament_week = (TournamentWeek.query
                            .filter_by(start_date=monday)
                            .first())
+
         if tournament_week is None:
             tournament_week = TournamentWeek(start_date=monday)
+
             db.session.add(tournament_week)
             db.session.commit()
+
         tournament.name = form.name.data
         tournament.started_at = form.start_date.data
         tournament.week = tournament_week
+
         db.session.add(tournament)
         db.session.commit()
+
         display_info_message(f"Le tournoi {form.name.data} a été mis à jour")
         return redirect(url_for(".edit_tournament", tournament_id=tournament_id))
     else:
@@ -103,9 +113,7 @@ def edit_tournament(tournament_id):
 @bp.route("/view")
 @login_required
 def view_tournaments():
-    tournaments = (Tournament.query
-                   .filter(Tournament.deleted_at.is_(None))
-                   )
+    tournaments = Tournament.query.filter(Tournament.deleted_at.is_(None))
 
     return render_template(
         "tournament/view_tournaments.html",
@@ -118,14 +126,19 @@ def view_tournaments():
 @login_required
 def view_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
     if current_user.can_make_forecast(tournament):
         form = MakeForecastForm()
+
         participation = current_user.participation(tournament)
+
         form.player.choices = [(-1, "Choisir un joueur")]
         form.player.choices += [(p.id, p.get_name("last_name_first"))
                                 for p in tournament.get_allowed_forecasts()]
+
         forbidden_forecasts = participation.get_forbidden_forecasts()
         forbidden_forecasts = ";".join([str(x) for x in forbidden_forecasts])
+
         if participation.tournament_player_id:
             form.player.data = participation.tournament_player_id
     else:
@@ -145,6 +158,7 @@ def view_tournament(tournament_id):
 @login_required
 def register(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
     if not current_user.can_register_to_tournament(tournament):
         display_warning_message("Tu n'es pas autorisé à t'inscrire à ce tournoi, soit "
               "doute car tu es déjà inscrit à un autre tournoi cette semaine,"
@@ -155,8 +169,10 @@ def register(tournament_id):
         tournament_id=tournament_id,
         user_id=current_user.id
     )
+
     db.session.add(participant)
     db.session.commit()
+
     display_success_message(f"Tu es bien inscrit au tournoi {tournament.name}")
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
@@ -165,16 +181,19 @@ def register(tournament_id):
 @login_required
 def withdraw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
     if not current_user.participation(tournament):
         display_warning_message("Tu n'es pas inscrit à ce tournoi")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     participation = current_user.participation(tournament)
+
     if not tournament.is_open_to_registration():
         display_warning_message("Tu ne peux plus te retirer de ce tournoi")
     else:
         participation.delete()
         display_success_message(f"Tu es bien désinscrit du tournoi {tournament.name}")
+
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
 
@@ -217,6 +236,7 @@ def create_tournament_draw(tournament_id):
                 player_id = None
                 qualifier_count += 1
                 qualifier_id = qualifier_count
+
             t1 = TournamentPlayer(
                 player_id=player_id,
                 seed=p.data["player1_seed"],
@@ -225,6 +245,7 @@ def create_tournament_draw(tournament_id):
                 qualifier_id=qualifier_id,
                 tournament_id=tournament_id
             )
+
             if p.data["player2_name"] >= 0:
                 player_id = p.data["player2_name"]
                 qualifier_id = None
@@ -232,6 +253,7 @@ def create_tournament_draw(tournament_id):
                 player_id = None
                 qualifier_count += 1
                 qualifier_id = qualifier_count
+
             t2 = TournamentPlayer(
                 player_id=player_id,
                 seed=p.data["player2_seed"],
@@ -292,8 +314,10 @@ def edit_tournament_draw(tournament_id):
         for p, match in zip(form.player, matches):
             if match.tournament_player1 and match.tournament_player1.player:
                 p.player1_name.data = match.tournament_player1.player.id
+
             if match.tournament_player2 and match.tournament_player2.player:
                 p.player2_name.data = match.tournament_player2.player.id
+
             p.player1_status.data = match.tournament_player1.status
             p.player2_status.data = match.tournament_player2.status
             p.player1_seed.data = match.tournament_player1.seed
@@ -344,6 +368,7 @@ def edit_tournament_draw(tournament_id):
             for participation, forecast in participations.items():
                 if forecast in modified_players:
                     participation.tournament_player = None
+
                     send_email(
                         participation.user.email,
                         f"Tableau du tournoi {tournament.name} modifié",
@@ -380,6 +405,7 @@ def make_forecast(tournament_id):
     if int(request.form["player"]) == -1:
         forecast = None
         current_user.make_forecast(tournament, forecast)
+
         display_success_message("Ton pronostic a bien été pris en compte.")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
@@ -401,6 +427,7 @@ def make_forecast(tournament_id):
 @login_required
 def view_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
     if tournament.deleted_at:
         abort(404)
 
@@ -415,6 +442,7 @@ def view_tournament_draw(tournament_id):
 @manager_required
 def update_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
     if tournament.deleted_at:
         abort(404)
 
@@ -471,9 +499,12 @@ def update_tournament_draw(tournament_id):
 @manager_required
 def open_registrations(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
     tournament.status = TournamentStatus.REGISTRATION_OPEN
+
     db.session.add(tournament)
     db.session.commit()
+
     display_info_message("Les inscriptions au tournoi sont ouvertes")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
@@ -482,7 +513,9 @@ def open_registrations(tournament_id):
 @manager_required
 def close_registrations(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
     tournament.status = TournamentStatus.ONGOING
+
     db.session.add(tournament)
     db.session.commit()
 
@@ -490,6 +523,7 @@ def close_registrations(tournament_id):
         if not participant.has_made_forecast():
             db.session.delete(participant)
     db.session.commit()
+
     display_info_message("Les inscriptions au tournoi sont closes")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
@@ -503,6 +537,7 @@ def close_tournament(tournament_id):
         return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
     tournament.status = TournamentStatus.FINISHED
+
     db.session.add(tournament)
     db.session.commit()
 
@@ -517,6 +552,7 @@ def close_tournament(tournament_id):
 @login_required
 def stats(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
+
     return render_template(
         "tournament/stats.html",
         tournament=tournament

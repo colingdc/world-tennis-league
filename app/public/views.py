@@ -30,12 +30,15 @@ def support():
 @bp.route("/contact", methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
+
     if form.validate_on_submit():
         message = form.message.data
+
         if current_user and hasattr(current_user, "username"):
             sender = current_user.username
         else:
             sender = "Anonyme"
+
         send_email(
             to=current_app.config["ADMIN_WTL"],
             subject="Nouveau message de la part de {}".format(sender),
@@ -44,6 +47,7 @@ def contact():
             email=form.email.data,
             user=current_user
         )
+
         display_success_message("Ton message a bien été envoyé.")
         return redirect(url_for(".contact"))
 

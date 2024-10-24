@@ -14,6 +14,7 @@ from ..models import Tournament, TournamentWeek, TournamentStatus
 @login_required
 def weekly_ranking(tournament_week_id):
     week = TournamentWeek.query.get_or_404(tournament_week_id)
+
     if week.deleted_at:
         abort(404)
 
@@ -31,6 +32,7 @@ def weekly_ranking(tournament_week_id):
 @login_required
 def latest_ranking():
     week = Tournament.get_latest_finished_tournament().week
+
     if week.deleted_at:
         abort(404)
 
@@ -71,14 +73,13 @@ def monthly_ranking(year=None, month=None):
 @login_required
 def index():
     form = RankingForm()
+
     weeks = (TournamentWeek.query
              .join(Tournament)
              .filter(Tournament.status == TournamentStatus.FINISHED)
              .order_by(TournamentWeek.start_date.desc()))
 
-    form.week_name.choices = [
-                                 (-1, "Choisir une semaine")] + [(w.id, w.get_name("ranking"))
-                                                                 for w in weeks]
+    form.week_name.choices = [(-1, "Choisir une semaine")] + [(w.id, w.get_name("ranking")) for w in weeks]
 
     if form.validate_on_submit() and form.week_name.data != -1:
         return redirect(url_for(".weekly_ranking", tournament_week_id=form.week_name.data))

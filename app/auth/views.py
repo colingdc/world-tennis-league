@@ -17,10 +17,13 @@ def signup():
     if form.validate_on_submit():
         user_exists = User.query.filter_by(username=form.username.data).first()
         email_exists = User.query.filter_by(email=form.email.data).first()
+
         if user_exists:
             form.username.errors.append("Ce nom d'utilisateur est déjà pris")
+
         if email_exists:
             form.email.errors.append("Cet email existe déjà")
+
         if user_exists or email_exists:
             return render_template(
                 "auth/signup.html",
@@ -35,9 +38,12 @@ def signup():
                 password=form.password.data,
                 role=role
             )
+
             db.session.add(user)
             db.session.commit()
+
             token = user.generate_confirmation_token()
+
             send_email(
                 to=user.email,
                 subject="Confirmation de ton adresse mail",
@@ -54,10 +60,12 @@ def signup():
             )
 
             display_info_message("Un email de confirmation t'a été envoyé.")
+
             session.pop("signed", None)
             session.pop("username", None)
             logout_user()
             login_user(user)
+
             return redirect(url_for("auth.unconfirmed"))
     else:
         return render_template(
@@ -71,10 +79,12 @@ def signup():
 def unconfirmed():
     if current_user.confirmed:
         return redirect(url_for("main.index"))
+
     if session.get("next"):
         next_page = session.get("next")
         session.pop("next")
         return redirect(next_page)
+
     return render_template("auth/unconfirmed.html")
 
 
@@ -82,6 +92,7 @@ def unconfirmed():
 @auth_required
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
+
     send_email(
         to=current_user.email,
         subject="Confirmation de ton adresse mail",
@@ -89,6 +100,7 @@ def resend_confirmation():
         user=current_user,
         token=token
     )
+
     display_info_message("Un email de confirmation t'a été envoyé.")
     return redirect(url_for("auth.unconfirmed"))
 
@@ -110,6 +122,7 @@ def login():
         if user is None:
             form.username.errors.append("Identifiants incorrects")
             form.password.errors.append("")
+
             return render_template(
                 "auth/login.html",
                 title="Connexion",
@@ -120,6 +133,7 @@ def login():
         if not is_password_correct:
             form.username.errors.append("Identifiants incorrects")
             form.password.errors.append("")
+
             return render_template(
                 "auth/login.html",
                 title="Connexion",
@@ -130,9 +144,8 @@ def login():
         login_user(user, remember=form.remember_me.data)
         session["signed"] = True
         session["username"] = user.username
-        display_success_message("Tu es à présent connecté.")
 
-        print(session)
+        display_success_message("Tu es à présent connecté.")
         return redirect(url_for("auth.unconfirmed"))
 
     return render_template(
@@ -147,6 +160,7 @@ def logout():
     session.pop("signed", None)
     session.pop("username", None)
     logout_user()
+
     return redirect(url_for("main.index"))
 
 
@@ -155,6 +169,7 @@ def logout():
 def confirm(token):
     if current_user.confirmed:
         return redirect(url_for("main.index"))
+
     if current_user.confirm(token):
         display_success_message("Ton compte est à présent validé.")
         return redirect(url_for("main.index"))
@@ -167,14 +182,18 @@ def confirm(token):
 @login_required
 def change_password():
     form = ChangePasswordForm()
+
     if form.validate_on_submit():
         if current_user.verify_password(form.old_password.data):
             current_user.password = form.password.data
+
             db.session.add(current_user)
+
             display_success_message("Ton mot de passe a été mis à jour.")
             return redirect(url_for("main.index"))
         else:
             form.old_password.errors.append("Mot de passe incorrect")
+
     return render_template(
         "auth/change_password.html",
         title="Changement de mot de passe",
@@ -187,12 +206,15 @@ def change_password():
 def reset_password_request():
     if not current_user.is_anonymous():
         return redirect(url_for("main.index"))
+
     form = PasswordResetRequestForm()
 
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
+
         if user:
             token = user.generate_reset_token()
+
             send_email(
                 user.email,
                 "Réinitialisation du mot de passe",
@@ -201,11 +223,14 @@ def reset_password_request():
                 token=token,
                 next=request.args.get("next")
             )
+
         display_info_message("Un email contenant des instructions pour réinitialiser "
                              "ton mot de passe t'a été envoyé. Si tu n'as pas reçu d'email, "
                              "vérifie dans ton dossier de spams et assure toi d'avoir rentré "
                              "la bonne adresse mail.")
+
         return redirect(url_for("auth.login"))
+
     return render_template(
         "auth/reset_password_request.html",
         title="Réinitialisation du mot de passe",
@@ -217,31 +242,40 @@ def reset_password_request():
 def reset_password(token):
     if not current_user.is_anonymous():
         return redirect(url_for("main.index"))
+
     form = PasswordResetForm()
+
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
+
         if user is None:
             display_error_message("L'adresse email entrée ne correspond pas au lien de "
                                   "réinitialisation envoyé.")
+
             return render_template(
                 "auth/reset_password.html",
                 title="Réinitialisation du mot de passe",
                 form=form,
                 token=token
             )
+
         if user.reset_password(token, form.password.data):
             display_success_message("Ton mot de passe a été mis à jour.")
+
             login_user(user)
+
             return redirect(url_for("main.index"))
         else:
             display_error_message("L'adresse email entrée ne correspond pas au lien de "
                                   "réinitialisation envoyé.")
+
             return render_template(
                 "auth/reset_password.html",
                 title="Réinitialisation du mot de passe",
                 form=form,
                 token=token
             )
+
     return render_template(
         "auth/reset_password.html",
         title="Réinitialisation du mot de passe",
