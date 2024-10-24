@@ -8,12 +8,13 @@ from flask_login import current_user
 from . import bp
 from .forms import CreateTournamentDrawForm, CreateTournamentForm, EditTournamentForm, FillTournamentDrawForm, \
     MakeForecastForm
-from .lib import insert_tournament_week, fetch_tournament_week_by_start_date
+from .lib import insert_tournament_week, fetch_tournament_week_by_start_date, insert_tournament, \
+    open_tournament_registrations, close_tournament_registrations, finish_tournament, is_tournament_finished
 from .. import db
 from ..constants import tournament_categories
 from ..decorators import login_required, manager_required
 from ..email import send_email
-from ..models import Match, Participation, Player, Ranking, Tournament, TournamentPlayer, TournamentStatus, User
+from ..models import Match, Participation, Player, Tournament, TournamentPlayer, User
 from ..notifications import display_success_message, display_info_message, display_warning_message
 
 
@@ -35,16 +36,14 @@ def create_tournament():
 
         category = tournament_categories.get(form.category.data)
         number_rounds = category["number_rounds"]
-        tournament = Tournament(
+
+        tournament = insert_tournament(
             name=form.name.data,
-            started_at=form.start_date.data,
+            start_date=form.start_date.data,
             week_id=tournament_week.id,
             number_rounds=number_rounds,
             category=form.category.data,
         )
-
-        db.session.add(tournament)
-        db.session.commit()
 
         for i in range(1, 2 ** tournament.number_rounds):
             match = Match(
@@ -491,10 +490,7 @@ def update_tournament_draw(tournament_id):
 def open_registrations(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
-    tournament.status = TournamentStatus.REGISTRATION_OPEN
-
-    db.session.add(tournament)
-    db.session.commit()
+    open_tournament_registrations(tournament)
 
     display_info_message("Les inscriptions au tournoi sont ouvertes")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
@@ -505,10 +501,7 @@ def open_registrations(tournament_id):
 def close_registrations(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
-    tournament.status = TournamentStatus.ONGOING
-
-    db.session.add(tournament)
-    db.session.commit()
+    close_tournament_registrations(tournament)
 
     for participant in tournament.participations:
         if not participant.has_made_forecast():
@@ -524,16 +517,10 @@ def close_registrations(tournament_id):
 def close_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
-    if tournament.status == TournamentStatus.FINISHED:
+    if is_tournament_finished(tournament):
         return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
-    tournament.status = TournamentStatus.FINISHED
-
-    db.session.add(tournament)
-    db.session.commit()
-
-    tournament.compute_scores()
-    Ranking.compute_rankings(tournament.week)
+    finish_tournament(tournament)
 
     display_info_message("Le tournoi a bien été clos")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
