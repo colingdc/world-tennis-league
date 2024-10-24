@@ -1,6 +1,7 @@
 from math import floor, log
 
 from .. import db
+from ..constants import tournament_categories
 from ..models import Tournament, TournamentStatus, TournamentWeek, Ranking, Match
 
 
@@ -15,13 +16,16 @@ def fetch_tournament_week_by_start_date(start_date):
     return TournamentWeek.query.filter_by(start_date=start_date).first()
 
 
-def insert_tournament(name, start_date, week_id, number_rounds, category):
+def insert_tournament(name, start_date, week_id, category_name):
+    category = tournament_categories.get(category_name)
+    number_rounds = category["number_rounds"]
+
     tournament = Tournament(
         name=name,
         started_at=start_date,
         week_id=week_id,
         number_rounds=number_rounds,
-        category=category,
+        category=category_name,
     )
 
     db.session.add(tournament)

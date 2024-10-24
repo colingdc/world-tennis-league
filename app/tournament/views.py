@@ -34,15 +34,11 @@ def create_tournament():
         if tournament_week is None:
             tournament_week = insert_tournament_week(monday)
 
-        category = tournament_categories.get(form.category.data)
-        number_rounds = category["number_rounds"]
-
         insert_tournament(
             name=form.name.data,
             start_date=form.start_date.data,
             week_id=tournament_week.id,
-            number_rounds=number_rounds,
-            category=form.category.data,
+            category_name=form.category.data,
         )
 
         display_info_message(f"Le tournoi {form.name.data} a été créé")
