@@ -47,7 +47,7 @@ def create_tournament():
     else:
         return render_template(
             "tournament/create_tournament.html",
-            title="Créer un tournoi",
+            title=wordings["create_a_tournament"],
             form=form
         )
 
@@ -95,7 +95,7 @@ def view_tournaments():
 
     return render_template(
         "tournament/view_tournaments.html",
-        title="Tournois",
+        title=wordings["tournaments"],
         tournaments=tournaments
     )
 
@@ -252,12 +252,12 @@ def create_tournament_draw(tournament_id):
             db.session.add(match)
             db.session.commit()
 
-        display_info_message(f"Le tableau du tournoi {tournament.name} a été créé")
+        display_info_message(wordings["tournament_draw_created"].format(tournament.name))
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
     else:
         return render_template(
             "tournament/create_tournament_draw.html",
-            title=f"{tournament.name} - Tableau",
+            title=wordings["tournament_draw"].format(tournament.name),
             form=form,
             tournament=tournament
         )
@@ -356,12 +356,12 @@ def edit_tournament_draw(tournament_id):
                         forecast=forecast
                     )
 
-        display_info_message(f"Le tableau du tournoi {tournament.name} a été modifié")
+        display_info_message(wordings["tournament_draw_updated"].format(tournament.name))
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
     else:
         return render_template(
             "tournament/edit_tournament_draw.html",
-            title=f"{tournament.name} - Tableau",
+            title=wordings["tournament_draw"].format(tournament.name),
             form=form,
             tournament=tournament
         )
@@ -411,7 +411,7 @@ def view_tournament_draw(tournament_id):
 
     return render_template(
         "tournament/view_tournament_draw.html",
-        title=f"{tournament.name} - Tableau",
+        title=wordings["tournament_draw"].format(tournament.name),
         tournament=tournament
     )
 
@@ -467,7 +467,7 @@ def update_tournament_draw(tournament_id):
     else:
         return render_template(
             "tournament/update_tournament_draw.html",
-            title="Mettre à jour le tableau",
+            title=wordings["tournament_draw"].format(tournament.name),
             tournament=tournament,
             form=form
         )
