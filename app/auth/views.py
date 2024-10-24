@@ -1,4 +1,4 @@
-from flask import current_app, flash, redirect, render_template, request, session, url_for
+from flask import current_app, redirect, render_template, request, session, url_for
 from flask_login import current_user, login_user, logout_user
 
 from . import bp
@@ -6,6 +6,7 @@ from .. import db
 from ..decorators import login_required, auth_required
 from ..email import send_email
 from ..models import Role, User
+from ..notifications import display_success_message, display_info_message, display_danger_message, display_error_message
 from .forms import ChangePasswordForm, LoginForm, PasswordResetForm, PasswordResetRequestForm, SignupForm
 
 
@@ -52,7 +53,7 @@ def signup():
                 user=user
             )
 
-            flash("Un email de confirmation t'a été envoyé.", "info")
+            display_info_message("Un email de confirmation t'a été envoyé.")
             session.pop("signed", None)
             session.pop("username", None)
             logout_user()
@@ -88,7 +89,7 @@ def resend_confirmation():
         user=current_user,
         token=token
     )
-    flash("Un email de confirmation t'a été envoyé.", "info")
+    display_info_message("Un email de confirmation t'a été envoyé.")
     return redirect(url_for("auth.unconfirmed"))
 
 
@@ -129,7 +130,7 @@ def login():
         login_user(user, remember=form.remember_me.data)
         session["signed"] = True
         session["username"] = user.username
-        flash("Tu es à présent connecté.", "success")
+        display_success_message("Tu es à présent connecté.")
 
         print(session)
         return redirect(url_for("auth.unconfirmed"))
@@ -155,10 +156,10 @@ def confirm(token):
     if current_user.confirmed:
         return redirect(url_for("main.index"))
     if current_user.confirm(token):
-        flash("Ton compte est à présent validé.", "success")
+        display_success_message("Ton compte est à présent validé.")
         return redirect(url_for("main.index"))
     else:
-        flash("Ce lien de confirmation est invalide ou a expiré.", "danger")
+        display_danger_message("Ce lien de confirmation est invalide ou a expiré.")
         return redirect(url_for("auth.unconfirmed"))
 
 
@@ -170,7 +171,7 @@ def change_password():
         if current_user.verify_password(form.old_password.data):
             current_user.password = form.password.data
             db.session.add(current_user)
-            flash("Ton mot de passe a été mis à jour.", "success")
+            display_success_message("Ton mot de passe a été mis à jour.")
             return redirect(url_for("main.index"))
         else:
             form.old_password.errors.append("Mot de passe incorrect")
@@ -200,11 +201,10 @@ def reset_password_request():
                 token=token,
                 next=request.args.get("next")
             )
-        flash("Un email contenant des instructions pour réinitialiser "
-              "ton mot de passe t'a été envoyé. Si tu n'as pas reçu d'email, "
-              "vérifie dans ton dossier de spams et assure toi d'avoir rentré "
-              "la bonne adresse mail.",
-              "info")
+        display_info_message("Un email contenant des instructions pour réinitialiser "
+                             "ton mot de passe t'a été envoyé. Si tu n'as pas reçu d'email, "
+                             "vérifie dans ton dossier de spams et assure toi d'avoir rentré "
+                             "la bonne adresse mail.")
         return redirect(url_for("auth.login"))
     return render_template(
         "auth/reset_password_request.html",
@@ -221,8 +221,8 @@ def reset_password(token):
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None:
-            flash("L'adresse email entrée ne correspond pas au lien de "
-                  "réinitialisation envoyé.", "error")
+            display_error_message("L'adresse email entrée ne correspond pas au lien de "
+                                  "réinitialisation envoyé.")
             return render_template(
                 "auth/reset_password.html",
                 title="Réinitialisation du mot de passe",
@@ -230,12 +230,12 @@ def reset_password(token):
                 token=token
             )
         if user.reset_password(token, form.password.data):
-            flash("Ton mot de passe a été mis à jour.", "success")
+            display_success_message("Ton mot de passe a été mis à jour.")
             login_user(user)
             return redirect(url_for("main.index"))
         else:
-            flash("L'adresse email entrée ne correspond pas au lien de "
-                  "réinitialisation envoyé.", "error")
+            display_error_message("L'adresse email entrée ne correspond pas au lien de "
+                                  "réinitialisation envoyé.")
             return render_template(
                 "auth/reset_password.html",
                 title="Réinitialisation du mot de passe",
