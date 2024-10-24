@@ -28,10 +28,12 @@ def signup():
             )
         else:
             role = Role.query.filter(Role.name == "User").first()
-            user = User(username=form.username.data,
-                        email=form.email.data,
-                        password=form.password.data,
-                        role=role)
+            user = User(
+                username=form.username.data,
+                email=form.email.data,
+                password=form.password.data,
+                role=role
+            )
             db.session.add(user)
             db.session.commit()
             token = user.generate_confirmation_token()
