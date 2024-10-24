@@ -80,8 +80,7 @@ def index():
                                                                  for w in weeks]
 
     if form.validate_on_submit() and form.week_name.data != -1:
-        return redirect(url_for(".ranking",
-                                tournament_week_id=form.week_name.data))
+        return redirect(url_for(".ranking", tournament_week_id=form.week_name.data))
 
     return render_template(
         "ranking/index.html",
