@@ -53,6 +53,11 @@ def close_tournament_registrations(tournament):
     db.session.add(tournament)
     db.session.commit()
 
+    for participant in tournament.participations:
+        if not participant.has_made_forecast():
+            db.session.delete(participant)
+    db.session.commit()
+
 
 def finish_tournament(tournament):
     tournament.status = TournamentStatus.FINISHED

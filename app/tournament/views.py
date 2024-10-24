@@ -491,11 +491,6 @@ def close_registrations(tournament_id):
 
     close_tournament_registrations(tournament)
 
-    for participant in tournament.participations:
-        if not participant.has_made_forecast():
-            db.session.delete(participant)
-    db.session.commit()
-
     display_info_message("Les inscriptions au tournoi sont closes")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
