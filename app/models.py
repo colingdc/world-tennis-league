@@ -759,15 +759,3 @@ class Ranking(db.Model):
                 if participant.points is not None:
                     scores[user]["score"] += participant.points
         return sorted(scores.items(), key=lambda x: -x[1]["score"])
-
-    @classmethod
-    def generate_chart(cls, user):
-        return (Tournament.query
-                .join(TournamentWeek)
-                .outerjoin(cls, cls.tournament_week_id == TournamentWeek.id)
-                .filter(cls.user_id == user.id)
-                .order_by(Tournament.started_at)
-                .with_entities(Tournament.id,
-                               Tournament.name,
-                               Tournament.started_at,
-                               Ranking.year_to_date_ranking))

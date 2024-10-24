@@ -3,9 +3,10 @@ from flask_login import current_user
 
 from . import bp
 from .forms import SettingsForm
+from .lib import generate_chart
 from .. import db
 from ..decorators import manager_required, login_required
-from ..models import Ranking, Tournament, User
+from ..models import Tournament, User
 
 
 @bp.route("/")
@@ -27,7 +28,7 @@ def index():
 def view_user(user_id):
     user = User.query.get_or_404(user_id)
 
-    rankings = Ranking.generate_chart(user)
+    rankings = generate_chart(user)
 
     series = [{"name": "Classement",
                "data": [{"x": int(t.started_at.strftime("%s")) * 1000,
