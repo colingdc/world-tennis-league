@@ -19,7 +19,6 @@ from ..models import Match, Participation, Player, Ranking, Tournament, Tourname
 @bp.route("/create", methods=["GET", "POST"])
 @manager_required
 def create_tournament():
-    title = u"Créer un tournoi"
     form = CreateTournamentForm(request.form)
     form.category.choices = [("", "Choisir une catégorie")]
     form.category.choices += [(
@@ -55,16 +54,17 @@ def create_tournament():
         flash(f"Le tournoi {form.name.data} a été créé", "info")
         return redirect(url_for(".create_tournament"))
     else:
-        return render_template("tournament/create_tournament.html",
-                               title=title,
-                               form=form)
+        return render_template(
+            "tournament/create_tournament.html",
+            title="Créer un tournoi",
+            form=form
+        )
 
 
 @bp.route("/<tournament_id>/edit", methods=["GET", "POST"])
 @manager_required
 def edit_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    title = tournament.name
     form = EditTournamentForm(request.form)
 
     if request.method == "GET":
@@ -89,22 +89,26 @@ def edit_tournament(tournament_id):
         return redirect(url_for(".edit_tournament",
                                 tournament_id=tournament_id))
     else:
-        return render_template("tournament/edit_tournament.html",
-                               title=title,
-                               form=form,
-                               tournament=tournament)
+        return render_template(
+            "tournament/edit_tournament.html",
+            title=tournament.name,
+            form=form,
+            tournament=tournament
+        )
 
 
 @bp.route("/view")
 @login_required
 def view_tournaments():
-    title = "Tournois"
     tournaments = (Tournament.query
                    .filter(Tournament.deleted_at.is_(None))
                    )
-    return render_template("tournament/view_tournaments.html",
-                           title=title,
-                           tournaments=tournaments)
+
+    return render_template(
+        "tournament/view_tournaments.html",
+        title="Tournois",
+        tournaments=tournaments
+    )
 
 
 @bp.route("/<tournament_id>/view")
@@ -124,12 +128,14 @@ def view_tournament(tournament_id):
     else:
         form = None
         forbidden_forecasts = ""
-    title = tournament.name
-    return render_template("tournament/view_tournament.html",
-                           title=title,
-                           tournament=tournament,
-                           form=form,
-                           forbidden_forecasts=forbidden_forecasts)
+
+    return render_template(
+        "tournament/view_tournament.html",
+        title=tournament.name,
+        tournament=tournament,
+        form=form,
+        forbidden_forecasts=forbidden_forecasts
+    )
 
 
 @bp.route("/<tournament_id>/register")
@@ -174,7 +180,6 @@ def withdraw(tournament_id):
 @manager_required
 def create_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    title = f"{tournament.name} - Tableau"
 
     matches_with_tournament_player = [m for m in tournament.matches
                                       if m.tournament_player1_id
@@ -246,17 +251,18 @@ def create_tournament_draw(tournament_id):
         return redirect(url_for(".view_tournament",
                                 tournament_id=tournament_id))
     else:
-        return render_template("tournament/create_tournament_draw.html",
-                               title=title,
-                               form=form,
-                               tournament=tournament)
+        return render_template(
+            "tournament/create_tournament_draw.html",
+            title=f"{tournament.name} - Tableau",
+            form=form,
+            tournament=tournament
+        )
 
 
 @bp.route("/<tournament_id>/draw/edit", methods=["GET", "POST"])
 @manager_required
 def edit_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    title = f"{tournament.name} - Tableau"
 
     matches = tournament.get_matches_first_round()
     participations = {p: p.tournament_player.player
@@ -346,10 +352,12 @@ def edit_tournament_draw(tournament_id):
         return redirect(url_for(".view_tournament",
                                 tournament_id=tournament_id))
     else:
-        return render_template("tournament/edit_tournament_draw.html",
-                               title=title,
-                               form=form,
-                               tournament=tournament)
+        return render_template(
+            "tournament/edit_tournament_draw.html",
+            title=f"{tournament.name} - Tableau",
+            form=form,
+            tournament=tournament
+        )
 
 
 @bp.route("/<tournament_id>/forecast", methods=["POST"])
@@ -396,11 +404,12 @@ def view_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if tournament.deleted_at:
         abort(404)
-    title = f"{tournament.name} - Tableau"
 
-    return render_template("tournament/view_tournament_draw.html",
-                           title=title,
-                           tournament=tournament)
+    return render_template(
+        "tournament/view_tournament_draw.html",
+        title=f"{tournament.name} - Tableau",
+        tournament=tournament
+    )
 
 
 @bp.route("/<tournament_id>/draw/update", methods=["GET", "POST"])
@@ -409,7 +418,6 @@ def update_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if tournament.deleted_at:
         abort(404)
-    title = f"Mettre à jour le tableau"
 
     form = FillTournamentDrawForm()
 
@@ -455,10 +463,12 @@ def update_tournament_draw(tournament_id):
                                 tournament_id=tournament_id))
 
     else:
-        return render_template("tournament/update_tournament_draw.html",
-                               title=title,
-                               tournament=tournament,
-                               form=form)
+        return render_template(
+            "tournament/update_tournament_draw.html",
+            title="Mettre à jour le tableau",
+            tournament=tournament,
+            form=form
+        )
 
 
 @bp.route("/<tournament_id>/open_registrations")
@@ -515,8 +525,10 @@ def close_tournament(tournament_id):
 @login_required
 def stats(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    return render_template("tournament/stats.html",
-                           tournament=tournament)
+    return render_template(
+        "tournament/stats.html",
+        tournament=tournament
+    )
 
 
 @bp.route("/<tournament_id>/send_notification_email")
