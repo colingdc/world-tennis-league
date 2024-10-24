@@ -86,8 +86,7 @@ def edit_tournament(tournament_id):
         db.session.add(tournament)
         db.session.commit()
         flash(f"Le tournoi {form.name.data} a été mis à jour", "info")
-        return redirect(url_for(".edit_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".edit_tournament", tournament_id=tournament_id))
     else:
         return render_template(
             "tournament/edit_tournament.html",
@@ -147,8 +146,7 @@ def register(tournament_id):
               "doute car tu es déjà inscrit à un autre tournoi cette semaine,"
               "soit car les inscriptions sont fermées.",
               "warning")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     participant = Participation(tournament_id=tournament_id,
                                 user_id=current_user.id)
@@ -164,8 +162,7 @@ def withdraw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if not current_user.participation(tournament):
         flash("Tu n'es pas inscrit à ce tournoi", "warning")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     participation = current_user.participation(tournament)
     if not tournament.is_open_to_registration():
@@ -186,8 +183,7 @@ def create_tournament_draw(tournament_id):
                                       or m.tournament_player2_id]
 
     if len(matches_with_tournament_player) > 0:
-        return redirect(url_for(
-            ".edit_tournament_draw", tournament_id=tournament_id))
+        return redirect(url_for(".edit_tournament_draw", tournament_id=tournament_id))
 
     matches = tournament.get_matches_first_round()
 
@@ -248,8 +244,7 @@ def create_tournament_draw(tournament_id):
             db.session.commit()
 
         flash(f"Le tableau du tournoi {tournament.name} a été créé", "info")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
     else:
         return render_template(
             "tournament/create_tournament_draw.html",
@@ -349,8 +344,7 @@ def edit_tournament_draw(tournament_id):
                         forecast=forecast)
 
         flash(f"Le tableau du tournoi {tournament.name} a été modifié", "info")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
     else:
         return render_template(
             "tournament/edit_tournament_draw.html",
@@ -368,20 +362,17 @@ def make_forecast(tournament_id):
     if not current_user.can_make_forecast(tournament):
         flash("Tu n'es pas autorisé à faire un pronostic pour ce tournoi",
               "warning")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     if not request.form["player"]:
         flash("Requête invalide", "warning")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     if int(request.form["player"]) == -1:
         forecast = None
         current_user.make_forecast(tournament, forecast)
         flash("Ton pronostic a bien été pris en compte.", "success")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     forecast = int(request.form["player"])
     participation = current_user.participation(tournament)
@@ -394,8 +385,7 @@ def make_forecast(tournament_id):
     else:
         flash("Ce pronostic est invalide.", "warning")
 
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament_id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
 
 @bp.route("/<tournament_id>/draw")
@@ -425,8 +415,7 @@ def update_tournament_draw(tournament_id):
         try:
             results = json.loads(form.forecast.data)
         except json.decoder.JSONDecodeError:
-            return redirect(url_for(".view_tournament",
-                                    tournament_id=tournament_id))
+            return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
         matches = tournament.matches
 
@@ -456,11 +445,9 @@ def update_tournament_draw(tournament_id):
         tournament.compute_scores()
 
         if all(results[str(match.id)] != "None" for match in matches):
-            return redirect(url_for(".close_tournament",
-                                    tournament_id=tournament_id))
+            return redirect(url_for(".close_tournament", tournament_id=tournament_id))
 
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     else:
         return render_template(
@@ -479,8 +466,7 @@ def open_registrations(tournament_id):
     db.session.add(tournament)
     db.session.commit()
     flash("Les inscriptions au tournoi sont ouvertes", "info")
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament.id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
 @bp.route("/<tournament_id>/close_registrations")
@@ -496,8 +482,7 @@ def close_registrations(tournament_id):
             db.session.delete(participant)
     db.session.commit()
     flash("Les inscriptions au tournoi sont closes", "info")
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament.id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
 @bp.route("/<tournament_id>/close_tournament")
@@ -506,8 +491,7 @@ def close_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
     if tournament.status == TournamentStatus.FINISHED:
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament.id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
     tournament.status = TournamentStatus.FINISHED
     db.session.add(tournament)
@@ -517,8 +501,7 @@ def close_tournament(tournament_id):
     Ranking.compute_rankings(tournament.week)
 
     flash("Le tournoi a bien été clos", "info")
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament.id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
 @bp.route("/<tournament_id>/stats")
@@ -538,8 +521,7 @@ def send_notification_email(tournament_id):
 
     if all(t.notification_sent_at is not None for t in tournament.week.tournaments):
         flash("La notification par mail a déjà été envoyée pour tous les tournois de la semaine", "info")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament.id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
     for t in tournament.week.tournaments:
         t.notification_sent_at = datetime.now()
@@ -554,8 +536,8 @@ def send_notification_email(tournament_id):
             f"Les tournois de la semaine sont ouverts aux inscriptions !",
             "email/registrations_open",
             user=user,
-            tournaments=tournament.week.tournaments)
+            tournaments=tournament.week.tournaments
+        )
 
     flash("Les participants ont été notifiés par mail de l'ouverture des tournois de la semaine", "info")
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament.id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament.id))
