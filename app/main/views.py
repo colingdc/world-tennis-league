@@ -5,7 +5,8 @@ from . import bp
 from .forms import SettingsForm
 from .. import db
 from ..decorators import manager_required, login_required
-from ..models import Ranking, Tournament, User
+from ..models import Tournament, User
+from .lib import generate_chart
 
 
 @bp.route("/")
@@ -26,7 +27,7 @@ def view_user(user_id):
     user = User.query.get_or_404(user_id)
     title = f"Profil de {user.username}"
 
-    rankings = Ranking.generate_chart(user)
+    rankings = generate_chart(user)
 
     series = [{"name": "Classement",
                "data": [{"x": int(t.started_at.strftime("%s")) * 1000,
