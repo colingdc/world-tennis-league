@@ -28,7 +28,6 @@ def support():
 
 @bp.route("/contact", methods=['GET', 'POST'])
 def contact():
-    title = "Contact"
     form = ContactForm()
     if form.validate_on_submit():
         message = form.message.data
@@ -45,6 +44,8 @@ def contact():
         flash(u"Ton message a bien été envoyé.", "success")
         return redirect(url_for(".contact"))
 
-    return render_template("public/contact.html",
-                           form=form,
-                           title=title)
+    return render_template(
+        "public/contact.html",
+        title="Contact",
+        form=form
+    )

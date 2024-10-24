@@ -11,7 +11,6 @@ from ..models import Role, User
 
 @bp.route("/signup", methods=["GET", "POST"])
 def signup():
-    title = "Inscription"
     form = SignupForm(request.form)
 
     if form.validate_on_submit():
@@ -22,9 +21,11 @@ def signup():
         if email_exists:
             form.email.errors.append("Cet email existe déjà")
         if user_exists or email_exists:
-            return render_template("auth/signup.html",
-                                   form=form,
-                                   title=title)
+            return render_template(
+                "auth/signup.html",
+                title="Inscription",
+                form=form
+            )
         else:
             role = Role.query.filter(Role.name == "User").first()
             user = User(username=form.username.data,
@@ -52,9 +53,11 @@ def signup():
             login_user(user)
             return redirect(url_for("auth.unconfirmed"))
     else:
-        return render_template("auth/signup.html",
-                               form=form,
-                               title=title)
+        return render_template(
+            "auth/signup.html",
+            title="Inscription",
+            form=form
+        )
 
 
 @bp.route("/unconfirmed")
@@ -84,7 +87,6 @@ def resend_confirmation():
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
-    title = "Connexion"
 
     # Redirect user to homepage if they are already authenticated
     if current_user is not None and current_user.is_authenticated:
@@ -99,17 +101,21 @@ def login():
         if user is None:
             form.username.errors.append("Identifiants incorrects")
             form.password.errors.append("")
-            return render_template("auth/login.html",
-                                   form=form,
-                                   title=title)
+            return render_template(
+                "auth/login.html",
+                title="Connexion",
+                form=form
+            )
 
         is_password_correct = user.verify_password(form.password.data)
         if not is_password_correct:
             form.username.errors.append("Identifiants incorrects")
             form.password.errors.append("")
-            return render_template("auth/login.html",
-                                   form=form,
-                                   title=title)
+            return render_template(
+                "auth/login.html",
+                title="Connexion",
+                form=form
+            )
 
         # Otherwise log the user in
         login_user(user, remember=form.remember_me.data)
@@ -120,9 +126,11 @@ def login():
         print(session)
         return redirect(url_for("auth.unconfirmed"))
 
-    return render_template("auth/login.html",
-                           form=form,
-                           title=title)
+    return render_template(
+        "auth/login.html",
+        title="Connexion",
+        form=form
+    )
 
 
 @bp.route("/logout")
@@ -149,7 +157,6 @@ def confirm(token):
 @bp.route("/change-password", methods=["GET", "POST"])
 @login_required
 def change_password():
-    title = "Changement de mot de passe"
     form = ChangePasswordForm()
     if form.validate_on_submit():
         if current_user.verify_password(form.old_password.data):
@@ -159,10 +166,12 @@ def change_password():
             return redirect(url_for("main.index"))
         else:
             form.old_password.errors.append("Mot de passe incorrect")
-    return render_template("auth/change_password.html",
-                           form=form,
-                           title=title,
-                           user=current_user)
+    return render_template(
+        "auth/change_password.html",
+        title="Changement de mot de passe",
+        form=form,
+        user=current_user
+    )
 
 
 @bp.route("/reset", methods=["GET", "POST"])
@@ -170,7 +179,7 @@ def reset_password_request():
     if not current_user.is_anonymous():
         return redirect(url_for("main.index"))
     form = PasswordResetRequestForm()
-    title = "Réinitialisation du mot de passe"
+
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
@@ -186,9 +195,11 @@ def reset_password_request():
               "la bonne adresse mail.",
               "info")
         return redirect(url_for("auth.login"))
-    return render_template("auth/reset_password_request.html",
-                           form=form,
-                           title=title)
+    return render_template(
+        "auth/reset_password_request.html",
+        title="Réinitialisation du mot de passe",
+        form=form
+    )
 
 
 @bp.route("/reset/<token>", methods=["GET", "POST"])
@@ -196,16 +207,17 @@ def reset_password(token):
     if not current_user.is_anonymous():
         return redirect(url_for("main.index"))
     form = PasswordResetForm()
-    title = "Réinitialisation du mot de passe"
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None:
             flash("L'adresse email entrée ne correspond pas au lien de "
                   "réinitialisation envoyé.", "error")
-            return render_template("auth/reset_password.html",
-                                   form=form,
-                                   token=token,
-                                   title=title)
+            return render_template(
+                "auth/reset_password.html",
+                title="Réinitialisation du mot de passe",
+                form=form,
+                token=token
+            )
         if user.reset_password(token, form.password.data):
             flash("Ton mot de passe a été mis à jour.", "success")
             login_user(user)
@@ -213,11 +225,15 @@ def reset_password(token):
         else:
             flash("L'adresse email entrée ne correspond pas au lien de "
                   "réinitialisation envoyé.", "error")
-            return render_template("auth/reset_password.html",
-                                   form=form,
-                                   token=token,
-                                   title=title)
-    return render_template("auth/reset_password.html",
-                           form=form,
-                           token=token,
-                           title=title)
+            return render_template(
+                "auth/reset_password.html",
+                title="Réinitialisation du mot de passe",
+                form=form,
+                token=token
+            )
+    return render_template(
+        "auth/reset_password.html",
+        title="Réinitialisation du mot de passe",
+        form=form,
+        token=token
+    )
