@@ -8,12 +8,12 @@ from flask_login import current_user
 from . import bp
 from .forms import CreateTournamentDrawForm, CreateTournamentForm, EditTournamentForm, FillTournamentDrawForm, \
     MakeForecastForm
+from .lib import insert_tournament_week, fetch_tournament_week_by_start_date
 from .. import db
 from ..constants import tournament_categories
 from ..decorators import login_required, manager_required
 from ..email import send_email
-from ..models import Match, Participation, Player, Ranking, Tournament, TournamentPlayer, TournamentStatus, \
-    TournamentWeek, User
+from ..models import Match, Participation, Player, Ranking, Tournament, TournamentPlayer, TournamentStatus, User
 from ..notifications import display_success_message, display_info_message, display_warning_message
 
 
@@ -28,14 +28,10 @@ def create_tournament():
 
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())
-        tournament_week = (TournamentWeek.query
-                           .filter_by(start_date=monday)
-                           .first())
+        tournament_week = fetch_tournament_week_by_start_date(monday)
 
         if tournament_week is None:
-            tournament_week = TournamentWeek(start_date=monday)
-            db.session.add(tournament_week)
-            db.session.commit()
+            tournament_week = insert_tournament_week(monday)
 
         category = tournament_categories.get(form.category.data)
         number_rounds = category["number_rounds"]
@@ -82,15 +78,10 @@ def edit_tournament(tournament_id):
 
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())
-        tournament_week = (TournamentWeek.query
-                           .filter_by(start_date=monday)
-                           .first())
+        tournament_week = fetch_tournament_week_by_start_date(monday)
 
         if tournament_week is None:
-            tournament_week = TournamentWeek(start_date=monday)
-
-            db.session.add(tournament_week)
-            db.session.commit()
+            tournament_week = insert_tournament_week(monday)
 
         tournament.name = form.name.data
         tournament.started_at = form.start_date.data
