@@ -3,10 +3,10 @@ from flask_login import current_user
 
 from . import bp
 from .forms import SettingsForm
+from .lib import generate_chart
 from .. import db
 from ..decorators import manager_required, login_required
 from ..models import Tournament, User
-from .lib import generate_chart
 
 
 @bp.route("/")

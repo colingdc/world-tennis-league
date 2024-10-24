@@ -107,8 +107,7 @@ def create_app(config_name):
     from .player import bp as player_blueprint
     app.register_blueprint(player_blueprint, url_prefix="/wtl/player")
 
-    from .errors import (unauthorized, forbidden, page_not_found, bad_request,
-                         internal_server_error, unhandled_exception)
+    from .errors import unauthorized, forbidden, page_not_found, bad_request, internal_server_error, unhandled_exception
 
     app.register_error_handler(401, unauthorized)
     app.register_error_handler(403, forbidden)

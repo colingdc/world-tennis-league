@@ -2,8 +2,8 @@ from flask import current_app, flash, redirect, render_template, url_for
 from flask_login import current_user
 
 from . import bp
-from ..email import send_email
 from .forms import ContactForm
+from ..email import send_email
 
 
 @bp.route("/")

@@ -1,10 +1,10 @@
 from flask import flash, redirect, render_template, request, url_for
 
 from . import bp
+from .forms import CreatePlayerForm, EditPlayerForm
 from .. import db
 from ..decorators import manager_required
 from ..models import Player
-from .forms import CreatePlayerForm, EditPlayerForm
 
 
 @bp.route("/create", methods=["GET", "POST"])
