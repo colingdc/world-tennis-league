@@ -1,9 +1,10 @@
-from flask import current_app, flash, redirect, render_template, url_for
+from flask import current_app, redirect, render_template, url_for
 from flask_login import current_user
 
 from . import bp
 from .forms import ContactForm
 from ..email import send_email
+from ..notifications import display_success_message
 
 
 @bp.route("/")
@@ -43,7 +44,7 @@ def contact():
             email=form.email.data,
             user=current_user
         )
-        flash(u"Ton message a bien été envoyé.", "success")
+        display_success_message("Ton message a bien été envoyé.")
         return redirect(url_for(".contact"))
 
     return render_template(

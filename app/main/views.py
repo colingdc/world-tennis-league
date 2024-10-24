@@ -1,4 +1,4 @@
-from flask import redirect, render_template, url_for, request, flash
+from flask import redirect, render_template, url_for, request
 from flask_login import current_user
 
 from . import bp
@@ -7,6 +7,7 @@ from .lib import generate_chart
 from .. import db
 from ..decorators import manager_required, login_required
 from ..models import Tournament, User
+from ..notifications import display_info_message
 
 
 @bp.route("/")
@@ -55,7 +56,7 @@ def settings():
         current_user.notifications_activated = form.notifications_activated.data
         db.session.add(current_user)
         db.session.commit()
-        flash(f"Tes préférences de notifications ont été mises à jour", "info")
+        display_info_message(f"Tes préférences de notifications ont été mises à jour")
     return render_template(
         "main/settings.html",
         title="Paramètres",

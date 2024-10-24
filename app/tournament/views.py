@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timedelta
 from math import floor, log
 
-from flask import abort, flash, redirect, render_template, request, url_for
+from flask import abort, redirect, render_template, request, url_for
 from flask_login import current_user
 
 from . import bp
@@ -14,6 +14,7 @@ from ..decorators import login_required, manager_required
 from ..email import send_email
 from ..models import Match, Participation, Player, Ranking, Tournament, TournamentPlayer, TournamentStatus, \
     TournamentWeek, User
+from ..notifications import display_success_message, display_info_message, display_warning_message
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -54,7 +55,7 @@ def create_tournament():
             )
             db.session.add(match)
         db.session.commit()
-        flash(f"Le tournoi {form.name.data} a été créé", "info")
+        display_info_message(f"Le tournoi {form.name.data} a été créé")
         return redirect(url_for(".create_tournament"))
     else:
         return render_template(
@@ -88,7 +89,7 @@ def edit_tournament(tournament_id):
         tournament.week = tournament_week
         db.session.add(tournament)
         db.session.commit()
-        flash(f"Le tournoi {form.name.data} a été mis à jour", "info")
+        display_info_message(f"Le tournoi {form.name.data} a été mis à jour")
         return redirect(url_for(".edit_tournament", tournament_id=tournament_id))
     else:
         return render_template(
@@ -145,10 +146,9 @@ def view_tournament(tournament_id):
 def register(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if not current_user.can_register_to_tournament(tournament):
-        flash("Tu n'es pas autorisé à t'inscrire à ce tournoi, soit "
+        display_warning_message("Tu n'es pas autorisé à t'inscrire à ce tournoi, soit "
               "doute car tu es déjà inscrit à un autre tournoi cette semaine,"
-              "soit car les inscriptions sont fermées.",
-              "warning")
+              "soit car les inscriptions sont fermées.")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     participant = Participation(
@@ -157,7 +157,7 @@ def register(tournament_id):
     )
     db.session.add(participant)
     db.session.commit()
-    flash(f"Tu es bien inscrit au tournoi {tournament.name}", "success")
+    display_success_message(f"Tu es bien inscrit au tournoi {tournament.name}")
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
 
@@ -166,15 +166,15 @@ def register(tournament_id):
 def withdraw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if not current_user.participation(tournament):
-        flash("Tu n'es pas inscrit à ce tournoi", "warning")
+        display_warning_message("Tu n'es pas inscrit à ce tournoi")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     participation = current_user.participation(tournament)
     if not tournament.is_open_to_registration():
-        flash("Tu ne peux plus te retirer de ce tournoi", "warning")
+        display_warning_message("Tu ne peux plus te retirer de ce tournoi")
     else:
         participation.delete()
-        flash(f"Tu es bien désinscrit du tournoi {tournament.name}", "success")
+        display_success_message(f"Tu es bien désinscrit du tournoi {tournament.name}")
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
 
@@ -252,7 +252,7 @@ def create_tournament_draw(tournament_id):
             db.session.add(match)
             db.session.commit()
 
-        flash(f"Le tableau du tournoi {tournament.name} a été créé", "info")
+        display_info_message(f"Le tableau du tournoi {tournament.name} a été créé")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
     else:
         return render_template(
@@ -353,7 +353,7 @@ def edit_tournament_draw(tournament_id):
                         forecast=forecast
                     )
 
-        flash(f"Le tableau du tournoi {tournament.name} a été modifié", "info")
+        display_info_message(f"Le tableau du tournoi {tournament.name} a été modifié")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
     else:
         return render_template(
@@ -370,18 +370,17 @@ def make_forecast(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
     if not current_user.can_make_forecast(tournament):
-        flash("Tu n'es pas autorisé à faire un pronostic pour ce tournoi",
-              "warning")
+        display_warning_message("Tu n'es pas autorisé à faire un pronostic pour ce tournoi")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     if not request.form["player"]:
-        flash("Requête invalide", "warning")
+        display_warning_message("Requête invalide")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     if int(request.form["player"]) == -1:
         forecast = None
         current_user.make_forecast(tournament, forecast)
-        flash("Ton pronostic a bien été pris en compte.", "success")
+        display_success_message("Ton pronostic a bien été pris en compte.")
         return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     forecast = int(request.form["player"])
@@ -391,9 +390,9 @@ def make_forecast(tournament_id):
 
     if forecast in allowed_forecasts and forecast not in forbidden_forecasts:
         current_user.make_forecast(tournament, forecast)
-        flash("Ton pronostic a bien été pris en compte.", "success")
+        display_success_message("Ton pronostic a bien été pris en compte.")
     else:
-        flash("Ce pronostic est invalide.", "warning")
+        display_warning_message("Ce pronostic est invalide.")
 
     return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
@@ -475,7 +474,7 @@ def open_registrations(tournament_id):
     tournament.status = TournamentStatus.REGISTRATION_OPEN
     db.session.add(tournament)
     db.session.commit()
-    flash("Les inscriptions au tournoi sont ouvertes", "info")
+    display_info_message("Les inscriptions au tournoi sont ouvertes")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
@@ -491,7 +490,7 @@ def close_registrations(tournament_id):
         if not participant.has_made_forecast():
             db.session.delete(participant)
     db.session.commit()
-    flash("Les inscriptions au tournoi sont closes", "info")
+    display_info_message("Les inscriptions au tournoi sont closes")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
@@ -510,7 +509,7 @@ def close_tournament(tournament_id):
     tournament.compute_scores()
     Ranking.compute_rankings(tournament.week)
 
-    flash("Le tournoi a bien été clos", "info")
+    display_info_message("Le tournoi a bien été clos")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
@@ -530,7 +529,7 @@ def send_notification_email(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
     if all(t.notification_sent_at is not None for t in tournament.week.tournaments):
-        flash("La notification par mail a déjà été envoyée pour tous les tournois de la semaine", "info")
+        display_info_message("La notification par mail a déjà été envoyée pour tous les tournois de la semaine")
         return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
     for t in tournament.week.tournaments:
@@ -549,5 +548,5 @@ def send_notification_email(tournament_id):
             tournaments=tournament.week.tournaments
         )
 
-    flash("Les participants ont été notifiés par mail de l'ouverture des tournois de la semaine", "info")
+    display_info_message("Les participants ont été notifiés par mail de l'ouverture des tournois de la semaine")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))

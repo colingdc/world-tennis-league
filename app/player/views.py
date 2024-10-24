@@ -1,10 +1,11 @@
-from flask import flash, redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for
 
 from . import bp
 from .forms import CreatePlayerForm, EditPlayerForm
 from .. import db
 from ..decorators import manager_required
 from ..models import Player
+from ..notifications import display_info_message, display_danger_message
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -18,7 +19,7 @@ def create_player():
         )
         db.session.add(player)
         db.session.commit()
-        flash(f"Le joueur {player.get_name()} a été créé", "info")
+        display_info_message(f"Le joueur {player.get_name()} a été créé")
         return redirect(url_for(".create_player"))
     else:
         return render_template(
@@ -41,7 +42,7 @@ def edit_player(player_id):
         player.last_name = form.last_name.data
         db.session.add(player)
         db.session.commit()
-        flash(f"Le joueur {player.get_name()} a été mis à jour", "info")
+        display_info_message(f"Le joueur {player.get_name()} a été mis à jour")
         return redirect(url_for(".view_players"))
     else:
         return render_template(
@@ -58,11 +59,11 @@ def delete_player(player_id):
     player = Player.query.get_or_404(player_id)
     if player.tournament_players.count() > 0:
         tournament = player.tournament_players.first().tournament
-        flash("Ce joueur ne peut pas être supprimé car il apparait dans le "
-              f"tableau d'au moins un tournoi ({tournament.name})", "danger")
+        display_danger_message("Ce joueur ne peut pas être supprimé car il apparait dans le "
+              f"tableau d'au moins un tournoi ({tournament.name})")
         return redirect(url_for(".view_players"))
     player.delete()
-    flash(f"Le joueur {player.get_name()} a été supprimé", "info")
+    display_info_message(f"Le joueur {player.get_name()} a été supprimé")
     return redirect(url_for(".view_players"))
 
 
