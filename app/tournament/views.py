@@ -6,16 +6,14 @@ from flask import abort, flash, redirect, render_template, request, url_for
 from flask_login import current_user
 
 from . import bp
+from .forms import CreateTournamentDrawForm, CreateTournamentForm, EditTournamentForm, FillTournamentDrawForm, \
+    MakeForecastForm
 from .. import db
+from ..constants import tournament_categories
 from ..decorators import login_required, manager_required
 from ..email import send_email
-from ..models import (Match, Participation, Player, Ranking, Tournament,
-                      TournamentPlayer, TournamentStatus,
-                      TournamentWeek, User)
-from ..constants import tournament_categories
-from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
-                    EditTournamentForm, FillTournamentDrawForm,
-                    MakeForecastForm)
+from ..models import Match, Participation, Player, Ranking, Tournament, TournamentPlayer, TournamentStatus, \
+    TournamentWeek, User
 
 
 @bp.route("/create", methods=["GET", "POST"])

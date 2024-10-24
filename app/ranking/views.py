@@ -1,7 +1,8 @@
-from flask import abort, redirect, render_template, url_for
-
 from datetime import date
+
+from flask import abort, redirect, render_template, url_for
 from flask_babel import format_datetime
+
 from . import bp
 from ..decorators import login_required
 from ..models import Ranking, Tournament, TournamentWeek, TournamentStatus
