@@ -54,3 +54,7 @@ def finish_tournament(tournament):
 
 def is_tournament_finished(tournament):
     return tournament.status == TournamentStatus.FINISHED
+
+
+def fetch_non_deleted_tournaments():
+    return Tournament.query.filter(Tournament.deleted_at.is_(None))

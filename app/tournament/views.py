@@ -9,7 +9,8 @@ from . import bp
 from .forms import CreateTournamentDrawForm, CreateTournamentForm, EditTournamentForm, FillTournamentDrawForm, \
     MakeForecastForm
 from .lib import insert_tournament_week, fetch_tournament_week_by_start_date, insert_tournament, \
-    open_tournament_registrations, close_tournament_registrations, finish_tournament, is_tournament_finished
+    open_tournament_registrations, close_tournament_registrations, finish_tournament, is_tournament_finished, \
+    fetch_non_deleted_tournaments
 from .. import db
 from ..constants import tournament_categories
 from ..decorators import login_required, manager_required
@@ -103,7 +104,7 @@ def edit_tournament(tournament_id):
 @bp.route("/view")
 @login_required
 def view_tournaments():
-    tournaments = Tournament.query.filter(Tournament.deleted_at.is_(None))
+    tournaments = fetch_non_deleted_tournaments()
 
     return render_template(
         "tournament/view_tournaments.html",
