@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import DateTimeField, FieldList, FormField, IntegerField, SelectField, StringField, SubmitField
+from wtforms import DateTimeField, FieldList, FormField, IntegerField, SelectField, StringField
 from wtforms.validators import InputRequired, Optional
 
 
@@ -30,7 +30,6 @@ class CreateTournamentForm(FlaskForm):
             InputRequired(message="Ce champ est obligatoire")
         ]
     )
-    submit = SubmitField("Valider")
 
 
 class EditTournamentForm(FlaskForm):
@@ -54,7 +53,6 @@ class EditTournamentForm(FlaskForm):
             InputRequired(message="Ce champ est obligatoire")
         ]
     )
-    submit = SubmitField("Valider")
 
 
 class PlayerTournamentDrawForm(FlaskForm):
@@ -68,14 +66,11 @@ class PlayerTournamentDrawForm(FlaskForm):
 
 class CreateTournamentDrawForm(FlaskForm):
     player = FieldList(FormField(PlayerTournamentDrawForm))
-    submit = SubmitField("Valider")
 
 
 class MakeForecastForm(FlaskForm):
     player = SelectField("Mon pronostic", coerce=int)
-    submit = SubmitField("Valider")
 
 
 class FillTournamentDrawForm(FlaskForm):
     forecast = StringField("forecast")
-    submit = SubmitField("Valider")

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField
+from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
@@ -26,7 +26,6 @@ class SignupForm(FlaskForm):
             Length(1, 64)
         ]
     )
-    submit = SubmitField("Valider")
 
 
 class LoginForm(FlaskForm):
@@ -46,7 +45,6 @@ class LoginForm(FlaskForm):
         "Se souvenir de moi",
         default=False
     )
-    submit = SubmitField("Valider")
 
 
 class ChangePasswordForm(FlaskForm):
@@ -70,7 +68,6 @@ class ChangePasswordForm(FlaskForm):
             DataRequired()
         ]
     )
-    submit = SubmitField("Valider")
 
 
 class PasswordResetRequestForm(FlaskForm):
@@ -82,7 +79,6 @@ class PasswordResetRequestForm(FlaskForm):
             Email()
         ]
     )
-    submit = SubmitField("Valider")
 
 
 class PasswordResetForm(FlaskForm):
@@ -108,4 +104,3 @@ class PasswordResetForm(FlaskForm):
             DataRequired()
         ]
     )
-    submit = SubmitField("Valider")
