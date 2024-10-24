@@ -4,9 +4,9 @@ from datetime import date
 from flask_babel import format_datetime
 from . import bp
 from ..decorators import login_required
-from ..models import Ranking, Tournament, TournamentWeek, TournamentStatus
+from ..models import Tournament, TournamentWeek, TournamentStatus
 from .forms import RankingForm, MonthlyRankingForm
-from .lib import get_monthly_ranking
+from .lib import get_monthly_ranking, get_weekly_ranking
 
 
 @bp.route("/<tournament_week_id>")
@@ -17,7 +17,7 @@ def ranking(tournament_week_id):
         abort(404)
 
     title = "Classement"
-    ranking = Ranking.get_ranking(week)
+    ranking = get_weekly_ranking(week)
     return render_template("ranking/ranking.html",
                            title=title,
                            ranking=ranking,
