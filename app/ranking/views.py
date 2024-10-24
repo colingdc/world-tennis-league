@@ -7,6 +7,7 @@ from . import bp
 from ..decorators import login_required
 from ..models import Ranking, Tournament, TournamentWeek, TournamentStatus
 from .forms import RankingForm, MonthlyRankingForm
+from .lib import get_monthly_ranking
 
 
 @bp.route("/<tournament_week_id>")
@@ -54,7 +55,7 @@ def monthly_ranking(year=None, month=None):
         year, month = form.month_name.data.split("-")
         return redirect(url_for(".monthly_ranking", year=int(year), month=int(month)))
 
-    ranking = Ranking.get_monthly_ranking(year, month) if year and month else None
+    ranking = get_monthly_ranking(year, month) if year and month else None
     month_name = format_date(year, month) if year and month else None
 
     return render_template(
