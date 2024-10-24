@@ -12,13 +12,16 @@ from ..notifications import display_info_message, display_danger_message
 @manager_required
 def create_player():
     form = CreatePlayerForm(request.form)
+
     if form.validate_on_submit():
         player = Player(
             first_name=form.first_name.data,
             last_name=form.last_name.data
         )
+
         db.session.add(player)
         db.session.commit()
+
         display_info_message(f"Le joueur {player.get_name()} a été créé")
         return redirect(url_for(".create_player"))
     else:
@@ -34,14 +37,18 @@ def create_player():
 def edit_player(player_id):
     player = Player.query.get_or_404(player_id)
     form = EditPlayerForm(request.form)
+
     if request.method == "GET":
         form.first_name.data = player.first_name
         form.last_name.data = player.last_name
+
     if form.validate_on_submit():
         player.first_name = form.first_name.data
         player.last_name = form.last_name.data
+
         db.session.add(player)
         db.session.commit()
+
         display_info_message(f"Le joueur {player.get_name()} a été mis à jour")
         return redirect(url_for(".view_players"))
     else:
@@ -57,13 +64,19 @@ def edit_player(player_id):
 @manager_required
 def delete_player(player_id):
     player = Player.query.get_or_404(player_id)
+
     if player.tournament_players.count() > 0:
         tournament = player.tournament_players.first().tournament
+
         display_danger_message("Ce joueur ne peut pas être supprimé car il apparait dans le "
               f"tableau d'au moins un tournoi ({tournament.name})")
+
         return redirect(url_for(".view_players"))
+
     player.delete()
+
     display_info_message(f"Le joueur {player.get_name()} a été supprimé")
+
     return redirect(url_for(".view_players"))
 
 

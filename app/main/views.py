@@ -15,12 +15,14 @@ def index():
     if current_user.is_authenticated:
         ongoing_tournaments = Tournament.get_ongoing_tournaments()
         open_tournaments = Tournament.get_open_tournaments()
+
         return render_template(
             "main/dashboard.html",
             ongoing_tournaments=ongoing_tournaments,
             open_tournaments=open_tournaments,
             user=current_user
         )
+
     return redirect(url_for("auth.login"))
 
 
@@ -52,11 +54,13 @@ def settings():
 
     if request.method == "GET":
         form.notifications_activated.data = current_user.notifications_activated
+
     if form.validate_on_submit():
         current_user.notifications_activated = form.notifications_activated.data
         db.session.add(current_user)
         db.session.commit()
         display_info_message(f"Tes préférences de notifications ont été mises à jour")
+
     return render_template(
         "main/settings.html",
         title="Paramètres",
@@ -69,6 +73,7 @@ def settings():
 @manager_required
 def view_users():
     users = User.query.order_by(User.username)
+
     return render_template(
         "main/view_users.html",
         title="Utilisateurs",
@@ -81,6 +86,7 @@ def view_users():
 def view_users_raw():
     users = User.query.order_by(User.username)
     users = [user for user in users if not user.email.startswith("TEMPORARY")]
+
     return render_template(
         "main/view_users_raw.html",
         title="Utilisateurs",
