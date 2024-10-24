@@ -2,12 +2,12 @@ from flask import current_app, redirect, render_template, request, session, url_
 from flask_login import current_user, login_user, logout_user
 
 from . import bp
+from .forms import ChangePasswordForm, LoginForm, PasswordResetForm, PasswordResetRequestForm, SignupForm
 from .. import db
 from ..decorators import login_required, auth_required
 from ..email import send_email
 from ..models import Role, User
 from ..notifications import display_success_message, display_info_message, display_danger_message, display_error_message
-from .forms import ChangePasswordForm, LoginForm, PasswordResetForm, PasswordResetRequestForm, SignupForm
 
 
 @bp.route("/signup", methods=["GET", "POST"])
