@@ -1,30 +1,10 @@
 from flask import current_app, redirect, render_template, url_for
 from flask_login import current_user
 
-from . import bp
-from .forms import ContactForm
-from ..email import send_email
-from ..notifications import display_success_message
-
-
-@bp.route("/")
-def index():
-    return render_template("public/index.html")
-
-
-@bp.route("/partners")
-def partners():
-    return render_template("public/partners.html")
-
-
-@bp.route("/networks")
-def networks():
-    return render_template("public/networks.html")
-
-
-@bp.route("/support")
-def support():
-    return render_template("public/support.html")
+from .. import bp
+from ..forms import ContactForm
+from ...email import send_email
+from ...notifications import display_success_message
 
 
 @bp.route("/contact", methods=['GET', 'POST'])
