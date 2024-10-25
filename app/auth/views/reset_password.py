@@ -21,12 +21,7 @@ def reset_password(token):
             display_error_message("L'adresse email entrée ne correspond pas au lien de "
                                   "réinitialisation envoyé.")
 
-            return render_template(
-                "auth/reset_password.html",
-                title="Réinitialisation du mot de passe",
-                form=form,
-                token=token
-            )
+            return render_password_reset_page(form, token)
 
         if user.reset_password(token, form.password.data):
             display_success_message("Ton mot de passe a été mis à jour.")
@@ -38,13 +33,12 @@ def reset_password(token):
             display_error_message("L'adresse email entrée ne correspond pas au lien de "
                                   "réinitialisation envoyé.")
 
-            return render_template(
-                "auth/reset_password.html",
-                title="Réinitialisation du mot de passe",
-                form=form,
-                token=token
-            )
+            return render_password_reset_page(form, token)
 
+    return render_password_reset_page(form, token)
+
+
+def render_password_reset_page(form, token):
     return render_template(
         "auth/reset_password.html",
         title="Réinitialisation du mot de passe",

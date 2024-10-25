@@ -25,22 +25,14 @@ def login():
             form.username.errors.append("Identifiants incorrects")
             form.password.errors.append("")
 
-            return render_template(
-                "auth/login.html",
-                title="Connexion",
-                form=form
-            )
+            return render_login_page(form)
 
         is_password_correct = user.verify_password(form.password.data)
         if not is_password_correct:
             form.username.errors.append("Identifiants incorrects")
             form.password.errors.append("")
 
-            return render_template(
-                "auth/login.html",
-                title="Connexion",
-                form=form
-            )
+            return render_login_page(form)
 
         # Otherwise log the user in
         login_user(user, remember=form.remember_me.data)
@@ -50,6 +42,10 @@ def login():
         display_success_message("Tu es à présent connecté.")
         return redirect(url_for("auth.unconfirmed"))
 
+    return render_login_page(form)
+
+
+def render_login_page(form):
     return render_template(
         "auth/login.html",
         title="Connexion",
