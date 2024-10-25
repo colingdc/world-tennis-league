@@ -7,6 +7,7 @@ from ..forms import FillTournamentDrawForm
 from ..lib import fetch_tournament
 from ... import db
 from ...decorators import manager_required
+from ...navigation import go_to_tournament_page
 
 
 @bp.route("/<tournament_id>/draw/update", methods=["GET", "POST"])
@@ -23,7 +24,7 @@ def update_tournament_draw(tournament_id):
         try:
             results = json.loads(form.forecast.data)
         except json.decoder.JSONDecodeError:
-            return redirect(url_for(".view_tournament", tournament_id=tournament_id))
+            return go_to_tournament_page(tournament_id)
 
         matches = tournament.matches
 
@@ -55,7 +56,7 @@ def update_tournament_draw(tournament_id):
         if all(results[str(match.id)] != "None" for match in matches):
             return redirect(url_for(".close_tournament", tournament_id=tournament_id))
 
-        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
+        return go_to_tournament_page(tournament_id)
 
     else:
         return render_template(
