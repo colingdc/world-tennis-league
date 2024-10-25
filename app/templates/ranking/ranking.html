@@ -39,7 +39,7 @@
           <tr>
             <td>{{ loop.index }}</td>
             <td>
-              <a href="{{ url_for('main.view_user', user_id=r.user.id) }}">
+              <a href="{{ url_for('user.view_user', user_id=r.user.id) }}">
                 {{ r.user.username }}</a
               >
             </td>

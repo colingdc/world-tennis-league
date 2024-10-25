@@ -114,14 +114,14 @@ block head %} {{ super() }}
                     <ul class="dropdown-menu">
                         <li>
                             <a
-                                    href="{{ url_for('main.view_user', user_id=current_user.id) }}"
+                                    href="{{ url_for('user.view_user', user_id=current_user.id) }}"
                             >
                                 <span class="fa fa-user" aria-hidden="true"></span> Mon profil
                             </a>
                         </li>
                         <li>
                             <a
-                                    href="{{ url_for('main.settings') }}"
+                                    href="{{ url_for('user.settings') }}"
                             >
                                 <span class="fa fa-cog" aria-hidden="true"></span> Paramètres
                             </a>
@@ -152,12 +152,12 @@ block head %} {{ super() }}
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url_for('main.view_users') }}">
+                            <a href="{{ url_for('user.view_users') }}">
                                 <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url_for('main.view_users_raw') }}">
+                            <a href="{{ url_for('user.view_users_raw') }}">
                                 <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs (export brut)
                             </a>
                         </li>
@@ -244,7 +244,7 @@ block head %} {{ super() }}
                         </li>
                         <li>
                             <a
-                                    href="{{ url_for('main.view_user', user_id=current_user.id) }}"
+                                    href="{{ url_for('user.view_user', user_id=current_user.id) }}"
                             >
                                 <span class="fa fa-user" aria-hidden="true"></span> Mon profil
                                 [{{ current_user.username }}]
@@ -252,7 +252,7 @@ block head %} {{ super() }}
                         </li>
                         <li>
                             <a
-                                    href="{{ url_for('main.settings') }}"
+                                    href="{{ url_for('user.settings') }}"
                             >
                                 <span class="fa fa-cog" aria-hidden="true"></span> Paramètres
                             </a>

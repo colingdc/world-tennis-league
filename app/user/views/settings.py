@@ -8,7 +8,7 @@ from ...decorators import login_required
 from ...notifications import display_info_message
 
 
-@bp.route("/user/settings", methods=["GET", "POST"])
+@bp.route("/settings", methods=["GET", "POST"])
 @login_required
 def settings():
     form = SettingsForm(request.form)
