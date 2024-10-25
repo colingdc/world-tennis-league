@@ -24,11 +24,7 @@ def signup():
             form.email.errors.append(wordings["email_already_used"])
 
         if user_exists or email_exists:
-            return render_template(
-                "auth/signup.html",
-                title=wordings["signup"],
-                form=form
-            )
+            return render_signup_page(form)
         else:
             user = create_user(form.username.data, form.email.data, form.password.data)
 
@@ -58,8 +54,12 @@ def signup():
 
             return redirect(url_for("auth.unconfirmed"))
     else:
-        return render_template(
-            "auth/signup.html",
-            title=wordings["signup"],
-            form=form
-        )
+        return render_signup_page(form)
+
+
+def render_signup_page(form):
+    return render_template(
+        "auth/signup.html",
+        title=wordings["signup"],
+        form=form
+    )

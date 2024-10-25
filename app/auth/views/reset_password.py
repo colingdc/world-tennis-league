@@ -21,12 +21,7 @@ def reset_password(token):
         if user is None:
             display_error_message(wordings["invalid_reset_password_link"])
 
-            return render_template(
-                "auth/reset_password.html",
-                title=wordings["password_reset"],
-                form=form,
-                token=token
-            )
+            return render_password_reset_page(form, token)
 
         if user.reset_password(token, form.password.data):
             display_success_message(wordings["password_updated"])
@@ -37,13 +32,12 @@ def reset_password(token):
         else:
             display_error_message(wordings["invalid_reset_password_link"])
 
-            return render_template(
-                "auth/reset_password.html",
-                title=wordings["password_reset"],
-                form=form,
-                token=token
-            )
+            return render_password_reset_page(form, token)
 
+    return render_password_reset_page(form, token)
+
+
+def render_password_reset_page(form, token):
     return render_template(
         "auth/reset_password.html",
         title=wordings["password_reset"],

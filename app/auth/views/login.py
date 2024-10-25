@@ -26,22 +26,14 @@ def login():
             form.username.errors.append(wordings["invalid_credentials"])
             form.password.errors.append("")
 
-            return render_template(
-                "auth/login.html",
-                title=wordings["login"],
-                form=form
-            )
+            return render_login_page(form)
 
         is_password_correct = user.verify_password(form.password.data)
         if not is_password_correct:
             form.username.errors.append(wordings["invalid_credentials"])
             form.password.errors.append("")
 
-            return render_template(
-                "auth/login.html",
-                title=wordings["login"],
-                form=form
-            )
+            return render_login_page(form)
 
         # Otherwise log the user in
         login_user(user, remember=form.remember_me.data)
@@ -51,6 +43,10 @@ def login():
         display_success_message(wordings["login_confirmed"])
         return redirect(url_for("auth.unconfirmed"))
 
+    return render_login_page(form)
+
+
+def render_login_page(form):
     return render_template(
         "auth/login.html",
         title=wordings["login"],
