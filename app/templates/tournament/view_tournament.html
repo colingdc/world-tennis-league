@@ -331,14 +331,14 @@
                         {% if current_user.id == participant.user_id %}
                         <th>
                             <a
-                                    href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
+                                    href="{{ url_for('user.view_user', user_id=participant.user_id) }}"
                             >{{ participant.user.username }}</a
                             >
                         </th>
                         {% else %}
                         <td>
                             <a
-                                    href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
+                                    href="{{ url_for('user.view_user', user_id=participant.user_id) }}"
                             >{{ participant.user.username }}</a
                             >
                         </td>
@@ -368,14 +368,14 @@
                         {% if current_user.id == participant.user_id %}
                         <th>
                             <a
-                                    href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
+                                    href="{{ url_for('user.view_user', user_id=participant.user_id) }}"
                             >{{ participant.user.username }}</a
                             >
                         </th>
                         {% else %}
                         <td>
                             <a
-                                    href="{{ url_for('main.view_user', user_id=participant.user_id) }}"
+                                    href="{{ url_for('user.view_user', user_id=participant.user_id) }}"
                             >{{ participant.user.username }}</a
                             >
                         </td>

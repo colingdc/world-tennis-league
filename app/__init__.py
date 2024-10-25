@@ -101,6 +101,9 @@ def create_app(config_name):
     from .tournament import bp as tournament_blueprint
     app.register_blueprint(tournament_blueprint, url_prefix="/wtl/tournament")
 
+    from .user import bp as user_blueprint
+    app.register_blueprint(user_blueprint, url_prefix="/wtl/user")
+
     from .ranking import bp as ranking_blueprint
     app.register_blueprint(ranking_blueprint, url_prefix="/wtl/ranking")
 
