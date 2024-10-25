@@ -8,3 +8,6 @@ def go_to_homepage():
 def go_to_account_unconfirmed_page():
     return redirect(url_for("auth.unconfirmed"))
 
+
+def go_to_login_page():
+    return redirect(url_for("auth.login"))

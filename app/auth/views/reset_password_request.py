@@ -1,11 +1,11 @@
-from flask import redirect, render_template, request, url_for
+from flask import render_template, request
 from flask_login import current_user
 
 from .. import bp
 from ..forms import PasswordResetRequestForm
 from ..lib import get_user_by_email
 from ...email import send_email
-from ...navigation import go_to_homepage
+from ...navigation import go_to_homepage, go_to_login_page
 from ...notifications import display_info_message
 from ...wordings import wordings
 
@@ -34,7 +34,7 @@ def reset_password_request():
 
         display_info_message(wordings["password_reset_email_sent"])
 
-        return redirect(url_for("auth.login"))
+        return go_to_login_page()
 
     return render_template(
         "auth/reset_password_request.html",
