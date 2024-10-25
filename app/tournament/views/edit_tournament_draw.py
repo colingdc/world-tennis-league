@@ -1,4 +1,4 @@
-from flask import redirect, render_template, request, url_for
+from flask import render_template, request
 
 from .. import bp
 from ..forms import CreateTournamentDrawForm
@@ -7,6 +7,7 @@ from ... import db
 from ...decorators import manager_required
 from ...email import send_email
 from ...models import Player
+from ...navigation import go_to_tournament_page
 from ...notifications import display_info_message
 from ...wordings import wordings
 
@@ -105,7 +106,7 @@ def edit_tournament_draw(tournament_id):
                     )
 
         display_info_message(wordings["tournament_draw_updated"].format(tournament.name))
-        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
+        return go_to_tournament_page(tournament_id)
     else:
         return render_template(
             "tournament/edit_tournament_draw.html",

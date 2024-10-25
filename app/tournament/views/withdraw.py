@@ -1,9 +1,9 @@
-from flask import redirect, url_for
 from flask_login import current_user
 
 from .. import bp
 from ..lib import fetch_tournament
 from ...decorators import login_required
+from ...navigation import go_to_tournament_page
 from ...notifications import display_warning_message, display_success_message
 from ...wordings import wordings
 
@@ -15,7 +15,7 @@ def withdraw(tournament_id):
 
     if not current_user.participation(tournament):
         display_warning_message(wordings["not_registered_yet"])
-        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
+        return go_to_tournament_page(tournament_id)
 
     participation = current_user.participation(tournament)
 
@@ -25,4 +25,4 @@ def withdraw(tournament_id):
         participation.delete()
         display_success_message(wordings["withdrawal_confirmed"])
 
-    return redirect(url_for(".view_tournament", tournament_id=tournament_id))
+    return go_to_tournament_page(tournament_id)

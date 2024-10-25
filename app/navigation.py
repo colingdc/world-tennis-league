@@ -11,3 +11,7 @@ def go_to_account_unconfirmed_page():
 
 def go_to_login_page():
     return redirect(url_for("auth.login"))
+
+
+def go_to_tournament_page(tournament_id):
+    return redirect(url_for("tournament.view_tournament", tournament_id=tournament_id))
