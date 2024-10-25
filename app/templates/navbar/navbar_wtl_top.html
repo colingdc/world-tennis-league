@@ -1,0 +1,40 @@
+<li>
+    <a href="{{ url_for('public.index') }}">
+        <span><img class="logo" src="{{ url_for('static', filename='images/logo-v4.png') }}"/></span>
+        Game, Set & Talk
+    </a>
+</li>
+<li>
+    <a href="{{ url_for('main.rules') }}">
+        <span class="fa fa-gavel" aria-hidden="true"></span>
+        Les règles
+    </a>
+</li>
+
+{% if current_user.is_authenticated %}
+<li>
+    <a href="{{ url_for('tournament.view_tournaments') }}">
+        <span class="fa fa-trophy" aria-hidden="true"></span>
+        Tournois
+    </a>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="fa fa-list-ol" aria-hidden="true"></span>
+        Classements
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li><a href="{{ url_for('ranking.latest_ranking') }}">Classement actuel</a></li>
+        <li><a href="{{ url_for('ranking.index') }}">Tous les classements</a></li>
+        <li><a href="{{ url_for('ranking.monthly_ranking') }}">Classements mensuels</a></li>
+    </ul>
+</li>
+{% endif %}
+
+<li>
+    <a href="{{ url_for('public.contact') }}">
+        <span class="fa fa-pencil-alt" aria-hidden="true"></span>
+        Contact
+    </a>
+</li>
