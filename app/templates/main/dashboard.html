@@ -15,7 +15,7 @@
         <h3 class="panel-title">Mon classement</h3>
       </div>
       <div class="panel-body">
-        {% with ranking = current_user.get_ranking() %} {% if ranking is not
+        {% with ranking = current_user.get_current_ranking() %} {% if ranking is not
         none %}
         <div class="row">
           <div class="col-xs-6 dashboard-column">

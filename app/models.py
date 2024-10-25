@@ -169,14 +169,13 @@ class User(UserMixin, db.Model):
                 .order_by(Tournament.started_at.desc())
         )
 
-    def get_ranking(self, tournament=None):
-        if tournament is None:
-            tournament = Tournament.get_latest_finished_tournament()
-        ranking = (Ranking.query
-                   .filter(Ranking.user_id == self.id)
-                   .order_by(Ranking.tournament_week_id.desc())
-                   )
-        return ranking.first()
+    def get_current_ranking(self):
+        return (
+            Ranking.query
+                .filter(Ranking.user_id == self.id)
+                .order_by(Ranking.tournament_week_id.desc())
+                .first()
+        )
 
 
 class AnonymousUser(AnonymousUserMixin):
