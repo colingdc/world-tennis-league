@@ -2,6 +2,26 @@ wordings = {
     "mandatory_field": "Ce champ est obligatoire",
     "invalid_request": "Requête invalide",
 
+    "faq": "FAQ",
+
+    "account_validated": "Ton compte est à présent validé.",
+    "password_updated": "Ton mot de passe a été mis à jour.",
+    "password_change": "Changement de mot de passe",
+    "password_reset": "Réinitialisation du mot de passe",
+    "password_reset_email_sent": "Un email contenant des instructions pour réinitialiser ton mot de passe t'a été envoyé. Si tu n'as pas reçu d'email, vérifie dans ton dossier de spams et assure toi d'avoir rentré la bonne adresse mail.",
+    "username_already_used": "Ce nom d'utilisateur est déjà pris",
+    "email_already_used": "Cet email existe déjà",
+    "invalid_confirmation_link": "Ce lien de confirmation est invalide ou a expiré.",
+    "invalid_password": "Mot de passe incorrect",
+    "invalid_credentials": "Identifiants incorrects",
+    "invalid_reset_password_link": "L'adresse mail entrée ne correspond pas au lien de réinitialisation envoyé.",
+    "login": "Connexion",
+    "signup": "Inscription",
+    "login_confirmed": "Tu es à présent connecté.",
+    "email_address_confirmation": "Confirmation de ton adresse mail",
+    "confirmation_email_sent": "Un email de confirmation t'a été envoyé.",
+    "new_user_signup": "Nouvel inscrit",
+
     "choose_a_category": "Choisir une catégorie",
     "choose_a_player": "Choisir un joueur",
 

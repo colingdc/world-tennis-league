@@ -5,6 +5,7 @@ from .. import bp
 from ...decorators import auth_required
 from ...email import send_email
 from ...notifications import display_info_message
+from ...wordings import wordings
 
 
 @bp.route("/confirm")
@@ -14,11 +15,11 @@ def resend_confirmation():
 
     send_email(
         to=current_user.email,
-        subject="Confirmation de ton adresse mail",
+        subject=wordings["email_address_confirmation"],
         template="email/confirm",
         user=current_user,
         token=token
     )
 
-    display_info_message("Un email de confirmation t'a été envoyé.")
+    display_info_message(wordings["confirmation_email_sent"])
     return redirect(url_for("auth.unconfirmed"))

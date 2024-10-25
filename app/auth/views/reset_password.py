@@ -5,6 +5,7 @@ from .. import bp
 from ..forms import PasswordResetForm
 from ..lib import get_user_by_email
 from ...notifications import display_success_message, display_error_message
+from ...wordings import wordings
 
 
 @bp.route("/reset/<token>", methods=["GET", "POST"])
@@ -18,36 +19,34 @@ def reset_password(token):
         user = get_user_by_email(form.email.data)
 
         if user is None:
-            display_error_message("L'adresse email entrée ne correspond pas au lien de "
-                                  "réinitialisation envoyé.")
+            display_error_message(wordings["invalid_reset_password_link"])
 
             return render_template(
                 "auth/reset_password.html",
-                title="Réinitialisation du mot de passe",
+                title=wordings["password_reset"],
                 form=form,
                 token=token
             )
 
         if user.reset_password(token, form.password.data):
-            display_success_message("Ton mot de passe a été mis à jour.")
+            display_success_message(wordings["password_updated"])
 
             login_user(user)
 
             return redirect(url_for("main.index"))
         else:
-            display_error_message("L'adresse email entrée ne correspond pas au lien de "
-                                  "réinitialisation envoyé.")
+            display_error_message(wordings["invalid_reset_password_link"])
 
             return render_template(
                 "auth/reset_password.html",
-                title="Réinitialisation du mot de passe",
+                title=wordings["password_reset"],
                 form=form,
                 token=token
             )
 
     return render_template(
         "auth/reset_password.html",
-        title="Réinitialisation du mot de passe",
+        title=wordings["password_reset"],
         form=form,
         token=token
     )

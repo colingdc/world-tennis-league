@@ -5,6 +5,7 @@ from .. import bp
 from ..forms import LoginForm
 from ..lib import get_user_by_username
 from ...notifications import display_success_message
+from ...wordings import wordings
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -22,23 +23,23 @@ def login():
         # If the credentials are incorrect, render the login page
         # with an error message
         if user is None:
-            form.username.errors.append("Identifiants incorrects")
+            form.username.errors.append(wordings["invalid_credentials"])
             form.password.errors.append("")
 
             return render_template(
                 "auth/login.html",
-                title="Connexion",
+                title=wordings["login"],
                 form=form
             )
 
         is_password_correct = user.verify_password(form.password.data)
         if not is_password_correct:
-            form.username.errors.append("Identifiants incorrects")
+            form.username.errors.append(wordings["invalid_credentials"])
             form.password.errors.append("")
 
             return render_template(
                 "auth/login.html",
-                title="Connexion",
+                title=wordings["login"],
                 form=form
             )
 
@@ -47,11 +48,11 @@ def login():
         session["signed"] = True
         session["username"] = user.username
 
-        display_success_message("Tu es à présent connecté.")
+        display_success_message(wordings["login_confirmed"])
         return redirect(url_for("auth.unconfirmed"))
 
     return render_template(
         "auth/login.html",
-        title="Connexion",
+        title=wordings["login"],
         form=form
     )

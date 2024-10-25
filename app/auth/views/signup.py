@@ -6,6 +6,7 @@ from ..forms import SignupForm
 from ..lib import get_user_by_username, get_user_by_email, create_user
 from ...email import send_email
 from ...notifications import display_info_message
+from ...wordings import wordings
 
 
 @bp.route("/signup", methods=["GET", "POST"])
@@ -17,15 +18,15 @@ def signup():
         email_exists = get_user_by_email(form.email.data) is not None
 
         if user_exists:
-            form.username.errors.append("Ce nom d'utilisateur est déjà pris")
+            form.username.errors.append(wordings["username_already_used"])
 
         if email_exists:
-            form.email.errors.append("Cet email existe déjà")
+            form.email.errors.append(wordings["email_already_used"])
 
         if user_exists or email_exists:
             return render_template(
                 "auth/signup.html",
-                title="Inscription",
+                title=wordings["signup"],
                 form=form
             )
         else:
@@ -35,7 +36,7 @@ def signup():
 
             send_email(
                 to=user.email,
-                subject="Confirmation de ton adresse mail",
+                subject=wordings["email_address_confirmation"],
                 template="email/confirm",
                 user=user,
                 token=token
@@ -43,12 +44,12 @@ def signup():
 
             send_email(
                 to=current_app.config.get("ADMIN_WTL"),
-                subject="Nouvel inscrit",
+                subject=wordings["new_user_signup"],
                 template="email/new_user",
                 user=user
             )
 
-            display_info_message("Un email de confirmation t'a été envoyé.")
+            display_info_message(wordings["confirmation_email_sent"])
 
             session.pop("signed", None)
             session.pop("username", None)
@@ -59,6 +60,6 @@ def signup():
     else:
         return render_template(
             "auth/signup.html",
-            title="Inscription",
+            title=wordings["signup"],
             form=form
         )

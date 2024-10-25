@@ -6,6 +6,7 @@ from ..forms import PasswordResetRequestForm
 from ..lib import get_user_by_email
 from ...email import send_email
 from ...notifications import display_info_message
+from ...wordings import wordings
 
 
 @bp.route("/reset", methods=["GET", "POST"])
@@ -23,22 +24,19 @@ def reset_password_request():
 
             send_email(
                 user.email,
-                "Réinitialisation du mot de passe",
+                wordings["password_reset"],
                 "email/reset_password",
                 user=user,
                 token=token,
                 next=request.args.get("next")
             )
 
-        display_info_message("Un email contenant des instructions pour réinitialiser "
-                             "ton mot de passe t'a été envoyé. Si tu n'as pas reçu d'email, "
-                             "vérifie dans ton dossier de spams et assure toi d'avoir rentré "
-                             "la bonne adresse mail.")
+        display_info_message(wordings["password_reset_email_sent"])
 
         return redirect(url_for("auth.login"))
 
     return render_template(
         "auth/reset_password_request.html",
-        title="Réinitialisation du mot de passe",
+        title=wordings["password_reset"],
         form=form
     )

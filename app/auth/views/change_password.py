@@ -6,6 +6,7 @@ from ..forms import ChangePasswordForm
 from ... import db
 from ...decorators import login_required
 from ...notifications import display_success_message
+from ...wordings import wordings
 
 
 @bp.route("/change-password", methods=["GET", "POST"])
@@ -19,14 +20,14 @@ def change_password():
 
             db.session.add(current_user)
 
-            display_success_message("Ton mot de passe a été mis à jour.")
+            display_success_message(wordings["password_updated"])
             return redirect(url_for("main.index"))
         else:
-            form.old_password.errors.append("Mot de passe incorrect")
+            form.old_password.errors.append(wordings["invalid_password"])
 
     return render_template(
         "auth/change_password.html",
-        title="Changement de mot de passe",
+        title=wordings["password_change"],
         form=form,
         user=current_user
     )
