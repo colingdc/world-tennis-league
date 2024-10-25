@@ -3,8 +3,8 @@ from flask_login import current_user
 
 from .. import bp
 from ..forms import PasswordResetRequestForm
+from ..lib import get_user_by_email
 from ...email import send_email
-from ...models import User
 from ...notifications import display_info_message
 
 
@@ -16,7 +16,7 @@ def reset_password_request():
     form = PasswordResetRequestForm()
 
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = get_user_by_email(form.email.data)
 
         if user:
             token = user.generate_reset_token()
