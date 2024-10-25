@@ -40,12 +40,6 @@ def create_app(config_name):
     def load_user(user_id):
         return User.query.filter(User.id == int(user_id)).first()
 
-    error_handler = RotatingFileHandler(
-        "logs/app.log", maxBytes=1000000, backupCount=1)
-    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-    error_handler.setFormatter(formatter)
-    app.logger.addHandler(error_handler)
-
     @app.template_filter('autoversion')
     def autoversion_filter(filename):
         # determining fullpath might be project specific
@@ -57,6 +51,22 @@ def create_app(config_name):
         newfilename = "{0}?v={1}".format(filename, timestamp)
         return newfilename
 
+    register_loggers(app)
+    register_datetime_filters(app)
+    register_blueprints(app)
+    register_error_handlers(app)
+
+    return app
+
+
+def register_loggers(app):
+    error_handler = RotatingFileHandler("logs/app.log", maxBytes=1000000, backupCount=1)
+    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+    error_handler.setFormatter(formatter)
+    app.logger.addHandler(error_handler)
+
+
+def register_datetime_filters(app):
     def custom_datetime_filter(value):
         dt = format_datetime(value, "EEEE d MMMM yyyy à H:mm")
         return dt.capitalize()
@@ -88,11 +98,6 @@ def create_app(config_name):
 
     app.jinja_env.filters["dt"] = custom_datetime_filter
     app.jinja_env.filters["dt_diff"] = custom_datetime_difference_filter
-
-    register_blueprints(app)
-    register_error_handlers(app)
-
-    return app
 
 
 def register_blueprints(app):
