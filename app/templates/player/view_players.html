@@ -12,7 +12,7 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='css/tables.css') }}"
 />
-{% endblock %}
+{% endblock styles %}
 
 {% block content %}
 
@@ -85,7 +85,7 @@
 
 {{ macros.confirmation_modal() }}
 
-{% endblock %}
+{% endblock content %}
 
 {% block extrajs %}
 
@@ -134,4 +134,4 @@
   });
 </script>
 
-{% endblock %}
+{% endblock extrajs %}

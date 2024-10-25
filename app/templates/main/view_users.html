@@ -10,7 +10,7 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='css/tables.css') }}"
 />
-{% endblock %}
+{% endblock styles %}
 
 {% block content %}
 
@@ -54,9 +54,10 @@
     </div>
 </div>
 
-{% endblock %}
+{% endblock content %}
 
 {% block extrajs %}
+
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
@@ -79,4 +80,5 @@
     });
   });
 </script>
-{% endblock %}
+
+{% endblock extrajs %}

@@ -6,7 +6,7 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='css/draw.css') | autoversion }}"
 />
-{% endblock %}
+{% endblock styles %}
 
 {% block content %}
 
@@ -122,8 +122,8 @@
     </div>
 </div>
 
-{% endblock %}
+{% endblock content %}
 
 {% block extrajs %}
 <script src="{{ url_for('static', filename='js/draw.js') | autoversion }}"></script>
-{% endblock %}
+{% endblock extrajs %}
