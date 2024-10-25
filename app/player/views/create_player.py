@@ -5,6 +5,7 @@ from ..forms import CreatePlayerForm
 from ..lib import insert_player
 from ...decorators import manager_required
 from ...notifications import display_info_message
+from ...wordings import wordings
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -15,7 +16,7 @@ def create_player():
     if form.validate_on_submit():
         player = insert_player(form.first_name.data, form.last_name.data)
 
-        display_info_message(f"Le joueur {player.get_name()} a été créé")
+        display_info_message(wordings["player_created"].format(player.get_name()))
         return redirect(url_for(".create_player"))
     else:
         return render_template(
