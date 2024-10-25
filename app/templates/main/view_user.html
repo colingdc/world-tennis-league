@@ -55,9 +55,10 @@
     </div>
 </div>
 
-{% endblock %}
+{% endblock content %}
 
 {% block extrajs %}
+
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script>
   var series = {{ series | safe }}
@@ -92,4 +93,5 @@
     });
   });
 </script>
-{% endblock %}
+
+{% endblock extrajs %}

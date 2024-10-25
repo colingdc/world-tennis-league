@@ -10,7 +10,7 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='css/tables.css') }}"
 />
-{% endblock %}
+{% endblock styles %}
 
 {% block content %}
 
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-{% endblock %}
+{% endblock content %}
 
 {% block extrajs %}
 
@@ -94,4 +94,4 @@
   });
 </script>
 
-{% endblock %}
+{% endblock extrajs %}

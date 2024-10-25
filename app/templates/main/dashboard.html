@@ -6,7 +6,7 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='css/dashboard.css') | autoversion }}"
 />
-{% endblock %}
+{% endblock styles %}
 
 {% block content %}
 
@@ -114,4 +114,5 @@
         </div>
     </div>
 </div>
-{% endblock %}
+
+{% endblock content %}
