@@ -1,9 +1,10 @@
-from flask import redirect, render_template, url_for
+from flask import render_template
 from flask_login import current_user, login_user
 
 from .. import bp
 from ..forms import PasswordResetForm
 from ..lib import get_user_by_email
+from ...navigation import go_to_homepage
 from ...notifications import display_success_message, display_error_message
 from ...wordings import wordings
 
@@ -11,7 +12,7 @@ from ...wordings import wordings
 @bp.route("/reset/<token>", methods=["GET", "POST"])
 def reset_password(token):
     if not current_user.is_anonymous():
-        return redirect(url_for("main.index"))
+        return go_to_homepage()
 
     form = PasswordResetForm()
 
@@ -28,7 +29,7 @@ def reset_password(token):
 
             login_user(user)
 
-            return redirect(url_for("main.index"))
+            return go_to_homepage()
         else:
             display_error_message(wordings["invalid_reset_password_link"])
 
