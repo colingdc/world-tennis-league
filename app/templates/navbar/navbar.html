@@ -1,0 +1,9 @@
+<nav class="navbar navbar-default navbar-static-top navbar-fixed-top">
+    <div class="container-fluid">
+        {% include "navbar/navbar_header.html" %}
+
+        {% if "/wtl" in request.path %} {% include "navbar/navbar_wtl.html" %}
+        {% else %} {% include "navbar/navbar_game_set_and_talk.html" %}
+        {% endif %}
+    </div>
+</nav>

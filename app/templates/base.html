@@ -29,7 +29,7 @@
 
 {% block body %}
 
-{% block navbar %}{% include "navbar.html" %}{% endblock navbar %}
+{% block navbar %}{% include "navbar/navbar.html" %}{% endblock navbar %}
 
 <div class="container-fluid wrap-content">
     {% for category, message in get_flashed_messages(with_categories=True) %}
