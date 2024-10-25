@@ -435,15 +435,6 @@ class Player(db.Model):
     last_name = db.Column(db.String(64))
     tournament_players = db.relationship("TournamentPlayer", backref="player", lazy="dynamic")
 
-    @staticmethod
-    def create(first_name, last_name):
-        p = Player(
-            first_name=first_name,
-            last_name=last_name
-        )
-        db.session.add(p)
-        db.session.commit()
-
     def delete(self):
         db.session.delete(self)
         db.session.commit()
