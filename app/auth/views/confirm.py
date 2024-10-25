@@ -1,9 +1,8 @@
-from flask import redirect, url_for
 from flask_login import current_user
 
 from .. import bp
 from ...decorators import auth_required
-from ...navigation import go_to_homepage
+from ...navigation import go_to_homepage, go_to_account_unconfirmed_page
 from ...notifications import display_success_message, display_danger_message
 from ...wordings import wordings
 
@@ -19,4 +18,4 @@ def confirm(token):
         return go_to_homepage()
     else:
         display_danger_message(wordings["invalid_confirmation_link"])
-        return redirect(url_for("auth.unconfirmed"))
+        return go_to_account_unconfirmed_page()
