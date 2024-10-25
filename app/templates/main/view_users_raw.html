@@ -1,18 +1,18 @@
 <table>
-  <thead>
+    <thead>
     <tr>
-      <th>Pseudo</th>
-      <th>Email</th>
-      <th>Confirmé</th>
+        <th>Pseudo</th>
+        <th>Email</th>
+        <th>Confirmé</th>
     </tr>
-  </thead>
-  <tbody>
-{% for user in users %}
+    </thead>
+    <tbody>
+    {% for user in users %}
     <tr>
-      <td>{{ user.username }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ "Oui" if user.confirmed else "Non" }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ "Oui" if user.confirmed else "Non" }}</td>
     </tr>
-{% endfor %}
-  </tbody>
+    {% endfor %}
+    </tbody>
 </table>

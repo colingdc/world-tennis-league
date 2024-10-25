@@ -2,17 +2,17 @@
 
 <p>
   Tu as un nouveau message de la part {% if not user.is_anonymous() %}de
-  <strong>{{ user.username }}</strong
-  >{% else %}d'un utilisateur non connecté{% endif %} :
+  <strong>{{ user.username }}</strong>{% else %}d'un utilisateur non connecté{% endif %} :
 </p>
 
 <p style="white-space: pre-line;">{{ message }}</p>
 
 {% if email %}
-<p>Il a souhaité recevoir une réponse à l'adresse suivante : {{ email }}</p>
+<p>
+  Il a souhaité recevoir une réponse à l'adresse suivante : {{ email }}
+</p>
 {% else %}
 <p>
-  Il n'a pas spécifié d'adresse email de contact. Adresse par défaut :
-  {{ user.email }}
+  Il n'a pas spécifié d'adresse email de contact. Adresse par défaut : {{ user.email }}
 </p>
 {% endif %}
