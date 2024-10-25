@@ -2,9 +2,8 @@ from flask import redirect, render_template, request, url_for
 
 from .. import bp
 from ..forms import CreatePlayerForm
-from ... import db
+from ..lib import insert_player
 from ...decorators import manager_required
-from ...models import Player
 from ...notifications import display_info_message
 
 
@@ -14,13 +13,7 @@ def create_player():
     form = CreatePlayerForm(request.form)
 
     if form.validate_on_submit():
-        player = Player(
-            first_name=form.first_name.data,
-            last_name=form.last_name.data
-        )
-
-        db.session.add(player)
-        db.session.commit()
+        player = insert_player(form.first_name.data, form.last_name.data)
 
         display_info_message(f"Le joueur {player.get_name()} a été créé")
         return redirect(url_for(".create_player"))
