@@ -348,7 +348,6 @@ class Tournament(db.Model):
         return (
             Tournament.query
                 .order_by(Tournament.started_at.desc())
-                .filter(Tournament.deleted_at.is_(None))
                 .filter(Tournament.status == TournamentStatus.FINISHED)
                 .first()
         )
@@ -455,8 +454,7 @@ class Player(db.Model):
     @classmethod
     def get_all(cls, format="last_name_first"):
         return [(p.id, p.get_name(format))
-                for p in cls.query.filter(cls.deleted_at.is_(None))
-                    .order_by(cls.last_name, cls.first_name).all()]
+                for p in cls.query.order_by(cls.last_name, cls.first_name).all()]
 
 
 class TournamentPlayer(db.Model):
@@ -647,7 +645,6 @@ class Ranking(db.Model):
             Participation.query
                 .join(Tournament)
                 .join(TournamentWeek)
-                .filter(Tournament.deleted_at.is_(None))
                 .filter(TournamentWeek.start_date <= week.start_date)
                 .filter(TournamentWeek.start_date >= datetime.date(year - 1, 12, 25))
                 .filter(Tournament.status == TournamentStatus.FINISHED)

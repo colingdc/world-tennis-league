@@ -79,14 +79,13 @@ def is_tournament_finished(tournament):
 
 
 def fetch_non_deleted_tournaments():
-    return Tournament.query.filter(Tournament.deleted_at.is_(None))
+    return Tournament.query.all()
 
 
 def fetch_ongoing_tournaments():
     return (
         Tournament.query
             .order_by(Tournament.started_at.desc())
-            .filter(Tournament.deleted_at.is_(None))
             .filter(Tournament.status == TournamentStatus.ONGOING)
     )
 
@@ -95,6 +94,5 @@ def fetch_open_tournaments():
     return (
         Tournament.query
             .order_by(Tournament.started_at.desc())
-            .filter(Tournament.deleted_at.is_(None))
             .filter(Tournament.status == TournamentStatus.REGISTRATION_OPEN)
     )
