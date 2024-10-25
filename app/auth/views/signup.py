@@ -3,10 +3,8 @@ from flask_login import login_user, logout_user
 
 from .. import bp
 from ..forms import SignupForm
-from ..lib import get_user_by_username, get_user_by_email
-from ... import db
+from ..lib import get_user_by_username, get_user_by_email, create_user
 from ...email import send_email
-from ...models import Role, User
 from ...notifications import display_info_message
 
 
@@ -31,16 +29,7 @@ def signup():
                 form=form
             )
         else:
-            role = Role.query.filter(Role.name == "User").first()
-            user = User(
-                username=form.username.data,
-                email=form.email.data,
-                password=form.password.data,
-                role=role
-            )
-
-            db.session.add(user)
-            db.session.commit()
+            user = create_user(form.username.data, form.email.data, form.password.data)
 
             token = user.generate_confirmation_token()
 
