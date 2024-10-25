@@ -1,10 +1,10 @@
-from flask import redirect, render_template, session, url_for
+from flask import render_template, session
 from flask_login import current_user, login_user
 
 from .. import bp
 from ..forms import LoginForm
 from ..lib import get_user_by_username
-from ...navigation import go_to_homepage
+from ...navigation import go_to_homepage, go_to_account_unconfirmed_page
 from ...notifications import display_success_message
 
 
@@ -41,7 +41,7 @@ def login():
         session["username"] = user.username
 
         display_success_message("Tu es à présent connecté.")
-        return redirect(url_for("auth.unconfirmed"))
+        return go_to_account_unconfirmed_page()
 
     return render_login_page(form)
 

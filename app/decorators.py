@@ -4,6 +4,7 @@ from flask import abort, redirect, url_for, request, session
 from flask_login import current_user
 
 from .models import Permission
+from .navigation import go_to_account_unconfirmed_page
 
 
 def permission_required(permission=None):
@@ -33,7 +34,7 @@ def login_required(f):
         if not current_user.is_authenticated:
             return redirect(url_for("auth.login"))
         if not current_user.confirmed:
-            return redirect(url_for("auth.unconfirmed"))
+            return go_to_account_unconfirmed_page()
         return f(*args, **kwargs)
     return decorated_function
 
