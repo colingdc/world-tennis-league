@@ -1,0 +1,24 @@
+from flask import abort, render_template
+
+from .. import bp
+from ..lib import get_weekly_ranking
+from ...decorators import login_required
+from ...models import TournamentWeek
+
+
+@bp.route("/<tournament_week_id>")
+@login_required
+def weekly_ranking(tournament_week_id):
+    week = TournamentWeek.query.get_or_404(tournament_week_id)
+
+    if week.deleted_at:
+        abort(404)
+
+    ranking = get_weekly_ranking(week)
+
+    return render_template(
+        "ranking/ranking.html",
+        title="Classement",
+        ranking=ranking,
+        week=week
+    )
