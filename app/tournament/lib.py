@@ -5,6 +5,10 @@ from ..constants import tournament_categories
 from ..models import Tournament, TournamentStatus, TournamentWeek, Ranking, Match
 
 
+def fetch_tournament(tournament_id):
+    return Tournament.query.get_or_404(tournament_id)
+
+
 def insert_tournament_week(start_date):
     tournament_week = TournamentWeek(start_date=start_date)
     db.session.add(tournament_week)

@@ -2,8 +2,8 @@ from flask import redirect, url_for
 from flask_login import current_user
 
 from .. import bp
+from ..lib import fetch_tournament
 from ...decorators import login_required
-from ...models import Tournament
 from ...notifications import display_warning_message, display_success_message
 from ...wordings import wordings
 
@@ -11,7 +11,7 @@ from ...wordings import wordings
 @bp.route("/<tournament_id>/withdraw")
 @login_required
 def withdraw(tournament_id):
-    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament = fetch_tournament(tournament_id)
 
     if not current_user.participation(tournament):
         display_warning_message(wordings["not_registered_yet"])

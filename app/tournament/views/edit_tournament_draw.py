@@ -2,10 +2,11 @@ from flask import redirect, render_template, request, url_for
 
 from .. import bp
 from ..forms import CreateTournamentDrawForm
+from ..lib import fetch_tournament
 from ... import db
 from ...decorators import manager_required
 from ...email import send_email
-from ...models import Tournament, Player
+from ...models import Player
 from ...notifications import display_info_message
 from ...wordings import wordings
 
@@ -13,7 +14,7 @@ from ...wordings import wordings
 @bp.route("/<tournament_id>/draw/edit", methods=["GET", "POST"])
 @manager_required
 def edit_tournament_draw(tournament_id):
-    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament = fetch_tournament(tournament_id)
 
     matches = tournament.get_matches_first_round()
     participations = {p: p.tournament_player.player
