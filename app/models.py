@@ -345,16 +345,13 @@ class Tournament(db.Model):
 
     @staticmethod
     def get_latest_finished_tournament():
-        return Tournament.get_finished_tournaments().first()
-
-    @staticmethod
-    def get_finished_tournaments():
-        tournaments = (
+        return (
             Tournament.query
                 .order_by(Tournament.started_at.desc())
                 .filter(Tournament.deleted_at.is_(None))
-                .filter(Tournament.status == TournamentStatus.FINISHED))
-        return tournaments
+                .filter(Tournament.status == TournamentStatus.FINISHED)
+                .first()
+        )
 
 
 class Participation(db.Model):
