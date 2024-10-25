@@ -39,6 +39,8 @@ wordings = {
     "player_created": "Le joueur {} a été créé",
     "player_updated": "Le joueur {} a été mis à jour",
     "player_deleted": "Le joueur {} a été supprimé",
+    "first_name": "Prénom",
+    "last_name": "Nom",
 
     "create_a_tournament": "Créer un tournoi",
     "tournament_created": "Le tournoi {} a été créé",

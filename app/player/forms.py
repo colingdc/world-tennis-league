@@ -7,13 +7,13 @@ from ..wordings import wordings
 
 class CreatePlayerForm(FlaskForm):
     first_name = StringField(
-        "Prénom",
+        wordings["first_name"],
         validators=[
             Optional()
         ]
     )
     last_name = StringField(
-        "Nom",
+        wordings["last_name"],
         validators=[
             InputRequired(message=wordings["mandatory_field"])
         ]
@@ -33,13 +33,13 @@ class CreatePlayerForm(FlaskForm):
 
 class EditPlayerForm(FlaskForm):
     first_name = StringField(
-        "Prénom",
+        wordings["first_name"],
         validators=[
             Optional()
         ]
     )
     last_name = StringField(
-        "Nom",
+        wordings["last_name"],
         validators=[
             InputRequired(message=wordings["mandatory_field"])
         ]
