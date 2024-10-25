@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% block styles %}
+{% extends "base.html" %}
+
+{% block styles %}
 
 {{ super() }}
 <link
@@ -9,7 +11,9 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='css/bullet-list.css') | autoversion }}"
 />
-{% endblock %}{% block content %}
+{% endblock %}
+
+{% block content %}
 
 <div class="row">
     <div class="col-sm-8 col-xs-12">
@@ -44,26 +48,19 @@
                                         A chaque semaine de tournoi, tu choisis un joueur différent
                                     </li>
                                     <li>
-                                        A la fin du tournoi, tu remportes autant de points ATP que
-                                        ton joueur
+                                        A la fin du tournoi, tu remportes autant de points ATP que ton joueur
                                     </li>
                                     <li>
                                         Des lots offerts par nos partenaires
-                                        <strong
-                                        ><a href="https://www.tennislegend.fr" target="_blank"
-                                        >Tennis Legend</a
-                                        ></strong
-                                        >,
-                                        <strong
-                                        ><a href="https://www.asics.com/fr/fr-fr/" target="_blank"
-                                        >ASICS</a
-                                        ></strong
-                                        > et
-                                        <strong
-                                        ><a href="https://ed-amphora.fr/" target="_blank"
-                                        >les Editions Amphora</a
-                                        ></strong
-                                        >
+                                        <strong>
+                                            <a href="https://www.tennislegend.fr" target="_blank">Tennis Legend</a>
+                                        </strong>,
+                                        <strong>
+                                            <a href="https://www.asics.com/fr/fr-fr/" target="_blank">ASICS</a>
+                                        </strong> et
+                                        <strong>
+                                            <a href="https://ed-amphora.fr/" target="_blank">les Editions Amphora</a>
+                                        </strong>
                                         seront à gagner pour les meilleurs pronostiqueurs en fin de saison !
                                     </li>
                                 </ol>
@@ -102,8 +99,8 @@
                                         class="btn btn-success"
                                         role="button"
                                 >
-                                    Je m'inscris</a
-                                >
+                                    Je m'inscris
+                                </a>
                             </div>
                             <div class="col-xs-6">
                                 <a
@@ -111,8 +108,8 @@
                                         class="btn btn-success"
                                         role="button"
                                 >
-                                    Je me connecte</a
-                                >
+                                    Je me connecte
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -122,7 +119,9 @@
     </div>
     <div class="col-sm-4 col-xs-12">
         <div class="panel panel-default">
-            <div class="panel-heading"><h3 class="panel-title">Actualités</h3></div>
+            <div class="panel-heading">
+                <h3 class="panel-title">Actualités</h3>
+            </div>
             <div class="panel-body">
                 <div class="video-container">
                     <iframe id="youtube_video" frameborder="0" allowfullscreen></iframe>
@@ -138,7 +137,10 @@
     </div>
 </div>
 
-{% endblock %} {% block extrajs %}
+{% endblock %}
+
+{% block extrajs %}
+
 <script
         async
         src="https://platform.twitter.com/widgets.js"
@@ -162,6 +164,7 @@
       );
     }
   );
+
 
 </script>
 

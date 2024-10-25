@@ -1,78 +1,77 @@
-{% extends "base.html" %} {% block styles %}
+{% extends "base.html" %}
 
+{% block styles %}
 {{ super() }}
 <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
 />
 <link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/datetimepicker.css') }}"
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/datetimepicker.css') }}"
 />
+{% endblock %}
 
-{% endblock %} {% block content %}
+{% block content %}
 
 <div class="panel panel-default">
-  <div class="panel-heading"><h3 class="panel-title">Créer un tournoi</h3></div>
-
-  <form action="{{ url_for('tournament.create_tournament') }}" method="POST">
-    {{ form.hidden_tag() }}
-
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-          <div
-            class="form-group {% if form.name.errors %} has-error {% endif %}"
-          >
-            {{ form.name.label() }}
-            <div>{{form.name(class="form-control")}}</div>
-            <p class="help-block">{{ form.name.errors[0] }}</p>
-          </div>
-
-          <div
-            class="form-group {% if form.category.errors %} has-error {% endif %}"
-          >
-            {{ form.category.label() }}
-            <div>{{form.category(class="form-control")}}</div>
-            <p class="help-block">{{ form.category.errors[0] }}</p>
-          </div>
-
-          <div
-            class="form-group {% if form.start_date.errors %} has-error {% endif %}"
-          >
-            {{ form.start_date.label() }}
-            <div class="input-group date" id="start-date-picker">
-              {{ form.start_date(class="form-control") }}
-              <span class="input-group-addon">
-                <span class="fa fa-calendar"></span>
-              </span>
-            </div>
-            <p class="help-block">{{ form.start_date.errors[0] }}</p>
-          </div>
-
-          <div
-            class="form-group {% if form.week.errors %} has-error {% endif %}"
-          >
-            {{ form.week.label() }}
-            <div class="input-group date" id="week-picker">
-              {{ form.week(class="form-control") }}
-              <span class="input-group-addon">
-                <span class="fa fa-calendar"></span>
-              </span>
-            </div>
-            <p class="help-block">{{ form.week.errors[0] }}</p>
-          </div>
-
-          <div class="form-group">
-            <button class="btn btn-success" type="submit">Valider</button>
-          </div>
-        </div>
-      </div>
+    <div class="panel-heading">
+        <h3 class="panel-title">Créer un tournoi</h3>
     </div>
-  </form>
+
+    <form action="{{ url_for('tournament.create_tournament') }}" method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="form-group {% if form.name.errors %} has-error {% endif %}">
+                        {{ form.name.label() }}
+                        <div>{{form.name(class="form-control")}}</div>
+                        <p class="help-block">{{ form.name.errors[0] }}</p>
+                    </div>
+
+                    <div class="form-group {% if form.category.errors %} has-error {% endif %}">
+                        {{ form.category.label() }}
+                        <div>{{form.category(class="form-control")}}</div>
+                        <p class="help-block">{{ form.category.errors[0] }}</p>
+                    </div>
+
+                    <div class="form-group {% if form.start_date.errors %} has-error {% endif %}">
+                        {{ form.start_date.label() }}
+                        <div class="input-group date" id="start-date-picker">
+                            {{ form.start_date(class="form-control") }}
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                        <p class="help-block">{{ form.start_date.errors[0] }}</p>
+                    </div>
+
+                    <div class="form-group {% if form.week.errors %} has-error {% endif %}">
+                        {{ form.week.label() }}
+                        <div class="input-group date" id="week-picker">
+                            {{ form.week(class="form-control") }}
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                        <p class="help-block">{{ form.week.errors[0] }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-success" type="submit">Valider</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
-{% endblock %} {% block extrajs %}
+{% endblock %}
+
+{% block extrajs %}
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/fr.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
