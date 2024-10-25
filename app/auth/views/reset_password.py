@@ -3,7 +3,7 @@ from flask_login import current_user, login_user
 
 from .. import bp
 from ..forms import PasswordResetForm
-from ...models import User
+from ..lib import get_user_by_email
 from ...notifications import display_success_message, display_error_message
 
 
@@ -15,7 +15,7 @@ def reset_password(token):
     form = PasswordResetForm()
 
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = get_user_by_email(form.email.data)
 
         if user is None:
             display_error_message("L'adresse email entrée ne correspond pas au lien de "

@@ -3,7 +3,7 @@ from flask_login import current_user, login_user
 
 from .. import bp
 from ..forms import LoginForm
-from ...models import User
+from ..lib import get_user_by_username
 from ...notifications import display_success_message
 
 
@@ -17,7 +17,7 @@ def login():
 
     # If form was submitted via a POST request
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = get_user_by_username(form.username.data)
 
         # If the credentials are incorrect, render the login page
         # with an error message

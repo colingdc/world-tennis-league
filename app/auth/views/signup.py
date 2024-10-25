@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user
 
 from .. import bp
 from ..forms import SignupForm
+from ..lib import get_user_by_username, get_user_by_email
 from ... import db
 from ...email import send_email
 from ...models import Role, User
@@ -14,8 +15,8 @@ def signup():
     form = SignupForm(request.form)
 
     if form.validate_on_submit():
-        user_exists = User.query.filter_by(username=form.username.data).first()
-        email_exists = User.query.filter_by(email=form.email.data).first()
+        user_exists = get_user_by_username(form.username.data) is not None
+        email_exists = get_user_by_email(form.email.data) is not None
 
         if user_exists:
             form.username.errors.append("Ce nom d'utilisateur est déjà pris")
