@@ -1,13 +1,14 @@
-from flask import redirect, render_template, session, url_for
+from flask import redirect, render_template, session
 from flask_login import current_user
 
 from .. import bp
+from ...navigation import go_to_homepage
 
 
 @bp.route("/unconfirmed")
 def unconfirmed():
     if current_user.confirmed:
-        return redirect(url_for("main.index"))
+        return go_to_homepage()
 
     if session.get("next"):
         next_page = session.get("next")

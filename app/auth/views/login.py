@@ -4,6 +4,7 @@ from flask_login import current_user, login_user
 from .. import bp
 from ..forms import LoginForm
 from ..lib import get_user_by_username
+from ...navigation import go_to_homepage
 from ...notifications import display_success_message
 
 
@@ -13,7 +14,7 @@ def login():
 
     # Redirect user to homepage if they are already authenticated
     if current_user is not None and current_user.is_authenticated:
-        return redirect(url_for("main.index"))
+        return go_to_homepage()
 
     # If form was submitted via a POST request
     if form.validate_on_submit():

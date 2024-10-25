@@ -1,7 +1,8 @@
-from flask import redirect, session, url_for
+from flask import session
 from flask_login import logout_user
 
 from .. import bp
+from ...navigation import go_to_homepage
 
 
 @bp.route("/logout")
@@ -10,4 +11,4 @@ def logout():
     session.pop("username", None)
     logout_user()
 
-    return redirect(url_for("main.index"))
+    return go_to_homepage()

@@ -5,13 +5,14 @@ from .. import bp
 from ..forms import PasswordResetRequestForm
 from ..lib import get_user_by_email
 from ...email import send_email
+from ...navigation import go_to_homepage
 from ...notifications import display_info_message
 
 
 @bp.route("/reset", methods=["GET", "POST"])
 def reset_password_request():
     if not current_user.is_anonymous():
-        return redirect(url_for("main.index"))
+        return go_to_homepage()
 
     form = PasswordResetRequestForm()
 
