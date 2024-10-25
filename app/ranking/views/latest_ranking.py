@@ -13,4 +13,4 @@ def latest_ranking():
     if week.deleted_at:
         abort(404)
 
-    return redirect(url_for(".ranking", tournament_week_id=week.id))
+    return redirect(url_for(".weekly_ranking", tournament_week_id=week.id))
