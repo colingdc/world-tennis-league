@@ -6,6 +6,7 @@ from ..forms import SettingsForm
 from ..lib import update_notification_preferences
 from ...decorators import login_required
 from ...notifications import display_info_message
+from ...wordings import wordings
 
 
 @bp.route("/settings", methods=["GET", "POST"])
@@ -19,11 +20,11 @@ def settings():
     if form.validate_on_submit():
         update_notification_preferences(current_user, form.notifications_activated.data)
 
-        display_info_message(f"Tes préférences de notifications ont été mises à jour")
+        display_info_message(wordings["notification_preferences_updated"])
 
     return render_template(
         "main/settings.html",
-        title="Paramètres",
+        title=wordings["settings"],
         form=form,
         user=current_user
     )

@@ -4,6 +4,7 @@ from .. import bp
 from ..lib import generate_chart
 from ...decorators import login_required
 from ...models import User
+from ...wordings import wordings
 
 
 @bp.route("/<user_id>")
@@ -13,7 +14,7 @@ def view_user(user_id):
 
     rankings = generate_chart(user)
 
-    series = [{"name": "Classement",
+    series = [{"name": wordings["ranking"],
                "data": [{"x": int(t.started_at.strftime("%s")) * 1000,
                          "y": t.year_to_date_ranking or "null",
                          "tournament_name": t.name}
@@ -21,7 +22,7 @@ def view_user(user_id):
 
     return render_template(
         "main/view_user.html",
-        title=f"Profil de {user.username}",
+        title=wordings["profile_of"].format(user.username),
         series=series,
         user=user
     )

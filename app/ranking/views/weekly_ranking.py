@@ -4,6 +4,7 @@ from .. import bp
 from ..lib import get_weekly_ranking
 from ...decorators import login_required
 from ...models import TournamentWeek
+from ...wordings import wordings
 
 
 @bp.route("/<tournament_week_id>")
@@ -18,7 +19,7 @@ def weekly_ranking(tournament_week_id):
 
     return render_template(
         "ranking/ranking.html",
-        title="Classement",
+        title=wordings["ranking"],
         ranking=ranking,
         week=week
     )

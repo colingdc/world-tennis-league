@@ -3,6 +3,10 @@ wordings = {
     "invalid_request": "Requête invalide",
 
     "faq": "FAQ",
+    "new_message_from": "Nouveau message de la part de {}",
+    "message_sent": "Ton message a bien été envoyé.",
+    "contact": "Contact",
+    "anonymous": "Anonyme",
 
     "account_validated": "Ton compte est à présent validé.",
     "password_updated": "Ton mot de passe a été mis à jour.",
@@ -21,6 +25,11 @@ wordings = {
     "email_address_confirmation": "Confirmation de ton adresse mail",
     "confirmation_email_sent": "Un email de confirmation t'a été envoyé.",
     "new_user_signup": "Nouvel inscrit",
+    "users": "Utilisateurs",
+
+    "settings": "Paramètres",
+    "notification_preferences_updated": "Tes préférences de notifications ont été mises à jour",
+    "email_notifications_activated": "Notifications par mail activées",
 
     "choose_a_category": "Choisir une catégorie",
     "choose_a_player": "Choisir un joueur",
@@ -55,4 +64,13 @@ wordings = {
     "withdrawal_confirmed": "Tu es bien désinscrit du tournoi {}",
     "forecast_confirmed": "Ton pronostic a bien été pris en compte.",
     "invalid_forecast": "Ce pronostic est invalide.",
+
+    "ranking": "Classement",
+    "rankings": "Classements",
+    "monthly_rankings": "Classements par mois",
+    "choose_a_week": "Choisir une semaine",
+    "choose_a_month": "Choisir un mois",
+    "week": "Semaine",
+    "month": "Mois",
+    "profile_of": "Profil de {}"
 }
