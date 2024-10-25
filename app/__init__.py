@@ -90,15 +90,7 @@ def create_app(config_name):
     app.jinja_env.filters["dt_diff"] = custom_datetime_difference_filter
 
     register_blueprints(app)
-
-    from .errors import unauthorized, forbidden, page_not_found, bad_request, internal_server_error, unhandled_exception
-
-    app.register_error_handler(401, unauthorized)
-    app.register_error_handler(403, forbidden)
-    app.register_error_handler(404, page_not_found)
-    app.register_error_handler(400, bad_request)
-    # app.register_error_handler(500, internal_server_error)
-    # app.register_error_handler(Exception, unhandled_exception)
+    register_error_handlers(app)
 
     return app
 
@@ -124,3 +116,14 @@ def register_blueprints(app):
 
     from .player import bp as player_blueprint
     app.register_blueprint(player_blueprint, url_prefix="/wtl/player")
+
+
+def register_error_handlers(app):
+    from .errors import unauthorized, forbidden, page_not_found, bad_request, internal_server_error, unhandled_exception
+
+    app.register_error_handler(401, unauthorized)
+    app.register_error_handler(403, forbidden)
+    app.register_error_handler(404, page_not_found)
+    app.register_error_handler(400, bad_request)
+    # app.register_error_handler(500, internal_server_error)
+    # app.register_error_handler(Exception, unhandled_exception)
