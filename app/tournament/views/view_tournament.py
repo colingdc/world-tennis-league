@@ -3,14 +3,14 @@ from flask_login import current_user
 
 from .. import bp
 from ..forms import MakeForecastForm
+from ..lib import fetch_tournament
 from ...decorators import login_required
-from ...models import Tournament
 
 
 @bp.route("/<tournament_id>/view")
 @login_required
 def view_tournament(tournament_id):
-    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament = fetch_tournament(tournament_id)
 
     if current_user.can_make_forecast(tournament):
         form = MakeForecastForm()

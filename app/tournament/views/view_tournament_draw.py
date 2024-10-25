@@ -1,14 +1,14 @@
 from flask import abort, render_template
 
 from .. import bp
+from ..lib import fetch_tournament
 from ...decorators import login_required
-from ...models import Tournament
 
 
 @bp.route("/<tournament_id>/draw")
 @login_required
 def view_tournament_draw(tournament_id):
-    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament = fetch_tournament(tournament_id)
 
     if tournament.deleted_at:
         abort(404)

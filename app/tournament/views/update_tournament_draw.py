@@ -4,15 +4,15 @@ from flask import redirect, render_template, url_for, abort
 
 from .. import bp
 from ..forms import FillTournamentDrawForm
+from ..lib import fetch_tournament
 from ... import db
 from ...decorators import manager_required
-from ...models import Tournament
 
 
 @bp.route("/<tournament_id>/draw/update", methods=["GET", "POST"])
 @manager_required
 def update_tournament_draw(tournament_id):
-    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament = fetch_tournament(tournament_id)
 
     if tournament.deleted_at:
         abort(404)

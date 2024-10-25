@@ -3,17 +3,18 @@ from datetime import datetime
 from flask import redirect, url_for
 
 from .. import bp
+from ..lib import fetch_tournament
 from ... import db
 from ...decorators import manager_required
 from ...email import send_email
-from ...models import Tournament, User
+from ...models import User
 from ...notifications import display_info_message
 
 
 @bp.route("/<tournament_id>/send_notification_email")
 @manager_required
 def send_notification_email(tournament_id):
-    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament = fetch_tournament(tournament_id)
 
     if all(t.notification_sent_at is not None for t in tournament.week.tournaments):
         display_info_message("La notification par mail a déjà été envoyée pour tous les tournois de la semaine")

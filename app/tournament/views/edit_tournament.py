@@ -4,17 +4,16 @@ from flask import redirect, render_template, request, url_for
 
 from .. import bp
 from ..forms import EditTournamentForm
-from ..lib import insert_tournament_week, fetch_tournament_week_by_start_date
+from ..lib import insert_tournament_week, fetch_tournament_week_by_start_date, fetch_tournament
 from ... import db
 from ...decorators import manager_required
-from ...models import Tournament
 from ...notifications import display_info_message
 
 
 @bp.route("/<tournament_id>/edit", methods=["GET", "POST"])
 @manager_required
 def edit_tournament(tournament_id):
-    tournament = Tournament.query.get_or_404(tournament_id)
+    tournament = fetch_tournament(tournament_id)
     form = EditTournamentForm(request.form)
 
     if request.method == "GET":
