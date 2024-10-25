@@ -12,9 +12,6 @@ from ...wordings import wordings
 def weekly_ranking(tournament_week_id):
     week = TournamentWeek.query.get_or_404(tournament_week_id)
 
-    if week.deleted_at:
-        abort(404)
-
     ranking = get_weekly_ranking(week)
 
     return render_template(

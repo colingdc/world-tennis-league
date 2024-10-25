@@ -16,9 +16,6 @@ from ...wordings import wordings
 def update_tournament_draw(tournament_id):
     tournament = fetch_tournament(tournament_id)
 
-    if tournament.deleted_at:
-        abort(404)
-
     form = FillTournamentDrawForm()
 
     if form.validate_on_submit():
