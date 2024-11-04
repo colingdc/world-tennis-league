@@ -25,7 +25,6 @@ wordings = {
     "email_address_confirmation": "Confirmation de ton adresse mail",
     "confirmation_email_sent": "Un email de confirmation t'a été envoyé.",
     "new_user_signup": "Nouvel inscrit",
-    "users": "Utilisateurs",
 
     "settings": "Paramètres",
     "notification_preferences_updated": "Tes préférences de notifications ont été mises à jour",
