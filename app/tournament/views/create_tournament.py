@@ -9,7 +9,6 @@ from ..lib import insert_tournament_week, fetch_tournament_week_by_start_date, i
 from ...constants import tournament_categories
 from ...decorators import manager_required
 from ...notifications import display_info_message
-from ...wordings import wordings
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -35,7 +34,7 @@ def create_tournament():
             category_name=form.category.data,
         )
 
-        display_info_message(wordings["tournament_created"].format(form.name.data))
+        display_info_message(_("tournament_created", tournament_name=form.name.data))
         return redirect(url_for(".create_tournament"))
     else:
         return render_template(

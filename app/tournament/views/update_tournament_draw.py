@@ -1,6 +1,7 @@
 import json
 
-from flask import redirect, render_template, url_for, abort
+from flask import redirect, render_template, url_for
+from flask_babel import _
 
 from .. import bp
 from ..forms import FillTournamentDrawForm
@@ -8,7 +9,6 @@ from ..lib import fetch_tournament
 from ... import db
 from ...decorators import manager_required
 from ...navigation import go_to_tournament_page
-from ...wordings import wordings
 
 
 @bp.route("/<tournament_id>/draw/update", methods=["GET", "POST"])
@@ -59,7 +59,7 @@ def update_tournament_draw(tournament_id):
     else:
         return render_template(
             "tournament/update_tournament_draw.html",
-            title=wordings["tournament_draw"].format(tournament.name),
+            title=_("tournament_draw", tournament_name=tournament.name),
             tournament=tournament,
             form=form
         )

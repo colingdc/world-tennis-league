@@ -8,7 +8,6 @@ from ...decorators import login_required
 from ...models import Participation
 from ...navigation import go_to_tournament_page
 from ...notifications import display_warning_message, display_success_message
-from ...wordings import wordings
 
 
 @bp.route("/<tournament_id>/register")
@@ -28,5 +27,5 @@ def register(tournament_id):
     db.session.add(participant)
     db.session.commit()
 
-    display_success_message(wordings["registration_confirmed"].format(tournament.name))
+    display_success_message(_("registration_confirmed", tournament_name=tournament.name))
     return go_to_tournament_page(tournament_id)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-04 13:27+0100\n"
+"POT-Creation-Date: 2024-11-04 13:39+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -116,15 +116,35 @@ msgstr "Ce champ est obligatoire"
 msgid "player_already_exists"
 msgstr "Ce joueur existe déjà"
 
-#: app/public/views/contact.py:22
+#: app/player/views/create_player.py:19
+msgid "player_created"
+msgstr "Le joueur %(player_name)s a été créé"
+
+#: app/player/views/delete_player.py:18
+msgid "player_in_use"
+msgstr "Ce joueur ne peut pas être supprimé car il apparait dans le tableau d'au moins un tournoi (%(tournament_name)s)"
+
+#: app/player/views/delete_player.py:24
+msgid "player_deleted"
+msgstr "Le joueur %(player_name)s a été supprimé"
+
+#: app/player/views/edit_player.py:24
+msgid "player_updated"
+msgstr "Le joueur %(player_name)s a été mis à jour"
+
+#: app/public/views/contact.py:21
 msgid "anonymous"
 msgstr "Anonyme"
 
-#: app/public/views/contact.py:33
+#: app/public/views/contact.py:25
+msgid "new_message_from"
+msgstr "Nouveau message de la part de %(sender)s"
+
+#: app/public/views/contact.py:32
 msgid "message_sent"
 msgstr "Ton message a bien été envoyé."
 
-#: app/public/views/contact.py:38
+#: app/public/views/contact.py:37
 msgid "contact"
 msgstr "Contact"
 
@@ -168,19 +188,46 @@ msgstr "Les inscriptions au tournoi sont closes"
 msgid "tournament_closed"
 msgstr "Le tournoi a bien été clos"
 
-#: app/tournament/views/create_tournament.py:19
+#: app/tournament/views/create_tournament.py:18
 msgid "choose_a_category"
 msgstr "Choisir une catégorie"
 
-#: app/tournament/views/create_tournament.py:43
+#: app/tournament/views/create_tournament.py:37
+msgid "tournament_created"
+msgstr "Le tournoi %(tournament_name)s a été créé"
+
+#: app/tournament/views/create_tournament.py:42
 msgid "create_a_tournament"
 msgstr "Créer un tournoi"
 
-#: app/tournament/views/create_tournament_draw.py:38
-#: app/tournament/views/edit_tournament_draw.py:35
+#: app/tournament/views/create_tournament_draw.py:37
+#: app/tournament/views/edit_tournament_draw.py:34
 #: app/tournament/views/view_tournament.py:21
 msgid "choose_a_player"
 msgstr "Choisir un joueur"
+
+#: app/tournament/views/create_tournament_draw.py:91
+msgid "tournament_draw_created"
+msgstr "Le tableau du tournoi %(tournament_name)s a été créé"
+
+#: app/tournament/views/create_tournament_draw.py:96
+#: app/tournament/views/edit_tournament_draw.py:113
+#: app/tournament/views/update_tournament_draw.py:62
+#: app/tournament/views/view_tournament_draw.py:16
+msgid "tournament_draw"
+msgstr "%(tournament_name)s – Tableau"
+
+#: app/tournament/views/edit_tournament.py:39
+msgid "tournament_updated"
+msgstr "Le tournoi %(tournament_name)s a été mis à jour"
+
+#: app/tournament/views/edit_tournament_draw.py:101
+msgid "tournament_draw_has_been_modified"
+msgstr "Tableau du tournoi %(tournament_name)s modifié"
+
+#: app/tournament/views/edit_tournament_draw.py:108
+msgid "tournament_draw_updated"
+msgstr "Le tableau du tournoi %(tournament_name)s a été modifié"
 
 #: app/tournament/views/make_forecast.py:18
 msgid "not_allowed_to_make_a_forecast"
@@ -203,12 +250,16 @@ msgstr "Ce pronostic est invalide."
 msgid "registrations_opened"
 msgstr "Les inscriptions au tournoi sont ouvertes"
 
-#: app/tournament/views/register.py:20
+#: app/tournament/views/register.py:19
 msgid "not_allowed_to_register"
 msgstr ""
 "Tu n'es pas autorisé à t'inscrire à ce tournoi, soit car tu es déjà "
 "inscrit à un autre tournoi cette semaine, soit car les inscriptions sont "
 "fermées."
+
+#: app/tournament/views/register.py:30
+msgid "registration_confirmed"
+msgstr "Tu es bien inscrit au tournoi %(tournament_name)s"
 
 #: app/tournament/views/send_notification_email.py:21
 msgid "participants_already_notified"
@@ -230,13 +281,17 @@ msgstr ""
 msgid "tournaments"
 msgstr "Tournois"
 
-#: app/tournament/views/withdraw.py:18
+#: app/tournament/views/withdraw.py:17
 msgid "not_registered_yet"
 msgstr "Tu n'es pas inscrit à ce tournoi"
 
-#: app/tournament/views/withdraw.py:24
+#: app/tournament/views/withdraw.py:23
 msgid "not_allowed_to_withdraw"
 msgstr "Tu ne peux plus te retirer de ce tournoi"
+
+#: app/tournament/views/withdraw.py:26
+msgid "withdrawal_confirmed"
+msgstr "Tu es bien désinscrit du tournoi %(tournament_name)s"
 
 #: app/user/forms.py:7
 msgid "email_notifications_activated"

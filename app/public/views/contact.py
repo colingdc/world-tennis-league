@@ -6,7 +6,6 @@ from .. import bp
 from ..forms import ContactForm
 from ...email import send_email
 from ...notifications import display_success_message
-from ...wordings import wordings
 
 
 @bp.route("/contact", methods=['GET', 'POST'])
@@ -23,7 +22,7 @@ def contact():
 
         send_email(
             to=current_app.config["ADMIN_WTL"],
-            subject=wordings["new_message_from"].format(sender),
+            subject=_("new_message_from", sender=sender),
             template="email/contact",
             message=message,
             email=form.email.data,

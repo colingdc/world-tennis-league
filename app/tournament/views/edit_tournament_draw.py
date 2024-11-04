@@ -10,7 +10,6 @@ from ...email import send_email
 from ...models import Player
 from ...navigation import go_to_tournament_page
 from ...notifications import display_info_message
-from ...wordings import wordings
 
 
 @bp.route("/<tournament_id>/draw/edit", methods=["GET", "POST"])
@@ -26,7 +25,7 @@ def edit_tournament_draw(tournament_id):
     if not request.form:
         form = CreateTournamentDrawForm()
 
-        for _ in matches:
+        for __ in matches:
             form.player.append_entry()
 
     else:
@@ -99,19 +98,19 @@ def edit_tournament_draw(tournament_id):
 
                     send_email(
                         participation.user.email,
-                        wordings["tournament_draw_has_been_modified"].format(tournament.name),
+                        _("tournament_draw_has_been_modified", tournament_name=tournament.name),
                         "email/draw_updated",
                         user=participation.user,
                         tournament=tournament,
                         forecast=forecast
                     )
 
-        display_info_message(wordings["tournament_draw_updated"].format(tournament.name))
+        display_info_message(_("tournament_draw_updated", tournament_name=tournament.name))
         return go_to_tournament_page(tournament_id)
     else:
         return render_template(
             "tournament/edit_tournament_draw.html",
-            title=wordings["tournament_draw"].format(tournament.name),
+            title=_("tournament_draw", tournament_name=tournament.name),
             form=form,
             tournament=tournament
         )

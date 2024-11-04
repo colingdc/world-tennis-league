@@ -6,7 +6,6 @@ from ..lib import fetch_tournament
 from ...decorators import login_required
 from ...navigation import go_to_tournament_page
 from ...notifications import display_warning_message, display_success_message
-from ...wordings import wordings
 
 
 @bp.route("/<tournament_id>/withdraw")
@@ -24,6 +23,6 @@ def withdraw(tournament_id):
         display_warning_message(_("not_allowed_to_withdraw"))
     else:
         participation.delete()
-        display_success_message(wordings["withdrawal_confirmed"])
+        display_success_message(_("withdrawal_confirmed", tournament_name=tournament.name))
 
     return go_to_tournament_page(tournament_id)

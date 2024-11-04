@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from flask import redirect, render_template, request, url_for
+from flask_babel import _
 
 from .. import bp
 from ..forms import EditTournamentForm
@@ -8,7 +9,6 @@ from ..lib import insert_tournament_week, fetch_tournament_week_by_start_date, f
 from ... import db
 from ...decorators import manager_required
 from ...notifications import display_info_message
-from ...wordings import wordings
 
 
 @bp.route("/<tournament_id>/edit", methods=["GET", "POST"])
@@ -36,7 +36,7 @@ def edit_tournament(tournament_id):
         db.session.add(tournament)
         db.session.commit()
 
-        display_info_message(wordings["tournament_updated"].format(form.name.data))
+        display_info_message(_("tournament_updated", tournament_name=form.name.data))
         return redirect(url_for(".edit_tournament", tournament_id=tournament_id))
     else:
         return render_template(
