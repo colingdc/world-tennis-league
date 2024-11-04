@@ -1,11 +1,11 @@
-from flask_babel import _
+from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 from wtforms import SelectField
 
 
 class RankingForm(FlaskForm):
-    week_name = SelectField(_("week"), coerce=int)
+    week_name = SelectField(_l("week"), coerce=int)
 
 
 class MonthlyRankingForm(FlaskForm):
-    month_name = SelectField(_("month"))
+    month_name = SelectField(_l("month"))

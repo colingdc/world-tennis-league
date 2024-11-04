@@ -1,4 +1,4 @@
-from flask_babel import _
+from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 from wtforms import DateTimeField, FieldList, FormField, IntegerField, SelectField, StringField
 from wtforms.validators import InputRequired, Optional
@@ -8,27 +8,27 @@ class CreateTournamentForm(FlaskForm):
     name = StringField(
         "Nom",
         validators=[
-            InputRequired(message=_("mandatory_field"))
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     category = SelectField(
         "Catégorie",
         validators=[
-            InputRequired(message=_("mandatory_field"))
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     start_date = DateTimeField(
         "Date de début",
         format="%d/%m/%Y %H:%M",
         validators=[
-            InputRequired(message=_("mandatory_field"))
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     week = DateTimeField(
         "Semaine",
         format="%d/%m/%Y",
         validators=[
-            InputRequired(message=_("mandatory_field"))
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
 
@@ -37,21 +37,21 @@ class EditTournamentForm(FlaskForm):
     name = StringField(
         "Nom",
         validators=[
-            InputRequired(message=_("mandatory_field"))
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     start_date = DateTimeField(
         "Date de début",
         format="%d/%m/%Y %H:%M",
         validators=[
-            InputRequired(message=_("mandatory_field"))
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     week = DateTimeField(
         "Semaine",
         format="%d/%m/%Y",
         validators=[
-            InputRequired(message=_("mandatory_field"))
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
 
