@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-04 13:39+0100\n"
+"POT-Creation-Date: 2024-11-04 13:58+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -17,6 +17,42 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
+
+#: app/auth/forms.py:9 app/auth/forms.py:76 app/auth/forms.py:87
+msgid "email"
+msgstr "Email"
+
+#: app/auth/forms.py:17 app/auth/forms.py:40
+msgid "password"
+msgstr "Mot de passe"
+
+#: app/auth/forms.py:24 app/auth/forms.py:34
+msgid "username"
+msgstr "Pseudo"
+
+#: app/auth/forms.py:46
+msgid "remember_me"
+msgstr "Se souvenir de moi"
+
+#: app/auth/forms.py:53
+msgid "current_password"
+msgstr "Mot de passe actuel"
+
+#: app/auth/forms.py:59 app/auth/forms.py:95
+msgid "new_password"
+msgstr "Nouveau mot de passe"
+
+#: app/auth/forms.py:63 app/auth/forms.py:99
+msgid "passwords_are_different"
+msgstr "Les mots de passe renseignés sont différents."
+
+#: app/auth/forms.py:67
+msgid "confirm_new_password"
+msgstr "Confirmer le nouveau mot de passe"
+
+#: app/auth/forms.py:103
+msgid "confirm_password"
+msgstr "Confirmer le mot de passe"
 
 #: app/auth/views/change_password.py:24 app/auth/views/reset_password.py:28
 msgid "password_updated"
@@ -122,7 +158,9 @@ msgstr "Le joueur %(player_name)s a été créé"
 
 #: app/player/views/delete_player.py:18
 msgid "player_in_use"
-msgstr "Ce joueur ne peut pas être supprimé car il apparait dans le tableau d'au moins un tournoi (%(tournament_name)s)"
+msgstr ""
+"Ce joueur ne peut pas être supprimé car il apparait dans le tableau d'au "
+"moins un tournoi (%(tournament_name)s)"
 
 #: app/player/views/delete_player.py:24
 msgid "player_deleted"
