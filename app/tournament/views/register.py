@@ -1,3 +1,4 @@
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -16,7 +17,7 @@ def register(tournament_id):
     tournament = fetch_tournament(tournament_id)
 
     if not current_user.can_register_to_tournament(tournament):
-        display_warning_message(wordings["not_allowed_to_register"])
+        display_warning_message(_("not_allowed_to_register"))
         return go_to_tournament_page(tournament_id)
 
     participant = Participation(

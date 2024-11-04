@@ -1,4 +1,5 @@
 from flask import render_template, request
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -6,7 +7,6 @@ from ..forms import SettingsForm
 from ..lib import update_notification_preferences
 from ...decorators import login_required
 from ...notifications import display_info_message
-from ...wordings import wordings
 
 
 @bp.route("/settings", methods=["GET", "POST"])
@@ -20,11 +20,11 @@ def settings():
     if form.validate_on_submit():
         update_notification_preferences(current_user, form.notifications_activated.data)
 
-        display_info_message(wordings["notification_preferences_updated"])
+        display_info_message(_("notification_preferences_updated"))
 
     return render_template(
         "main/settings.html",
-        title=wordings["settings"],
+        title=_("settings"),
         form=form,
         user=current_user
     )

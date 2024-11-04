@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-04 12:43+0100\n"
-"PO-Revision-Date: 2024-11-04 12:43+0100\n"
+"POT-Creation-Date: 2024-11-04 13:00+0100\n"
+"PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -18,11 +18,227 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/templates/main/view_users.html:20
+#: app/auth/views/change_password.py:24 app/auth/views/reset_password.py:28
+msgid "password_updated"
+msgstr "Ton mot de passe a été mis à jour."
+
+#: app/auth/views/change_password.py:27
+msgid "invalid_password"
+msgstr "Mot de passe incorrect"
+
+#: app/auth/views/change_password.py:31
+msgid "password_change"
+msgstr "Changement de mot de passe"
+
+#: app/auth/views/confirm.py:17
+msgid "account_validated"
+msgstr "Ton compte est à présent validé."
+
+#: app/auth/views/confirm.py:20
+msgid "invalid_confirmation_link"
+msgstr "Ce lien de confirmation est invalide ou a expiré."
+
+#: app/auth/views/login.py:27 app/auth/views/login.py:34
+msgid "invalid_credentials"
+msgstr "Identifiants incorrects"
+
+#: app/auth/views/login.py:44
+msgid "login_confirmed"
+msgstr "Tu es à présent connecté."
+
+#: app/auth/views/login.py:53
+msgid "login"
+msgstr "Connexion"
+
+#: app/auth/views/resend_confirmation.py:18 app/auth/views/signup.py:36
+msgid "email_address_confirmation"
+msgstr "Confirmation de ton adresse mail"
+
+#: app/auth/views/resend_confirmation.py:24 app/auth/views/signup.py:49
+msgid "confirmation_email_sent"
+msgstr "Un email de confirmation t'a été envoyé."
+
+#: app/auth/views/reset_password.py:23 app/auth/views/reset_password.py:34
+msgid "invalid_reset_password_link"
+msgstr "L'adresse mail entrée ne correspond pas au lien de réinitialisation envoyé."
+
+#: app/auth/views/reset_password.py:44
+#: app/auth/views/reset_password_request.py:28
+#: app/auth/views/reset_password_request.py:41
+msgid "password_reset"
+msgstr "Réinitialisation du mot de passe"
+
+#: app/auth/views/reset_password_request.py:35
+msgid "password_reset_email_sent"
+msgstr "Un email contenant des instructions pour réinitialiser ton mot de passe t'a été envoyé. Si tu n'as pas reçu d'email, vérifie dans ton dossier de spams et assure toi d'avoir rentré la bonne adresse mail."
+
+#: app/auth/views/signup.py:22
+msgid "username_already_used"
+msgstr "Ce nom d'utilisateur est déjà pris"
+
+#: app/auth/views/signup.py:25
+msgid "email_already_used"
+msgstr "Cet email existe déjà"
+
+#: app/auth/views/signup.py:44
+msgid "new_user_signup"
+msgstr "Nouvel inscrit"
+
+#: app/auth/views/signup.py:64
+msgid "signup"
+msgstr "Inscription"
+
+#: app/main/views/rules.py:11
+msgid "faq"
+msgstr "FAQ"
+
+#: app/player/forms.py:10 app/player/forms.py:36
+msgid "first_name"
+msgstr "Prénom"
+
+#: app/player/forms.py:16 app/player/forms.py:42
+msgid "last_name"
+msgstr "Nom"
+
+#: app/player/forms.py:18 app/player/forms.py:44 app/tournament/forms.py:12
+#: app/tournament/forms.py:18 app/tournament/forms.py:25
+#: app/tournament/forms.py:32 app/tournament/forms.py:41
+#: app/tournament/forms.py:48 app/tournament/forms.py:55
+msgid "mandatory_field"
+msgstr "Ce champ est obligatoire"
+
+#: app/player/forms.py:29 app/player/forms.py:62
+msgid "player_already_exists"
+msgstr "Ce joueur existe déjà"
+
+#: app/public/views/contact.py:21
+msgid "anonymous"
+msgstr "Anonyme"
+
+#: app/public/views/contact.py:32
+msgid "message_sent"
+msgstr "Ton message a bien été envoyé."
+
+#: app/public/views/contact.py:37
+msgid "contact"
+msgstr "Contact"
+
+#: app/ranking/forms.py:8
+msgid "week"
+msgstr "Semaine"
+
+#: app/ranking/forms.py:12
+msgid "month"
+msgstr "Mois"
+
+#: app/ranking/views/index.py:20
+msgid "choose_a_week"
+msgstr "Choisir une semaine"
+
+#: app/ranking/views/index.py:27
+msgid "rankings"
+msgstr "Classements"
+
+#: app/ranking/views/monthly_ranking.py:25
+msgid "choose_a_month"
+msgstr "Choisir un mois"
+
+#: app/ranking/views/monthly_ranking.py:37
+msgid "monthly_rankings"
+msgstr "Classements par mois"
+
+#: app/ranking/views/weekly_ranking.py:19 app/user/views/view_user.py:17
+msgid "ranking"
+msgstr "Classement"
+
+#: app/templates/main/view_users.html:19
 msgid "users_list"
 msgstr "Liste des utilisateurs"
 
-#: app/user/views/view_users.py:16
+#: app/tournament/views/close_registrations.py:16
+msgid "registrations_closed"
+msgstr "Les inscriptions au tournoi sont closes"
+
+#: app/tournament/views/close_tournament.py:16
+msgid "tournament_closed"
+msgstr "Le tournoi a bien été clos"
+
+#: app/tournament/views/create_tournament.py:18
+msgid "choose_a_category"
+msgstr "Choisir une catégorie"
+
+#: app/tournament/views/create_tournament.py:42
+msgid "create_a_tournament"
+msgstr "Créer un tournoi"
+
+#: app/tournament/views/create_tournament_draw.py:37
+#: app/tournament/views/edit_tournament_draw.py:34
+#: app/tournament/views/view_tournament.py:21
+msgid "choose_a_player"
+msgstr "Choisir un joueur"
+
+#: app/tournament/views/make_forecast.py:18
+msgid "not_allowed_to_make_a_forecast"
+msgstr "Tu n'es pas autorisé à faire un pronostic pour ce tournoi"
+
+#: app/tournament/views/make_forecast.py:22
+msgid "invalid_request"
+msgstr "Requête invalide"
+
+#: app/tournament/views/make_forecast.py:29
+#: app/tournament/views/make_forecast.py:39
+msgid "forecast_confirmed"
+msgstr "Ton pronostic a bien été pris en compte."
+
+#: app/tournament/views/make_forecast.py:41
+msgid "invalid_forecast"
+msgstr "Ce pronostic est invalide."
+
+#: app/tournament/views/open_registrations.py:16
+msgid "registrations_opened"
+msgstr "Les inscriptions au tournoi sont ouvertes"
+
+#: app/tournament/views/register.py:19
+msgid "not_allowed_to_register"
+msgstr "Tu n'es pas autorisé à t'inscrire à ce tournoi, soit car tu es déjà inscrit à un autre tournoi cette semaine, soit car les inscriptions sont fermées."
+
+#: app/tournament/views/send_notification_email.py:20
+msgid "participants_already_notified"
+msgstr "La notification par mail a déjà été envoyée pour tous les tournois de la semaine"
+
+#: app/tournament/views/send_notification_email.py:33
+msgid "registrations_opened_this_week"
+msgstr "Les tournois de la semaine sont ouverts aux inscriptions !"
+
+#: app/tournament/views/send_notification_email.py:39
+msgid "participants_notified"
+msgstr "Les participants ont été notifiés par mail de l'ouverture des tournois de la semaine"
+
+#: app/tournament/views/view_tournaments.py:16
+msgid "tournaments"
+msgstr "Tournois"
+
+#: app/tournament/views/withdraw.py:17
+msgid "not_registered_yet"
+msgstr "Tu n'es pas inscrit à ce tournoi"
+
+#: app/tournament/views/withdraw.py:23
+msgid "not_allowed_to_withdraw"
+msgstr "Tu ne peux plus te retirer de ce tournoi"
+
+#: app/user/forms.py:8
+msgid "email_notifications_activated"
+msgstr "Notifications par mail activées"
+
+#: app/user/views/settings.py:23
+msgid "notification_preferences_updated"
+msgstr "Tes préférences de notifications ont été mises à jour"
+
+#: app/user/views/settings.py:27
+msgid "settings"
+msgstr "Paramètres"
+
+#: app/user/views/view_users.py:16 app/user/views/view_users_raw.py:17
 msgid "users"
 msgstr "Utilisateurs"
 

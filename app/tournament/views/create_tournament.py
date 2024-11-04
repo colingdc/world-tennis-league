@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from flask import redirect, render_template, request, url_for
+from flask_babel import _
 
 from .. import bp
 from ..forms import CreateTournamentForm
@@ -15,7 +16,7 @@ from ...wordings import wordings
 @manager_required
 def create_tournament():
     form = CreateTournamentForm(request.form)
-    form.category.choices = [("", wordings["choose_a_category"])]
+    form.category.choices = [("", _("choose_a_category"))]
     form.category.choices += [(
         i, c["full_name"])
         for i, c in tournament_categories.items()]
@@ -39,6 +40,6 @@ def create_tournament():
     else:
         return render_template(
             "tournament/create_tournament.html",
-            title=wordings["create_a_tournament"],
+            title=_("create_a_tournament"),
             form=form
         )

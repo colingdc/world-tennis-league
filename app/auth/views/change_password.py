@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -7,7 +8,6 @@ from ... import db
 from ...decorators import login_required
 from ...navigation import go_to_homepage
 from ...notifications import display_success_message
-from ...wordings import wordings
 
 
 @bp.route("/change-password", methods=["GET", "POST"])
@@ -21,14 +21,14 @@ def change_password():
 
             db.session.add(current_user)
 
-            display_success_message(wordings["password_updated"])
+            display_success_message(_("password_updated"))
             return go_to_homepage()
         else:
-            form.old_password.errors.append(wordings["invalid_password"])
+            form.old_password.errors.append(_("invalid_password"))
 
     return render_template(
         "auth/change_password.html",
-        title=wordings["password_change"],
+        title=_("password_change"),
         form=form,
         user=current_user
     )

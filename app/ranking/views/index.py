@@ -1,10 +1,10 @@
 from flask import redirect, render_template, url_for
+from flask_babel import _
 
 from .. import bp
 from ..forms import RankingForm
 from ...decorators import login_required
 from ...models import Tournament, TournamentWeek, TournamentStatus
-from ...wordings import wordings
 
 
 @bp.route("/", methods=["GET", "POST"])
@@ -17,13 +17,13 @@ def index():
              .filter(Tournament.status == TournamentStatus.FINISHED)
              .order_by(TournamentWeek.start_date.desc()))
 
-    form.week_name.choices = [(-1, wordings["choose_a_week"])] + [(w.id, w.get_name("ranking")) for w in weeks]
+    form.week_name.choices = [(-1, _("choose_a_week"))] + [(w.id, w.get_name("ranking")) for w in weeks]
 
     if form.validate_on_submit() and form.week_name.data != -1:
         return redirect(url_for(".weekly_ranking", tournament_week_id=form.week_name.data))
 
     return render_template(
         "ranking/index.html",
-        title=wordings["rankings"],
+        title=_("rankings"),
         form=form
     )

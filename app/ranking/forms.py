@@ -1,12 +1,11 @@
+from flask_babel import _
 from flask_wtf import FlaskForm
 from wtforms import SelectField
 
-from ..wordings import wordings
-
 
 class RankingForm(FlaskForm):
-    week_name = SelectField(wordings["week"], coerce=int)
+    week_name = SelectField(_("week"), coerce=int)
 
 
 class MonthlyRankingForm(FlaskForm):
-    month_name = SelectField(wordings["month"])
+    month_name = SelectField(_("month"))

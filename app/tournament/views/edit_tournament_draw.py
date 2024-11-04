@@ -1,4 +1,5 @@
 from flask import render_template, request
+from flask_babel import _
 
 from .. import bp
 from ..forms import CreateTournamentDrawForm
@@ -31,7 +32,7 @@ def edit_tournament_draw(tournament_id):
     else:
         form = CreateTournamentDrawForm(request.form)
 
-    player_names = [(-1, wordings["choose_a_player"])] + Player.get_all()
+    player_names = [(-1, _("choose_a_player"))] + Player.get_all()
 
     for p in form.player:
         p.player1_name.choices = player_names

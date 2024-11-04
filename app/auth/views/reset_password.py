@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 from flask_login import current_user, login_user
 
 from .. import bp
@@ -6,7 +7,6 @@ from ..forms import PasswordResetForm
 from ..lib import get_user_by_email
 from ...navigation import go_to_homepage
 from ...notifications import display_success_message, display_error_message
-from ...wordings import wordings
 
 
 @bp.route("/reset/<token>", methods=["GET", "POST"])
@@ -20,18 +20,18 @@ def reset_password(token):
         user = get_user_by_email(form.email.data)
 
         if user is None:
-            display_error_message(wordings["invalid_reset_password_link"])
+            display_error_message(_("invalid_reset_password_link"))
 
             return render_password_reset_page(form, token)
 
         if user.reset_password(token, form.password.data):
-            display_success_message(wordings["password_updated"])
+            display_success_message(_("password_updated"))
 
             login_user(user)
 
             return go_to_homepage()
         else:
-            display_error_message(wordings["invalid_reset_password_link"])
+            display_error_message(_("invalid_reset_password_link"))
 
             return render_password_reset_page(form, token)
 
@@ -41,7 +41,7 @@ def reset_password(token):
 def render_password_reset_page(form, token):
     return render_template(
         "auth/reset_password.html",
-        title=wordings["password_reset"],
+        title=_("password_reset"),
         form=form,
         token=token
     )

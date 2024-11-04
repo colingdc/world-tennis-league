@@ -1,4 +1,5 @@
 from flask import current_app, redirect, render_template, url_for
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -18,7 +19,7 @@ def contact():
         if current_user and hasattr(current_user, "username"):
             sender = current_user.username
         else:
-            sender = wordings["anonymous"]
+            sender = _("anonymous")
 
         send_email(
             to=current_app.config["ADMIN_WTL"],
@@ -29,11 +30,11 @@ def contact():
             user=current_user
         )
 
-        display_success_message(wordings["message_sent"])
+        display_success_message(_("message_sent"))
         return redirect(url_for(".contact"))
 
     return render_template(
         "public/contact.html",
-        title=wordings["contact"],
+        title=_("contact"),
         form=form
     )

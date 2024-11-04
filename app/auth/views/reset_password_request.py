@@ -1,4 +1,5 @@
 from flask import render_template, request
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -7,7 +8,6 @@ from ..lib import get_user_by_email
 from ...email import send_email
 from ...navigation import go_to_homepage, go_to_login_page
 from ...notifications import display_info_message
-from ...wordings import wordings
 
 
 @bp.route("/reset", methods=["GET", "POST"])
@@ -25,19 +25,19 @@ def reset_password_request():
 
             send_email(
                 user.email,
-                wordings["password_reset"],
+                _("password_reset"),
                 "email/reset_password",
                 user=user,
                 token=token,
                 next=request.args.get("next")
             )
 
-        display_info_message(wordings["password_reset_email_sent"])
+        display_info_message(_("password_reset_email_sent"))
 
         return go_to_login_page()
 
     return render_template(
         "auth/reset_password_request.html",
-        title=wordings["password_reset"],
+        title=_("password_reset"),
         form=form
     )

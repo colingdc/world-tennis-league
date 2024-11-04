@@ -1,21 +1,22 @@
+from flask_babel import _
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import InputRequired, Optional
 
 from ..models import Player
-from ..wordings import wordings
+
 
 class CreatePlayerForm(FlaskForm):
     first_name = StringField(
-        wordings["first_name"],
+        _("first_name"),
         validators=[
             Optional()
         ]
     )
     last_name = StringField(
-        wordings["last_name"],
+        _("last_name"),
         validators=[
-            InputRequired(message=wordings["mandatory_field"])
+            InputRequired(message=_("mandatory_field"))
         ]
     )
 
@@ -26,22 +27,22 @@ class CreatePlayerForm(FlaskForm):
         if (Player.query.filter_by(first_name=self.first_name.data)
                         .filter_by(last_name=self.last_name.data).first()):
             self.first_name.errors.append("")
-            self.last_name.errors.append(wordings["player_already_exists"])
+            self.last_name.errors.append(_("player_already_exists"))
             return False
         return True
 
 
 class EditPlayerForm(FlaskForm):
     first_name = StringField(
-        wordings["first_name"],
+        _("first_name"),
         validators=[
             Optional()
         ]
     )
     last_name = StringField(
-        wordings["last_name"],
+        _("last_name"),
         validators=[
-            InputRequired(message=wordings["mandatory_field"])
+            InputRequired(message=_("mandatory_field"))
         ]
     )
 
@@ -59,6 +60,6 @@ class EditPlayerForm(FlaskForm):
                              .filter_by(last_name=self.last_name.data)
                              .first())):
             self.first_name.errors.append("")
-            self.last_name.errors.append(wordings["player_already_exists"])
+            self.last_name.errors.append(_("player_already_exists"))
             return False
         return True

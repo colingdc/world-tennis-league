@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 
 from .. import bp
 from ..lib import generate_chart
@@ -14,7 +15,7 @@ def view_user(user_id):
 
     rankings = generate_chart(user)
 
-    series = [{"name": wordings["ranking"],
+    series = [{"name": _("ranking"),
                "data": [{"x": int(t.started_at.strftime("%s")) * 1000,
                          "y": t.year_to_date_ranking or "null",
                          "tournament_name": t.name}
