@@ -40,10 +40,10 @@ def create_app(config_name):
     def load_user(user_id):
         return User.query.get(user_id)
 
-    @app.template_filter('autoversion')
+    @app.template_filter("autoversion")
     def autoversion_filter(filename):
         # determining fullpath might be project specific
-        fullpath = os.path.join('app/', filename[1:])
+        fullpath = os.path.join("app/", filename[1:])
         try:
             timestamp = str(os.path.getmtime(fullpath))
         except OSError:
@@ -61,7 +61,7 @@ def create_app(config_name):
 
 def register_loggers(app):
     error_handler = RotatingFileHandler("logs/app.log", maxBytes=1000000, backupCount=1)
-    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+    formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
     error_handler.setFormatter(formatter)
     app.logger.addHandler(error_handler)
 

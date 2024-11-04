@@ -5,26 +5,26 @@ from wtforms.validators import InputRequired, Optional
 
 class CreateTournamentForm(FlaskForm):
     name = StringField(
-        'Nom',
+        "Nom",
         validators=[
             InputRequired(message="Ce champ est obligatoire")
         ]
     )
     category = SelectField(
-        'Catégorie',
+        "Catégorie",
         validators=[
             InputRequired(message="Ce champ est obligatoire")
         ]
     )
     start_date = DateTimeField(
-        'Date de début',
+        "Date de début",
         format="%d/%m/%Y %H:%M",
         validators=[
             InputRequired(message="Ce champ est obligatoire")
         ]
     )
     week = DateTimeField(
-        'Semaine',
+        "Semaine",
         format="%d/%m/%Y",
         validators=[
             InputRequired(message="Ce champ est obligatoire")
@@ -34,20 +34,20 @@ class CreateTournamentForm(FlaskForm):
 
 class EditTournamentForm(FlaskForm):
     name = StringField(
-        'Nom',
+        "Nom",
         validators=[
             InputRequired(message="Ce champ est obligatoire")
         ]
     )
     start_date = DateTimeField(
-        'Date de début',
+        "Date de début",
         format="%d/%m/%Y %H:%M",
         validators=[
             InputRequired(message="Ce champ est obligatoire")
         ]
     )
     week = DateTimeField(
-        'Semaine',
+        "Semaine",
         format="%d/%m/%Y",
         validators=[
             InputRequired(message="Ce champ est obligatoire")

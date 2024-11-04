@@ -7,7 +7,7 @@ from ...email import send_email
 from ...notifications import display_success_message
 
 
-@bp.route("/contact", methods=['GET', 'POST'])
+@bp.route("/contact", methods=["GET", "POST"])
 def contact():
     form = ContactForm()
 
