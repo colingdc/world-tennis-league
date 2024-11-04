@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-04 13:58+0100\n"
+"POT-Creation-Date: 2024-11-04 14:12+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -169,6 +169,14 @@ msgstr "Le joueur %(player_name)s a été supprimé"
 #: app/player/views/edit_player.py:24
 msgid "player_updated"
 msgstr "Le joueur %(player_name)s a été mis à jour"
+
+#: app/public/forms.py:9
+msgid "email_if_answer_expected"
+msgstr "Email (si tu souhaites recevoir une réponse)"
+
+#: app/public/forms.py:17
+msgid "message *"
+msgstr "Message *"
 
 #: app/public/views/contact.py:21
 msgid "anonymous"
