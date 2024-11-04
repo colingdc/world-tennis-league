@@ -14,7 +14,7 @@
     <div class="col-sm-6 col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Mon classement</h3>
+                <h3 class="panel-title">{{ _("my_ranking") }}</h3>
             </div>
             <div class="panel-body">
                 {% with ranking = current_user.get_current_ranking() %}
@@ -28,19 +28,19 @@
                         <p class="dashboard-text">
                             {% with number_tournaments = ranking.year_to_date_number_tournaments %}
                             {% if number_tournaments == 1 %}
-                            1 tournoi joué cette année
+                            {{ _("one_tournament_played_this_year") }}
                             {% else %}
-                            {{ number_tournaments }} tournois joués cette année
+                            {{ _("n_tournaments_played_this_year", n=number_tournaments) }}
                             {% endif %}
                             {% endwith %}
                         </p>
                         <p class="dashboard-text">
-                            {{ ranking.year_to_date_points }} points
+                            {{ _("n_points", n=ranking.year_to_date_points) }}
                         </p>
                     </div>
                 </div>
                 {% else %}
-                Aucun tournoi joué cette année
+                {{ _("no_tournament_played_this_year") }}
                 {% endif %}
 
                 {% endwith %}
@@ -50,12 +50,12 @@
     <div class="col-sm-6 col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Les tournois du moment</h3>
+                <h3 class="panel-title">{{ _("ongoing_tournaments") }}</h3>
             </div>
             <div class="panel-body">
                 {% with number_ongoing_tournaments = ongoing_tournaments.count() %}
                 {% if number_ongoing_tournaments == 1 %}
-                <p>1 tournoi est en cours actuellement :</p>
+                <p>{{ _("one_tournament_ongoing") }}</p>
                 <p>
                     <span class="fa fa-chevron-right"></span>
                     <a href="{{ url_for('tournament.view_tournament', tournament_id=ongoing_tournaments.first().id) }}">
@@ -64,7 +64,7 @@
                 </p>
                 {% elif number_ongoing_tournaments > 1 %}
                 <p>
-                    {{ number_ongoing_tournaments }} tournois sont en cours actuellement :
+                    {{ _("n_tournaments_ongoing", n=number_ongoing_tournaments) }}
                 </p>
                 {% for t in ongoing_tournaments %}
                 <p>
@@ -79,17 +79,17 @@
 
                 {% with number_open_tournaments = open_tournaments.count() %}
                 {% if number_open_tournaments == 1 %}
-                <p>Les inscriptions sont toujours ouvertes pour un tournoi :</p>
+                <p>{{ _("registrations_are_open_for_one_tournament") }}</p>
                 <p>
                     <span class="fa fa-chevron-right"></span>
                     <a href="{{ url_for('tournament.view_tournament', tournament_id=open_tournaments.first().id) }}">
                         {{ open_tournaments.first().name }}
                     </a>
-                    (fermeture {{ open_tournaments.first().started_at | dt_diff }}).
+                    ({{ _("closing") }} {{ open_tournaments.first().started_at | dt_diff }}).
                 </p>
                 {% elif number_open_tournaments > 1 %}
                 <p>
-                    Les inscriptions sont toujours ouvertes pour les tournois suivants:
+                    {{ _("registrations_are_open_for_the_following_tournaments") }}
                 </p>
                 {% for t in open_tournaments %}
                 <p>
@@ -97,7 +97,7 @@
                     <a href="{{ url_for('tournament.view_tournament', tournament_id=t.id) }}">
                         {{ t.name }}
                     </a>
-                    (fermeture {{ t.started_at | dt_diff }})
+                    ({{ _("closing") }} {{ t.started_at | dt_diff }})
                 </p>
                 {% endfor %}
                 {% endif %}
@@ -109,7 +109,7 @@
 <div class="row">
     <div class="col-md-12 col-sm-12">
         <div class="panel panel-default">
-            <div class="panel-heading"><h3 class="panel-title">Actualités</h3></div>
+            <div class="panel-heading"><h3 class="panel-title">{{ _("news") }}</h3></div>
             <div class="panel-body"></div>
         </div>
     </div>

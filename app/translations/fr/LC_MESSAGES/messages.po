@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-04 15:16+0100\n"
+"POT-Creation-Date: 2024-11-04 15:24+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -293,15 +293,65 @@ msgstr "Avant de pouvoir accéder au site, tu dois confirmer ton adresse email "
 
 #: app/templates/auth/unconfirmed.html:14
 msgid "check_your_mailbox"
-msgstr "Vérifie ta boîte mail, tu as dû recevoir un email contenant un lien de confirmation."
+msgstr ""
+"Vérifie ta boîte mail, tu as dû recevoir un email contenant un lien de "
+"confirmation."
 
-#: app/templates/auth/unconfirmed.html:19
+#: app/templates/auth/unconfirmed.html:17
 msgid "did_not_receive_email?"
 msgstr "Tu n'as pas reçu l'email ou le lien de confirmation a expiré ?"
 
-#: app/templates/auth/unconfirmed.html:22
+#: app/templates/auth/unconfirmed.html:19
 msgid "resend_confirmation_email"
 msgstr "Envoyer à nouveau l'email de confirmation"
+
+#: app/templates/main/dashboard.html:17
+msgid "my_ranking"
+msgstr "Mon classement"
+
+#: app/templates/main/dashboard.html:31
+msgid "one_tournament_played_this_year"
+msgstr "1 tournoi joué cette année"
+
+#: app/templates/main/dashboard.html:33
+msgid "n_tournaments_played_this_year"
+msgstr "%(n)s tournois joués cette année"
+
+#: app/templates/main/dashboard.html:38
+msgid "n_points"
+msgstr "%(n)s points"
+
+#: app/templates/main/dashboard.html:43
+msgid "no_tournament_played_this_year"
+msgstr "Aucun tournoi joué cette année"
+
+#: app/templates/main/dashboard.html:53
+msgid "ongoing_tournaments"
+msgstr "Les tournois du moment"
+
+#: app/templates/main/dashboard.html:58
+msgid "one_tournament_ongoing"
+msgstr "1 tournoi est en cours actuellement :"
+
+#: app/templates/main/dashboard.html:67
+msgid "n_tournaments_ongoing"
+msgstr "%(n)s tournois sont en cours actuellement :"
+
+#: app/templates/main/dashboard.html:83
+msgid "registrations_are_open_for_one_tournament"
+msgstr "Les inscriptions sont toujours ouvertes pour un tournoi :"
+
+#: app/templates/main/dashboard.html:89 app/templates/main/dashboard.html:102
+msgid "closing"
+msgstr "fermeture"
+
+#: app/templates/main/dashboard.html:93
+msgid "registrations_are_open_for_the_following_tournaments"
+msgstr "Les inscriptions sont toujours ouvertes pour les tournois suivants:"
+
+#: app/templates/main/dashboard.html:114
+msgid "news"
+msgstr "Actualités"
 
 #: app/templates/main/view_users.html:19
 msgid "users_list"
