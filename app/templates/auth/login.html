@@ -4,7 +4,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Connexion</h3>
+        <h3 class="panel-title">{{ _("login") }}</h3>
     </div>
 
     <form action="{{ url_for('auth.login') }}" method="POST">
@@ -33,20 +33,20 @@
                     </div>
 
                     <div class="form-group">
-                        <button class="btn btn-success" type="submit">Valider</button>
+                        <button class="btn btn-success" type="submit">{{ _("confirm") }}</button>
                         <br/>
                         <br/>
                         <span>
-                            Pas encore inscrit ?
+                            {{ _("not_registered_yet?") }}
                             <a href="{{ url_for('auth.signup') }}">
-                                Créer un compte
+                                {{ _("create_account") }}
                             </a>
                         </span>
                         <br/>
                         <span>
-                            Mot de passe oublié ?
+                            {{ _("password_forgotten?") }}
                             <a href="{{ url_for('auth.reset_password_request') }}">
-                                Réinitialiser mon mot de passe
+                                {{ _("reset_my_password") }}
                             </a>
                         </span>
                     </div>

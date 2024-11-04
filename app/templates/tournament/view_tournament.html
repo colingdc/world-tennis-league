@@ -89,7 +89,7 @@
                             <p class="help-block">{{ form.player.errors[0] }}</p>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-success" type="submit">Valider</button>
+                            <button class="btn btn-success" type="submit">{{ _("confirm") }}</button>
                         </div>
                     </form>
                     {% if tournament.is_open_to_registration() %}
