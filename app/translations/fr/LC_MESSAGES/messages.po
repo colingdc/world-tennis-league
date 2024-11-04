@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-04 15:09+0100\n"
+"POT-Creation-Date: 2024-11-04 15:16+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -264,7 +264,6 @@ msgid "reset_my_password"
 msgstr "Réinitialiser mon mot de passe"
 
 #: app/templates/auth/reset_password_request.html:7
-#, fuzzy
 msgid "password_reset_request"
 msgstr "Demande de réinitialisation du mot de passe"
 
@@ -279,6 +278,30 @@ msgstr "Me connecter"
 #: app/templates/auth/signup.html:47
 msgid "password_forgotten"
 msgstr "Mot de passe oublié?"
+
+#: app/templates/auth/unconfirmed.html:7
+msgid "welcome"
+msgstr "Bienvenue %(username)s !"
+
+#: app/templates/auth/unconfirmed.html:8
+msgid "you_have_not_confirmed_your_email"
+msgstr "Tu n'as pas encore confirmé ton email."
+
+#: app/templates/auth/unconfirmed.html:10
+msgid "you_must_confirm_your_email"
+msgstr "Avant de pouvoir accéder au site, tu dois confirmer ton adresse email "
+
+#: app/templates/auth/unconfirmed.html:14
+msgid "check_your_mailbox"
+msgstr "Vérifie ta boîte mail, tu as dû recevoir un email contenant un lien de confirmation."
+
+#: app/templates/auth/unconfirmed.html:19
+msgid "did_not_receive_email?"
+msgstr "Tu n'as pas reçu l'email ou le lien de confirmation a expiré ?"
+
+#: app/templates/auth/unconfirmed.html:22
+msgid "resend_confirmation_email"
+msgstr "Envoyer à nouveau l'email de confirmation"
 
 #: app/templates/main/view_users.html:19
 msgid "users_list"
