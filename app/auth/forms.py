@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 class SignupForm(FlaskForm):
     email = StringField(
-        'Email',
+        "Email",
         validators=[
             DataRequired(),
             Length(1, 64),
@@ -13,7 +13,7 @@ class SignupForm(FlaskForm):
         ]
     )
     password = PasswordField(
-        'Mot de passe',
+        "Mot de passe",
         validators=[
             DataRequired(),
             Length(min=8)
@@ -59,7 +59,7 @@ class ChangePasswordForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(min=8),
-            EqualTo('password2', message="Les mots de passe renseignés sont différents.")
+            EqualTo("password2", message="Les mots de passe renseignés sont différents.")
         ]
     )
     password2 = PasswordField(
@@ -95,7 +95,7 @@ class PasswordResetForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(min=8),
-            EqualTo('password2', message="Les mots de passe renseignés sont différents.")
+            EqualTo("password2", message="Les mots de passe renseignés sont différents.")
         ]
     )
     password2 = PasswordField(
