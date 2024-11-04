@@ -21,6 +21,6 @@ def create_player():
     else:
         return render_template(
             "player/create_player.html",
-            title="Créer un joueur",
+            title=_("create_a_player"),
             form=form
         )

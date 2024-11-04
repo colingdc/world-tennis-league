@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-04 14:14+0100\n"
+"POT-Creation-Date: 2024-11-04 14:27+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -156,6 +156,10 @@ msgstr "Ce joueur existe déjà"
 msgid "player_created"
 msgstr "Le joueur %(player_name)s a été créé"
 
+#: app/player/views/create_player.py:24
+msgid "create_a_player"
+msgstr "Créer un joueur"
+
 #: app/player/views/delete_player.py:18
 msgid "player_in_use"
 msgstr ""
@@ -169,6 +173,10 @@ msgstr "Le joueur %(player_name)s a été supprimé"
 #: app/player/views/edit_player.py:24
 msgid "player_updated"
 msgstr "Le joueur %(player_name)s a été mis à jour"
+
+#: app/player/views/view_players.py:16
+msgid "players"
+msgstr "Joueurs"
 
 #: app/public/forms.py:9
 msgid "email_if_answer_expected"
