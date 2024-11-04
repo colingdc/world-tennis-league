@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-04 14:12+0100\n"
+"POT-Creation-Date: 2024-11-04 14:14+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -194,7 +194,7 @@ msgstr "Ton message a bien été envoyé."
 msgid "contact"
 msgstr "Contact"
 
-#: app/ranking/forms.py:7
+#: app/ranking/forms.py:7 app/tournament/forms.py:28 app/tournament/forms.py:51
 msgid "week"
 msgstr "Semaine"
 
@@ -225,6 +225,18 @@ msgstr "Classement"
 #: app/templates/main/view_users.html:19
 msgid "users_list"
 msgstr "Liste des utilisateurs"
+
+#: app/tournament/forms.py:9 app/tournament/forms.py:38
+msgid "name"
+msgstr "Nom"
+
+#: app/tournament/forms.py:15
+msgid "category"
+msgstr "Catégorie"
+
+#: app/tournament/forms.py:21 app/tournament/forms.py:44
+msgid "start_date"
+msgstr "Date de début"
 
 #: app/tournament/views/close_registrations.py:17
 msgid "registrations_closed"
