@@ -15,6 +15,4 @@ wordings = {
 
     "registration_confirmed": "Tu es bien inscrit au tournoi {}",
     "withdrawal_confirmed": "Tu es bien désinscrit du tournoi {}",
-
-    "profile_of": "Profil de {}"
 }

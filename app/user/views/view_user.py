@@ -5,7 +5,6 @@ from .. import bp
 from ..lib import generate_chart
 from ...decorators import login_required
 from ...models import User
-from ...wordings import wordings
 
 
 @bp.route("/<user_id>")
@@ -23,7 +22,7 @@ def view_user(user_id):
 
     return render_template(
         "main/view_user.html",
-        title=wordings["profile_of"].format(user.username),
+        title=_("profile_of", username=user.username),
         series=series,
         user=user
     )
