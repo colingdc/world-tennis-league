@@ -90,6 +90,7 @@
 {% block extrajs %}
 
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="{{ url_for('static', filename='js/dataTableConfig.js') | autoversion }}"></script>
 
 <script type="text/javascript">
   var action = "view_players";
@@ -115,22 +116,7 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#players-table").DataTable({
-      language: {
-        search: "Rechercher",
-        lengthMenu: "Montrer _MENU_ lignes",
-        paginate: {
-          next: "Suivante",
-          previous: "Précédente"
-        }
-      },
-      dom: "ftlp",
-      searching: true,
-      paging: true,
-      responsive: true,
-      info: false,
-      order: [[1, "asc"]]
-    });
+    $("#players-table").DataTable({ ...dataTableConfig, order: [[1, "desc"]], pageLength: 10 });
   });
 </script>
 

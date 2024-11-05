@@ -64,25 +64,11 @@
 {% block extrajs %}
 
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="{{ url_for('static', filename='js/dataTableConfig.js') | autoversion }}"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#ranking-table").DataTable({
-      language: {
-        search: "Rechercher",
-        lengthMenu: "Montrer _MENU_ lignes",
-        paginate: {
-          next: "Suivante",
-          previous: "Précédente"
-        }
-      },
-      dom: "ftlp",
-      searching: true,
-      paging: true,
-      pageLength: 100,
-      responsive: true,
-      info: false
-    });
+    $("#ranking-table").DataTable(dataTableConfig);
   });
 </script>
 
