@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 13:32+0100\n"
+"POT-Creation-Date: 2024-11-05 15:10+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -31,7 +31,7 @@ msgstr "Mot de passe"
 #: app/auth/forms.py:24 app/auth/forms.py:34
 #: app/templates/main/view_users.html:30
 #: app/templates/main/view_users_raw.html:4
-#: app/templates/ranking/monthly.html:63 app/templates/ranking/ranking.html:35
+#: app/templates/ranking/monthly.html:61 app/templates/ranking/ranking.html:33
 msgid "username"
 msgstr "Pseudo"
 
@@ -242,7 +242,7 @@ msgstr "Choisir un mois"
 
 #: app/ranking/views/monthly_ranking.py:36
 #: app/templates/navbar/navbar_wtl_top.html:30
-#: app/templates/ranking/monthly.html:21
+#: app/templates/ranking/monthly.html:19
 msgid "monthly_rankings"
 msgstr "Classements par mois"
 
@@ -250,46 +250,21 @@ msgstr "Classements par mois"
 msgid "ranking"
 msgstr "Classement"
 
-#: app/templates/_macros.html:15
-msgid "close"
-msgstr "Fermer"
-
-#: app/templates/_macros.html:17 app/templates/_macros.html:99
 #: app/templates/auth/change_password.html:37 app/templates/auth/login.html:36
 #: app/templates/auth/reset_password.html:37
 #: app/templates/auth/reset_password_request.html:23
-#: app/templates/auth/signup.html:36 app/templates/main/settings.html:22
+#: app/templates/auth/signup.html:36
+#: app/templates/macros/confirmation_modal.html:17
+#: app/templates/macros/tournament_draw_creation.html:56
+#: app/templates/main/settings.html:22
 #: app/templates/player/create_player.html:33
 #: app/templates/player/edit_player.html:35 app/templates/ranking/index.html:24
-#: app/templates/ranking/monthly.html:38
+#: app/templates/ranking/monthly.html:36
 #: app/templates/tournament/create_tournament.html:63
 #: app/templates/tournament/edit_tournament.html:61
 #: app/templates/tournament/view_tournament.html:93
 msgid "confirm"
 msgstr "Valider"
-
-#: app/templates/_macros.html:27 app/templates/main/view_users.html:47
-#: app/templates/main/view_users_raw.html:14
-msgid "yes"
-msgstr "Oui"
-
-#: app/templates/_macros.html:35 app/templates/main/view_users.html:47
-#: app/templates/main/view_users_raw.html:14
-msgid "no"
-msgstr "Non"
-
-#: app/templates/_macros.html:60 app/templates/tournament/stats.html:30
-msgid "player"
-msgstr "Joueur"
-
-#: app/templates/_macros.html:61
-#: app/templates/tournament/view_tournaments.html:41
-msgid "status"
-msgstr "Statut"
-
-#: app/templates/_macros.html:62
-msgid "seed"
-msgstr "Tête de série"
 
 #: app/templates/auth/login.html:40
 msgid "not_registered_yet?"
@@ -348,6 +323,36 @@ msgstr "Tu n'as pas reçu l'email ou le lien de confirmation a expiré ?"
 #: app/templates/auth/unconfirmed.html:19
 msgid "resend_confirmation_email"
 msgstr "Envoyer à nouveau l'email de confirmation"
+
+#: app/templates/macros/confirmation_modal.html:15
+msgid "close"
+msgstr "Fermer"
+
+#: app/templates/macros/confirmation_modal.html:27
+#: app/templates/main/view_users.html:47
+#: app/templates/main/view_users_raw.html:14
+msgid "yes"
+msgstr "Oui"
+
+#: app/templates/macros/confirmation_modal.html:35
+#: app/templates/main/view_users.html:47
+#: app/templates/main/view_users_raw.html:14
+msgid "no"
+msgstr "Non"
+
+#: app/templates/macros/tournament_draw_creation.html:17
+#: app/templates/tournament/stats.html:30
+msgid "player"
+msgstr "Joueur"
+
+#: app/templates/macros/tournament_draw_creation.html:18
+#: app/templates/tournament/view_tournaments.html:41
+msgid "status"
+msgstr "Statut"
+
+#: app/templates/macros/tournament_draw_creation.html:19
+msgid "seed"
+msgstr "Tête de série"
 
 #: app/templates/main/dashboard.html:17
 msgid "my_ranking"
@@ -433,11 +438,12 @@ msgid "chosen_player"
 msgstr "Joueur choisi"
 
 #: app/templates/main/view_user.html:27 app/templates/tournament/stats.html:32
+#: app/templates/tournament/view_tournament.html:367
 msgid "round_reached"
 msgstr "Stade atteint"
 
-#: app/templates/main/view_user.html:28 app/templates/ranking/monthly.html:64
-#: app/templates/ranking/ranking.html:36
+#: app/templates/main/view_user.html:28 app/templates/ranking/monthly.html:62
+#: app/templates/ranking/ranking.html:34
 msgid "points"
 msgstr "Points"
 
@@ -622,23 +628,23 @@ msgstr "Historique du classement"
 msgid "view_ranking_after_tournament"
 msgstr "Consulte le classement à la fin du tournoi de ton choix."
 
-#: app/templates/ranking/monthly.html:26
+#: app/templates/ranking/monthly.html:24
 msgid "view_monthly_ranking"
 msgstr "Consulte le classement sur l'ensemble du mois de ton choix."
 
-#: app/templates/ranking/monthly.html:50
+#: app/templates/ranking/monthly.html:48
 msgid "ranking_for_month"
 msgstr "Classement du mois"
 
-#: app/templates/ranking/monthly.html:65 app/templates/ranking/ranking.html:37
+#: app/templates/ranking/monthly.html:63 app/templates/ranking/ranking.html:35
 msgid "number_of_tournaments"
 msgstr "Nombre de tournois"
 
-#: app/templates/ranking/ranking.html:22
+#: app/templates/ranking/ranking.html:20
 msgid "ranking_after_week"
 msgstr "Classement après la semaine"
 
-#: app/templates/tournament/create_tournament_draw.html:8
+#: app/templates/tournament/create_tournament_draw.html:9
 #: app/templates/tournament/view_tournament.html:270
 msgid "create_draw"
 msgstr "Créer le tableau"
@@ -648,7 +654,7 @@ msgstr "Créer le tableau"
 msgid "edit_tournament"
 msgstr "Modifier le tournoi"
 
-#: app/templates/tournament/edit_tournament_draw.html:8
+#: app/templates/tournament/edit_tournament_draw.html:9
 msgid "edit_draw"
 msgstr "Modifier le tableau"
 
@@ -779,6 +785,19 @@ msgstr "Confirmer l'ouverture des inscriptions ?"
 #: app/templates/tournament/view_tournament.html:283
 msgid "edit_starting_draw"
 msgstr "Modifier le tableau de départ"
+
+#: app/templates/tournament/view_tournament.html:333
+#: app/templates/tournament/view_tournament.html:365
+msgid "participant"
+msgstr "Participant"
+
+#: app/templates/tournament/view_tournament.html:366
+msgid "forecast"
+msgstr "Pronostic"
+
+#: app/templates/tournament/view_tournament.html:368
+msgid "score"
+msgstr "Score"
 
 #: app/templates/tournament/view_tournament_draw.html:16
 msgid "draw"
