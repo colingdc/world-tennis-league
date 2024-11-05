@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 10:42+0100\n"
+"POT-Creation-Date: 2024-11-05 10:51+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -144,10 +144,12 @@ msgid "faq"
 msgstr "FAQ"
 
 #: app/player/forms.py:11 app/player/forms.py:37
+#: app/templates/player/view_players.html:40
 msgid "first_name"
 msgstr "Prénom"
 
 #: app/player/forms.py:17 app/player/forms.py:43
+#: app/templates/player/view_players.html:41
 msgid "last_name"
 msgstr "Nom"
 
@@ -167,6 +169,7 @@ msgid "player_created"
 msgstr "Le joueur %(player_name)s a été créé"
 
 #: app/player/views/create_player.py:24
+#: app/templates/player/create_player.html:7
 msgid "create_a_player"
 msgstr "Créer un joueur"
 
@@ -248,7 +251,7 @@ msgstr "Classement"
 #: app/templates/auth/reset_password_request.html:23
 #: app/templates/auth/signup.html:36 app/templates/main/settings.html:22
 #: app/templates/player/create_player.html:33
-#: app/templates/player/edit_player.html:36 app/templates/ranking/index.html:24
+#: app/templates/player/edit_player.html:35 app/templates/ranking/index.html:24
 #: app/templates/ranking/monthly.html:38
 #: app/templates/tournament/create_tournament.html:63
 #: app/templates/tournament/create_tournament_draw.html:76
@@ -523,6 +526,38 @@ msgstr "Classement actuel"
 #: app/templates/navbar/navbar_wtl_top.html:29
 msgid "all_rankings"
 msgstr "Tous les classements"
+
+#: app/templates/player/edit_player.html:8
+msgid "edit_the_player"
+msgstr "Modifier le joueur"
+
+#: app/templates/player/view_players.html:21
+msgid "players_list"
+msgstr "Liste des joueurs"
+
+#: app/templates/player/view_players.html:28
+msgid "new_player"
+msgstr "Nouveau joueur"
+
+#: app/templates/player/view_players.html:43
+msgid "actions"
+msgstr "Actions"
+
+#: app/templates/player/view_players.html:59
+msgid "edit"
+msgstr "Modifier"
+
+#: app/templates/player/view_players.html:64
+msgid "delete_player"
+msgstr "Supprimer le joueur"
+
+#: app/templates/player/view_players.html:66
+msgid "confirm_player_deletion"
+msgstr "Confirmer la suppression du joueur ?"
+
+#: app/templates/player/view_players.html:72
+msgid "delete"
+msgstr "Supprimer"
 
 #: app/tournament/forms.py:9 app/tournament/forms.py:38
 msgid "name"

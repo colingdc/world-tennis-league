@@ -5,8 +5,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            Editer le <a href="{{ url_for('player.view_players') }}">joueur</a>
-            {{ player.get_name() }}
+            {{ _("edit_the_player") }} {{ player.get_name() }}
         </h3>
     </div>
 

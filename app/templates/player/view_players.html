@@ -18,14 +18,14 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Liste des joueurs</h3>
+        <h3 class="panel-title">{{ _("players_list") }}</h3>
     </div>
 
     <div class="panel-body">
         {% if current_user.is_manager() %}
         <div class="btn-group" role="group">
             <a class="btn btn-success" href="{{ url_for('.create_player') }}">
-                Nouveau joueur
+                {{ _("new_player") }}
             </a>
         </div>
         {% endif %}
@@ -37,10 +37,10 @@
             >
                 <thead>
                 <tr>
-                    <th>Prénom</th>
-                    <th>Nom</th>
+                    <th>{{ _("first_name") }}</th>
+                    <th>{{ _("last_name") }}</th>
                     {% if current_user.is_manager() %}
-                    <th>Actions</th>
+                    <th>{{ _("actions") }}</th>
                     {% endif %}
                 </tr>
                 </thead>
@@ -56,20 +56,20 @@
                                     class="btn btn-warning"
                                     href="{{ url_for('.edit_player', player_id=player.id) }}"
                             >
-                                <span class="fa fa-pencil"></span> Editer
+                                <span class="fa fa-pencil"></span> {{ _("edit") }}
                             </a>
                         </div>
                         <div class="btn-group" role="group">
                             <div
-                                    data-title="Supprimer le joueur {{ player.get_name() }}"
+                                    data-title="{{ _('delete_player') }} {{ player.get_name() }}"
                                     data-action="{{ url_for('.delete_player', player_id=player.id) }}"
-                                    data-message="Confirmer la suppression du joueur ?"
+                                    data-message="{{ _('confirm_player_deletion') }}"
                             >
                                 <a
                                         class="btn btn-danger formConfirm"
                                         href="{{ url_for('.delete_player', player_id=player.id) }}"
                                 >
-                                    <span class="fa fa-trash"></span> Supprimer
+                                    <span class="fa fa-trash"></span> {{ _("delete") }}
                                 </a>
                             </div>
                         </div>
