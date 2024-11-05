@@ -45,8 +45,8 @@
                 <!-- Tournament draw -->
                 {% if tournament.is_draw_created() %}
                 <div class="col-md-6 col-sm-6">
-                    <h4>Le tournoi</h4>
-                    <p>Catégorie : {{ tournament.category }}</p>
+                    <h4>{{ _("the_tournament") }}</h4>
+                    <p>{{ _("category") }} : {{ tournament.category }}</p>
                     <p>
                         <a href="{{ url_for('.view_tournament_draw', tournament_id=tournament.id) }}">
                             <span class="fa fa-chevron-right"></span> {{ _("view_draw") }}

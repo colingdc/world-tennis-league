@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 13:25+0100\n"
+"POT-Creation-Date: 2024-11-05 13:32+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -687,6 +687,15 @@ msgstr ""
 "Tu es déjà inscrit au tournoi %(link)s cette semaine et ne peux donc pas "
 "t'inscrire à ce tournoi."
 
+#: app/templates/tournament/view_tournament.html:48
+msgid "the_tournament"
+msgstr "Le tournoi"
+
+#: app/templates/tournament/view_tournament.html:49
+#: app/templates/tournament/view_tournaments.html:40 app/tournament/forms.py:15
+msgid "category"
+msgstr "Catégorie"
+
 #: app/templates/tournament/view_tournament.html:52
 msgid "view_draw"
 msgstr "Voir le tableau"
@@ -782,10 +791,6 @@ msgstr "Liste des tournois"
 #: app/templates/tournament/view_tournaments.html:26
 msgid "new_tournament"
 msgstr "Nouveau tournoi"
-
-#: app/templates/tournament/view_tournaments.html:40 app/tournament/forms.py:15
-msgid "category"
-msgstr "Catégorie"
 
 #: app/tournament/forms.py:9 app/tournament/forms.py:38
 msgid "name"
