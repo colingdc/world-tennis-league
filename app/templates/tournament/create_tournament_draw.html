@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
-{% import "_macros.html" as macros %}
+{% from "macros/tournament_draw_creation.html" import tournament_draw_creation %}
+{% from "macros/tournament_panel_heading.html" import tournament_panel_heading %}
 
 {% block content %}
 
 <div class="panel panel-default">
-    {{ macros.tournament_panel_heading(tournament, _("create_draw")) }}
+    {{ tournament_panel_heading(tournament, _("create_draw")) }}
 
     <form
             action="{{ url_for('tournament.create_tournament_draw', tournament_id=tournament.id) }}"
@@ -15,7 +16,7 @@
     >
         {{ form.hidden_tag() }}
 
-        {{ macros.tournament_draw_creation(form) }}
+        {{ tournament_draw_creation(form) }}
     </form>
 </div>
 

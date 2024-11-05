@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% import "_macros.html" as macros %}
+{% from "macros/tournament_panel_heading.html" import tournament_panel_heading %}
 
 {% block styles %}
 {{ super() }}
@@ -13,7 +13,7 @@
 {% block content %}
 
 <div class="panel panel-default">
-    {{ macros.tournament_panel_heading(tournament, _("draw")) }}
+    {{ tournament_panel_heading(tournament, _("draw")) }}
 
     <div class="panel-body">
         <div class="main">

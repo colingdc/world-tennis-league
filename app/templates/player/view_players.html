@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% import "_macros.html" as macros %}
+{% from "macros/confirmation_modal.html" import confirmation_modal %}
 
 {% block styles %}
 {{ super() }}
@@ -83,7 +83,7 @@
     </div>
 </div>
 
-{{ macros.confirmation_modal() }}
+{{ confirmation_modal() }}
 
 {% endblock content %}
 
