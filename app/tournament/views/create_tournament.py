@@ -25,7 +25,7 @@ def create_tournament():
         tournament_week = fetch_tournament_week_by_start_date(monday)
 
         if tournament_week is None:
-            insert_tournament_week(monday)
+            tournament_week = insert_tournament_week(monday)
 
         insert_tournament(
             name=form.name.data,
