@@ -8,7 +8,7 @@
             <a href="{{ url_for('.view_tournament', tournament_id=tournament.id) }}">
                 {{ tournament.name }}
             </a>
-            - Créer le tableau
+            - {{ _("create_draw") }}
         </h3>
     </div>
 
@@ -34,9 +34,9 @@
                             <thead class="thead-default">
                             <tr>
                                 <th>#</th>
-                                <th>Joueur</th>
-                                <th>Statut</th>
-                                <th>Tête de série</th>
+                                <th>{{ _("player") }}</th>
+                                <th>{{ _("status") }}</th>
+                                <th>{{ _("seed") }}</th>
                             </tr>
                             </thead>
 

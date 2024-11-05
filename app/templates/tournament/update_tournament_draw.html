@@ -16,16 +16,14 @@
             <a href="{{ url_for('.view_tournament', tournament_id=tournament.id) }}">
                 {{ tournament.name }}
             </a>
-            - Mettre à jour le tableau
+            - {{ _("update_draw") }}
         </h3>
     </div>
 
     <div class="panel-body">
         <div class="alert alert-info">
-            <p>
-                Cliquez sur le nom d'un joueur pour le faire avancer au tour suivant.
-            </p>
-            <p>Ctrl + clic pour effacer le contenu d'une case du tableau.</p>
+            <p>{{ _("update_draw_instruction_advance") }}</p>
+            <p>{{ _("update_draw_instruction_delete") }}</p>
         </div>
 
         <div class="row">
@@ -37,7 +35,7 @@
                     {{ form.hidden_tag() }}
                     <div class="form-group">
                         <button class="btn btn-success" type="submit">
-                            Valider les modifications
+                            {{ _("confirm_modifications") }}
                         </button>
                     </div>
                     <div class="form-group">
