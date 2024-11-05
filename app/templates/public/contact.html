@@ -19,13 +19,13 @@
 
                     <div class="form-group {% if form.email.errors %} has-error {% endif %}">
                         {{ form.email.label() }}
-                        <div>{{form.email(class="form-control", rows = "10")}}</div>
+                        <div>{{ form.email(class="form-control", rows = "10") }}</div>
                         <p class="help-block">{{ form.email.errors[0] }}</p>
                     </div>
 
                     <div class="form-group {% if form.message.errors %} has-error {% endif %}">
                         {{ form.message.label() }}
-                        <div>{{form.message(class="form-control", rows = "10")}}</div>
+                        <div>{{ form.message(class="form-control", rows = "10") }}</div>
                         <p class="help-block">{{ form.message.errors[0] }}</p>
                     </div>
 

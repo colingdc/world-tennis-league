@@ -84,7 +84,7 @@
                         {{ form.hidden_tag() }}
                         <div class="form-group {% if form.player.errors %} has-error {% endif %}">
                             <div id="player-choice">
-                                {{form.player(class="form-control")}}
+                                {{ form.player(class="form-control") }}
                             </div>
                             <p class="help-block">{{ form.player.errors[0] }}</p>
                         </div>
@@ -206,7 +206,7 @@
                                 >
                                     <a
                                             class="btn btn-secondary btn-outline formConfirm"
-                                            href="{{ url_for('.close_registrations', tournament_id=tournament.id)}}"
+                                            href="{{ url_for('.close_registrations', tournament_id=tournament.id) }}"
                                     >
                                         <span class="fa fa-lock"></span> Fermer les inscriptions
                                     </a>
@@ -224,7 +224,7 @@
                                 >
                                     <a
                                             class="btn btn-secondary btn-outline formConfirm"
-                                            href="{{ url_for('.send_notification_email', tournament_id=tournament.id)}}"
+                                            href="{{ url_for('.send_notification_email', tournament_id=tournament.id) }}"
                                     >
                                         <span class="fa fa-lock"></span> Envoyer les mails de notification
                                     </a>
