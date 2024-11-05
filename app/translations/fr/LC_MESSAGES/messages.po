@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 10:51+0100\n"
+"POT-Creation-Date: 2024-11-05 10:58+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -214,6 +214,7 @@ msgstr "Ton message a bien été envoyé."
 #: app/public/views/contact.py:37
 #: app/templates/navbar/navbar_game_set_and_talk_top.html:22
 #: app/templates/navbar/navbar_wtl_top.html:38
+#: app/templates/public/contact.html:12
 msgid "contact"
 msgstr "Contact"
 
@@ -444,6 +445,7 @@ msgstr "Confirmé"
 #: app/templates/navbar/navbar_game_set_and_talk_right.html:5
 #: app/templates/navbar/navbar_game_set_and_talk_right.html:51
 #: app/templates/navbar/navbar_header.html:16
+#: app/templates/public/index.html:34
 msgid "the_world_tennis_league"
 msgstr "La World Tennis League"
 
@@ -479,14 +481,17 @@ msgid "the_rules"
 msgstr "Les règles"
 
 #: app/templates/navbar/navbar_game_set_and_talk_top.html:4
+#: app/templates/public/networks.html:7
 msgid "follow_us"
 msgstr "Nous suivre"
 
 #: app/templates/navbar/navbar_game_set_and_talk_top.html:10
+#: app/templates/public/support.html:7
 msgid "support_us"
 msgstr "Nous soutenir"
 
 #: app/templates/navbar/navbar_game_set_and_talk_top.html:16
+#: app/templates/public/partners.html:15
 msgid "our_partners"
 msgstr "Nos partenaires"
 
@@ -558,6 +563,32 @@ msgstr "Confirmer la suppression du joueur ?"
 #: app/templates/player/view_players.html:72
 msgid "delete"
 msgstr "Supprimer"
+
+#: app/templates/public/contact.html:7
+msgid "contact_header"
+msgstr ""
+"Un bug à signaler ? Une remarque, une question, une proposition "
+"d'amélioration ? Envoie-nous un message"
+
+#: app/templates/public/contact.html:33
+msgid "send"
+msgstr "Envoyer"
+
+#: app/templates/public/index.html:28
+msgid "decrypt_tennis_news"
+msgstr "Décrypter l’actualité tennis comme un pro avec Game, Set & Talk"
+
+#: app/templates/public/networks.html:19
+msgid "find_us_on_social_networks"
+msgstr "Retrouve l'équipe de Game Set & Talk sur les réseaux sociaux :"
+
+#: app/templates/public/networks.html:45
+msgid "find_our_podcasts"
+msgstr "Tu peux également retrouver nos contenus sous forme de podcasts :"
+
+#: app/templates/public/support.html:17
+msgid "I_support_the_project"
+msgstr "Je soutiens le projet"
 
 #: app/tournament/forms.py:9 app/tournament/forms.py:38
 msgid "name"
