@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-04 15:39+0100\n"
+"POT-Creation-Date: 2024-11-05 10:23+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -19,6 +19,8 @@ msgstr ""
 "Generated-By: Babel 2.9.1\n"
 
 #: app/auth/forms.py:9 app/auth/forms.py:76 app/auth/forms.py:87
+#: app/templates/main/view_users.html:31
+#: app/templates/main/view_users_raw.html:5
 msgid "email"
 msgstr "Email"
 
@@ -27,6 +29,8 @@ msgid "password"
 msgstr "Mot de passe"
 
 #: app/auth/forms.py:24 app/auth/forms.py:34
+#: app/templates/main/view_users.html:30
+#: app/templates/main/view_users_raw.html:4
 msgid "username"
 msgstr "Pseudo"
 
@@ -365,13 +369,67 @@ msgstr "1 an. 35 tournois. Un joueur par tournoi."
 msgid "I_signup"
 msgstr "Je m'inscris"
 
-#: app/templates/main/index.html:26
+#: app/templates/main/index.html:25
 msgid "I_login"
 msgstr "Je me connecte"
+
+#: app/templates/main/settings.html:7
+msgid "my_profile_settings"
+msgstr "Paramètres de mon profil"
+
+#: app/templates/main/view_user.html:7 app/user/views/view_user.py:25
+msgid "profile_of"
+msgstr "Profil de %(username)s"
+
+#: app/templates/main/view_user.html:25
+msgid "tournament"
+msgstr "Tournoi"
+
+#: app/templates/main/view_user.html:26
+msgid "chosen_player"
+msgstr "Joueur choisi"
+
+#: app/templates/main/view_user.html:27
+msgid "round_reached"
+msgstr "Stade atteint"
+
+#: app/templates/main/view_user.html:28
+msgid "points"
+msgstr "Points"
+
+#: app/templates/main/view_user.html:29
+msgid "atp_ranking"
+msgstr "Classement ATP"
 
 #: app/templates/main/view_users.html:19
 msgid "users_list"
 msgstr "Liste des utilisateurs"
+
+#: app/templates/main/view_users.html:32
+msgid "role"
+msgstr "Role"
+
+#: app/templates/main/view_users.html:33
+msgid "validated_account"
+msgstr "Compte confirmé"
+
+#: app/templates/main/view_users.html:34
+msgid "tournaments_played"
+msgstr "Tournois joués"
+
+#: app/templates/main/view_users.html:47
+#: app/templates/main/view_users_raw.html:14
+msgid "yes"
+msgstr "Oui"
+
+#: app/templates/main/view_users.html:47
+#: app/templates/main/view_users_raw.html:14
+msgid "no"
+msgstr "Non"
+
+#: app/templates/main/view_users_raw.html:6
+msgid "validated"
+msgstr "Confirmé"
 
 #: app/tournament/forms.py:9 app/tournament/forms.py:38
 msgid "name"
@@ -509,10 +567,6 @@ msgstr "Tes préférences de notifications ont été mises à jour"
 #: app/user/views/settings.py:27
 msgid "settings"
 msgstr "Paramètres"
-
-#: app/user/views/view_user.py:25
-msgid "profile_of"
-msgstr "Profil de %(username)s"
 
 #: app/user/views/view_users.py:16 app/user/views/view_users_raw.py:17
 msgid "users"

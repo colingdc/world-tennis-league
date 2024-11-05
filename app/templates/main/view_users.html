@@ -27,11 +27,11 @@
             >
                 <thead>
                 <tr>
-                    <th>Pseudo</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Compte confirmé</th>
-                    <th>Tournois joués</th>
+                    <th>{{ _("username") }}</th>
+                    <th>{{ _("email") }}</th>
+                    <th>{{ _("role") }}</th>
+                    <th>{{ _("validated_account") }}</th>
+                    <th>{{ _("tournaments_played") }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,7 +44,7 @@
                     </td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.role }}</td>
-                    <td>{% if user.confirmed %}Oui{% else %}Non{% endif %}</td>
+                    <td>{% if user.confirmed %}{{ _("yes") }}{% else %}{{ _("no") }}{% endif %}</td>
                     <td>{{ user.participations.count() }}</td>
                 </tr>
                 {% endfor %}

@@ -4,7 +4,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Paramètres de mon profil ({{ user.username }})</h3>
+        <h3 class="panel-title">{{ _("my_profile_settings") }} ({{ user.username }})</h3>
     </div>
 
     <form action="{{ url_for('user.settings') }}" method="POST">
