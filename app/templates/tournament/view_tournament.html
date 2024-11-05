@@ -321,7 +321,9 @@
             {% if not tournament.participations.first() %}
             Aucun participant à ce tournoi pour le moment
 
-            {% elif tournament.is_open_to_registration() %}
+            {% else %}
+
+            {% if tournament.is_open_to_registration() %}
 
             <div class="table">
                 <table
@@ -399,6 +401,9 @@
                     </tbody>
                 </table>
             </div>
+
+            {% endif %}
+
             {% endif %}
         </div>
     </div>
