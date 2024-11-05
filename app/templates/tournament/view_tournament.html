@@ -319,8 +319,7 @@
     <div id="collapse3" class="panel-collapse collapse in">
         <div class="panel-body">
             {% if not tournament.participations.first() %}
-            Aucun participant à ce tournoi pour le moment
-
+            {{ _("no_participant_yet") }}
             {% else %}
 
             <div class="table">

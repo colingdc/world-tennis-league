@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 15:10+0100\n"
+"POT-Creation-Date: 2024-11-05 15:44+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -438,7 +438,7 @@ msgid "chosen_player"
 msgstr "Joueur choisi"
 
 #: app/templates/main/view_user.html:27 app/templates/tournament/stats.html:32
-#: app/templates/tournament/view_tournament.html:367
+#: app/templates/tournament/view_tournament.html:335
 msgid "round_reached"
 msgstr "Stade atteint"
 
@@ -786,16 +786,19 @@ msgstr "Confirmer l'ouverture des inscriptions ?"
 msgid "edit_starting_draw"
 msgstr "Modifier le tableau de départ"
 
-#: app/templates/tournament/view_tournament.html:333
-#: app/templates/tournament/view_tournament.html:365
+#: app/templates/tournament/view_tournament.html:322
+msgid "no_participant_yet"
+msgstr "Aucun participant à ce tournoi pour le moment"
+
+#: app/templates/tournament/view_tournament.html:332
 msgid "participant"
 msgstr "Participant"
 
-#: app/templates/tournament/view_tournament.html:366
+#: app/templates/tournament/view_tournament.html:334
 msgid "forecast"
 msgstr "Pronostic"
 
-#: app/templates/tournament/view_tournament.html:368
+#: app/templates/tournament/view_tournament.html:336
 msgid "score"
 msgstr "Score"
 
