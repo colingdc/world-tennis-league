@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 12:06+0100\n"
+"POT-Creation-Date: 2024-11-05 13:25+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -263,7 +263,7 @@ msgstr "Fermer"
 #: app/templates/player/edit_player.html:35 app/templates/ranking/index.html:24
 #: app/templates/ranking/monthly.html:38
 #: app/templates/tournament/create_tournament.html:63
-#: app/templates/tournament/edit_tournament.html:66
+#: app/templates/tournament/edit_tournament.html:61
 #: app/templates/tournament/view_tournament.html:93
 msgid "confirm"
 msgstr "Valider"
@@ -278,7 +278,7 @@ msgstr "Oui"
 msgid "no"
 msgstr "Non"
 
-#: app/templates/_macros.html:60 app/templates/tournament/stats.html:35
+#: app/templates/_macros.html:60 app/templates/tournament/stats.html:30
 msgid "player"
 msgstr "Joueur"
 
@@ -432,7 +432,7 @@ msgstr "Tournoi"
 msgid "chosen_player"
 msgstr "Joueur choisi"
 
-#: app/templates/main/view_user.html:27 app/templates/tournament/stats.html:37
+#: app/templates/main/view_user.html:27 app/templates/tournament/stats.html:32
 msgid "round_reached"
 msgstr "Stade atteint"
 
@@ -638,38 +638,42 @@ msgstr "Nombre de tournois"
 msgid "ranking_after_week"
 msgstr "Classement après la semaine"
 
-#: app/templates/tournament/create_tournament_draw.html:13
+#: app/templates/tournament/create_tournament_draw.html:8
 #: app/templates/tournament/view_tournament.html:270
 msgid "create_draw"
 msgstr "Créer le tableau"
 
-#: app/templates/tournament/edit_tournament.html:23
+#: app/templates/tournament/edit_tournament.html:20
 #: app/templates/tournament/view_tournament.html:167
 msgid "edit_tournament"
 msgstr "Modifier le tournoi"
 
-#: app/templates/tournament/stats.html:23
+#: app/templates/tournament/edit_tournament_draw.html:8
+msgid "edit_draw"
+msgstr "Modifier le tableau"
+
+#: app/templates/tournament/stats.html:20
 msgid "statistics"
 msgstr "Statistiques"
 
-#: app/templates/tournament/stats.html:36
+#: app/templates/tournament/stats.html:31
 msgid "number_of_forecasts"
 msgstr "Nombre de pronostics"
 
-#: app/templates/tournament/update_tournament_draw.html:19
+#: app/templates/tournament/update_tournament_draw.html:16
 #: app/templates/tournament/view_tournament.html:295
 msgid "update_draw"
 msgstr "Mettre à jour le tableau"
 
-#: app/templates/tournament/update_tournament_draw.html:25
+#: app/templates/tournament/update_tournament_draw.html:20
 msgid "update_draw_instruction_advance"
 msgstr "Cliquez sur le nom d'un joueur pour le faire avancer au tour suivant."
 
-#: app/templates/tournament/update_tournament_draw.html:26
+#: app/templates/tournament/update_tournament_draw.html:21
 msgid "update_draw_instruction_delete"
 msgstr "Ctrl + clic pour effacer le contenu d'une case du tableau."
 
-#: app/templates/tournament/update_tournament_draw.html:38
+#: app/templates/tournament/update_tournament_draw.html:33
 msgid "confirm_modifications"
 msgstr "Valider les modifications"
 
@@ -767,7 +771,7 @@ msgstr "Confirmer l'ouverture des inscriptions ?"
 msgid "edit_starting_draw"
 msgstr "Modifier le tableau de départ"
 
-#: app/templates/tournament/view_tournament_draw.html:19
+#: app/templates/tournament/view_tournament_draw.html:16
 msgid "draw"
 msgstr "Tableau"
 
@@ -903,7 +907,4 @@ msgstr "Notifications par mail activées"
 #: app/user/views/settings.py:23
 msgid "notification_preferences_updated"
 msgstr "Tes préférences de notifications ont été mises à jour"
-
-#~ msgid "edit_draw"
-#~ msgstr "Modifier le tableau"
 

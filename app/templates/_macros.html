@@ -104,3 +104,13 @@
 </div>
 
 {% endmacro %}
+
+{% macro tournament_panel_heading(tournament, suffix) %}
+
+<div class="panel-heading">
+    <h3 class="panel-title">
+        <a href="{{ url_for('.view_tournament', tournament_id=tournament.id) }}">{{ tournament.name }}</a> - {{ suffix }}
+    </h3>
+</div>
+
+{% endmacro %}
