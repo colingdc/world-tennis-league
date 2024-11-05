@@ -341,19 +341,15 @@
                     <tbody>
                     {% for participant in tournament.participations %}
                     <tr>
-                        {% if current_user.id == participant.user_id %}
-                        <th>
-                            <a href="{{ url_for('user.view_user', user_id=participant.user_id) }}">
-                                {{ participant.user.username }}
-                            </a>
-                        </th>
-                        {% else %}
                         <td>
                             <a href="{{ url_for('user.view_user', user_id=participant.user_id) }}">
+                                {% if current_user.id == participant.user_id %}
+                                <b>{{ participant.user.username }}</b>
+                                {% else %}
                                 {{ participant.user.username }}
+                                {% endif %}
                             </a>
                         </td>
-                        {% endif %}
 
                         {% if not tournament.is_open_to_registration() %}
 
