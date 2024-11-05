@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 10:23+0100\n"
+"POT-Creation-Date: 2024-11-05 10:42+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -88,6 +88,8 @@ msgid "login_confirmed"
 msgstr "Tu es à présent connecté."
 
 #: app/auth/views/login.py:53 app/templates/auth/login.html:7
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:70
+#: app/templates/navbar/navbar_wtl_right.html:66
 msgid "login"
 msgstr "Connexion"
 
@@ -132,6 +134,8 @@ msgid "new_user_signup"
 msgstr "Nouvel inscrit"
 
 #: app/auth/views/signup.py:64 app/templates/auth/signup.html:7
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:64
+#: app/templates/navbar/navbar_wtl_right.html:61
 msgid "signup"
 msgstr "Inscription"
 
@@ -205,6 +209,8 @@ msgid "message_sent"
 msgstr "Ton message a bien été envoyé."
 
 #: app/public/views/contact.py:37
+#: app/templates/navbar/navbar_game_set_and_talk_top.html:22
+#: app/templates/navbar/navbar_wtl_top.html:38
 msgid "contact"
 msgstr "Contact"
 
@@ -220,7 +226,7 @@ msgstr "Mois"
 msgid "choose_a_week"
 msgstr "Choisir une semaine"
 
-#: app/ranking/views/index.py:27
+#: app/ranking/views/index.py:27 app/templates/navbar/navbar_wtl_top.html:24
 msgid "rankings"
 msgstr "Classements"
 
@@ -229,6 +235,7 @@ msgid "choose_a_month"
 msgstr "Choisir un mois"
 
 #: app/ranking/views/monthly_ranking.py:36
+#: app/templates/navbar/navbar_wtl_top.html:30
 msgid "monthly_rankings"
 msgstr "Classements par mois"
 
@@ -431,6 +438,92 @@ msgstr "Non"
 msgid "validated"
 msgstr "Confirmé"
 
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:5
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:51
+#: app/templates/navbar/navbar_header.html:16
+msgid "the_world_tennis_league"
+msgstr "La World Tennis League"
+
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:12
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:58
+msgid "homepage"
+msgstr "Accueil"
+
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:18
+#: app/templates/navbar/navbar_wtl_right.html:10
+msgid "my_profile"
+msgstr "Mon profil"
+
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:24
+#: app/templates/navbar/navbar_wtl_right.html:15 app/user/views/settings.py:27
+msgid "settings"
+msgstr "Paramètres"
+
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:30
+#: app/templates/navbar/navbar_wtl_right.html:20
+msgid "logout"
+msgstr "Me déconnecter"
+
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:36
+#: app/templates/navbar/navbar_wtl_right.html:25
+msgid "modify_my_password"
+msgstr "Modifier mon mot de passe"
+
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:42
+#: app/templates/navbar/navbar_game_set_and_talk_right.html:76
+#: app/templates/navbar/navbar_wtl_top.html:10
+msgid "the_rules"
+msgstr "Les règles"
+
+#: app/templates/navbar/navbar_game_set_and_talk_top.html:4
+msgid "follow_us"
+msgstr "Nous suivre"
+
+#: app/templates/navbar/navbar_game_set_and_talk_top.html:10
+msgid "support_us"
+msgstr "Nous soutenir"
+
+#: app/templates/navbar/navbar_game_set_and_talk_top.html:16
+msgid "our_partners"
+msgstr "Nos partenaires"
+
+#: app/templates/navbar/navbar_header.html:21
+#: app/templates/navbar/navbar_wtl_top.html:4
+msgid "game_set_and_talk"
+msgstr "Game, Set & Talk"
+
+#: app/templates/navbar/navbar_wtl_right.html:30
+#: app/templates/navbar/navbar_wtl_top.html:18
+#: app/tournament/views/view_tournaments.py:16
+msgid "tournaments"
+msgstr "Tournois"
+
+#: app/templates/navbar/navbar_wtl_right.html:37
+#: app/tournament/views/create_tournament.py:42
+msgid "create_a_tournament"
+msgstr "Créer un tournoi"
+
+#: app/templates/navbar/navbar_wtl_right.html:42
+#: app/user/views/view_users.py:16 app/user/views/view_users_raw.py:17
+msgid "users"
+msgstr "Utilisateurs"
+
+#: app/templates/navbar/navbar_wtl_right.html:47
+msgid "users_raw_export"
+msgstr "Utilisateurs (export brut)"
+
+#: app/templates/navbar/navbar_wtl_right.html:52
+msgid "atp_players"
+msgstr "Joueurs ATP"
+
+#: app/templates/navbar/navbar_wtl_top.html:28
+msgid "current_ranking"
+msgstr "Classement actuel"
+
+#: app/templates/navbar/navbar_wtl_top.html:29
+msgid "all_rankings"
+msgstr "Tous les classements"
+
 #: app/tournament/forms.py:9 app/tournament/forms.py:38
 msgid "name"
 msgstr "Nom"
@@ -458,10 +551,6 @@ msgstr "Choisir une catégorie"
 #: app/tournament/views/create_tournament.py:37
 msgid "tournament_created"
 msgstr "Le tournoi %(tournament_name)s a été créé"
-
-#: app/tournament/views/create_tournament.py:42
-msgid "create_a_tournament"
-msgstr "Créer un tournoi"
 
 #: app/tournament/views/create_tournament_draw.py:37
 #: app/tournament/views/edit_tournament_draw.py:34
@@ -540,10 +629,6 @@ msgstr ""
 "Les participants ont été notifiés par mail de l'ouverture des tournois de"
 " la semaine"
 
-#: app/tournament/views/view_tournaments.py:16
-msgid "tournaments"
-msgstr "Tournois"
-
 #: app/tournament/views/withdraw.py:17
 msgid "not_registered_yet"
 msgstr "Tu n'es pas inscrit à ce tournoi"
@@ -563,12 +648,4 @@ msgstr "Notifications par mail activées"
 #: app/user/views/settings.py:23
 msgid "notification_preferences_updated"
 msgstr "Tes préférences de notifications ont été mises à jour"
-
-#: app/user/views/settings.py:27
-msgid "settings"
-msgstr "Paramètres"
-
-#: app/user/views/view_users.py:16 app/user/views/view_users_raw.py:17
-msgid "users"
-msgstr "Utilisateurs"
 
