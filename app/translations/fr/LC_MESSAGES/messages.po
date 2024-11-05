@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 15:44+0100\n"
+"POT-Creation-Date: 2024-11-05 16:21+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -398,10 +398,6 @@ msgstr "fermeture"
 #: app/templates/main/dashboard.html:92
 msgid "registrations_are_open_for_the_following_tournaments"
 msgstr "Les inscriptions sont toujours ouvertes pour les tournois suivants:"
-
-#: app/templates/main/dashboard.html:112
-msgid "news"
-msgstr "Actualités"
 
 #: app/templates/main/index.html:7
 msgid "wtl"
