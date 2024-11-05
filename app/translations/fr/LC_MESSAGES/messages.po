@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 10:58+0100\n"
+"POT-Creation-Date: 2024-11-05 11:06+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -31,6 +31,7 @@ msgstr "Mot de passe"
 #: app/auth/forms.py:24 app/auth/forms.py:34
 #: app/templates/main/view_users.html:30
 #: app/templates/main/view_users_raw.html:4
+#: app/templates/ranking/monthly.html:63 app/templates/ranking/ranking.html:36
 msgid "username"
 msgstr "Pseudo"
 
@@ -240,6 +241,7 @@ msgstr "Choisir un mois"
 
 #: app/ranking/views/monthly_ranking.py:36
 #: app/templates/navbar/navbar_wtl_top.html:30
+#: app/templates/ranking/monthly.html:21
 msgid "monthly_rankings"
 msgstr "Classements par mois"
 
@@ -404,7 +406,8 @@ msgstr "Joueur choisi"
 msgid "round_reached"
 msgstr "Stade atteint"
 
-#: app/templates/main/view_user.html:28
+#: app/templates/main/view_user.html:28 app/templates/ranking/monthly.html:64
+#: app/templates/ranking/ranking.html:37
 msgid "points"
 msgstr "Points"
 
@@ -589,6 +592,30 @@ msgstr "Tu peux également retrouver nos contenus sous forme de podcasts :"
 #: app/templates/public/support.html:17
 msgid "I_support_the_project"
 msgstr "Je soutiens le projet"
+
+#: app/templates/ranking/index.html:7
+msgid "ranking_history"
+msgstr "Historique du classement"
+
+#: app/templates/ranking/index.html:12
+msgid "view_ranking_after_tournament"
+msgstr "Consulte le classement à la fin du tournoi de ton choix."
+
+#: app/templates/ranking/monthly.html:26
+msgid "view_monthly_ranking"
+msgstr "Consulte le classement sur l'ensemble du mois de ton choix."
+
+#: app/templates/ranking/monthly.html:50
+msgid "ranking_for_month"
+msgstr "Classement du mois"
+
+#: app/templates/ranking/monthly.html:65 app/templates/ranking/ranking.html:38
+msgid "number_of_tournaments"
+msgstr "Nombre de tournois"
+
+#: app/templates/ranking/ranking.html:22
+msgid "ranking_after_week"
+msgstr "Classement après la semaine"
 
 #: app/tournament/forms.py:9 app/tournament/forms.py:38
 msgid "name"

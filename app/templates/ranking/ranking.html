@@ -19,7 +19,7 @@
 <div class="panel panel-default panel-table">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <a href="{{ url_for('ranking.index') }}">Classement</a> après la semaine {{ week.get_name() }}
+            {{ _("ranking_after_week") }} {{ week.get_name() }}
         </h3>
     </div>
 
@@ -32,9 +32,9 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Pseudo</th>
-                    <th>Points</th>
-                    <th>Nombre de tournois</th>
+                    <th>{{ _("username") }}</th>
+                    <th>{{ _("points") }}</th>
+                    <th>{{ _("number_of_tournaments") }}</th>
                 </tr>
                 </thead>
                 <tbody>
