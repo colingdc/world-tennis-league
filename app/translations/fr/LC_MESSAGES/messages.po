@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 11:44+0100\n"
+"POT-Creation-Date: 2024-11-05 11:52+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -250,8 +250,12 @@ msgstr "Classements par mois"
 msgid "ranking"
 msgstr "Classement"
 
-#: app/templates/auth/change_password.html:37 app/templates/auth/login.html:36
-#: app/templates/auth/reset_password.html:37
+#: app/templates/_macros.html:15
+msgid "close"
+msgstr "Fermer"
+
+#: app/templates/_macros.html:17 app/templates/auth/change_password.html:37
+#: app/templates/auth/login.html:36 app/templates/auth/reset_password.html:37
 #: app/templates/auth/reset_password_request.html:23
 #: app/templates/auth/signup.html:36 app/templates/main/settings.html:22
 #: app/templates/player/create_player.html:33
@@ -264,6 +268,16 @@ msgstr "Classement"
 #: app/templates/tournament/view_tournament.html:93
 msgid "confirm"
 msgstr "Valider"
+
+#: app/templates/_macros.html:27 app/templates/main/view_users.html:47
+#: app/templates/main/view_users_raw.html:14
+msgid "yes"
+msgstr "Oui"
+
+#: app/templates/_macros.html:35 app/templates/main/view_users.html:47
+#: app/templates/main/view_users_raw.html:14
+msgid "no"
+msgstr "Non"
 
 #: app/templates/auth/login.html:40
 msgid "not_registered_yet?"
@@ -434,16 +448,6 @@ msgstr "Compte confirmé"
 #: app/templates/main/view_users.html:34
 msgid "tournaments_played"
 msgstr "Tournois joués"
-
-#: app/templates/main/view_users.html:47
-#: app/templates/main/view_users_raw.html:14
-msgid "yes"
-msgstr "Oui"
-
-#: app/templates/main/view_users.html:47
-#: app/templates/main/view_users_raw.html:14
-msgid "no"
-msgstr "Non"
 
 #: app/templates/main/view_users_raw.html:6
 msgid "validated"
