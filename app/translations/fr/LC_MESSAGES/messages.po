@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-05 16:21+0100\n"
+"POT-Creation-Date: 2024-11-05 16:43+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -17,6 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
+
+#: app/errors.py:24
+msgid "access_denied"
+msgstr "Vous n'êtes pas autorisé à accéder à cette page."
+
+#: app/errors.py:35
+msgid "page_not_found"
+msgstr "Cette page n'existe pas."
+
+#: app/errors.py:45 app/errors.py:55 app/errors.py:66
+msgid "an_error_occurred"
+msgstr "Une erreur est survenue."
 
 #: app/auth/forms.py:9 app/auth/forms.py:76 app/auth/forms.py:87
 #: app/templates/main/view_users.html:31

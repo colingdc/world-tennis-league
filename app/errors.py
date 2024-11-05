@@ -1,4 +1,5 @@
 from flask import render_template, request, jsonify, current_app
+from flask_babel import _
 
 from .navigation import go_to_login_page
 
@@ -20,7 +21,7 @@ def forbidden(e):
         response.status_code = 403
         return response
     current_app.logger.error("Unauthorized: %s", (request.path))
-    return render_template("errors/403.html"), 403
+    return render_template("errors/error.html", message=_("access_denied")), 403
 
 
 def page_not_found(e):
@@ -31,7 +32,7 @@ def page_not_found(e):
         return response
     if not request.path.endswith("robots.txt"):
         current_app.logger.error("Page not found: %s", (request.path))
-    return render_template("errors/404.html"), 404
+    return render_template("errors/error.html", message=_("page_not_found")), 404
 
 
 def bad_request(e):
@@ -41,7 +42,7 @@ def bad_request(e):
         response.status_code = 400
         return response
     current_app.logger.error("Bad request: %s", (request.path))
-    return render_template("errors/400.html"), 400
+    return render_template("errors/error.html", message=_("an_error_occurred")), 400
 
 
 def internal_server_error(e):
@@ -51,7 +52,7 @@ def internal_server_error(e):
         response.status_code = 500
         return response
     current_app.logger.error("Server Error: {}, {}".format(request.path, e))
-    return render_template('errors/500.html'), 500
+    return render_template("errors/error.html", message=_("an_error_occurred")), 500
 
 
 def unhandled_exception(e):
@@ -62,4 +63,4 @@ def unhandled_exception(e):
         return response
     current_app.logger.error(
         'Unhandled exception: {}, {}'.format(request.path, e))
-    return render_template('errors/500.html'), 500
+    return render_template("errors/error.html", message=_("an_error_occurred")), 500
