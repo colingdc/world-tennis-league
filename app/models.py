@@ -1,6 +1,7 @@
 import datetime
 
 from flask import current_app
+from flask_babel import _
 from flask_login import AnonymousUserMixin, UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy import func
@@ -212,13 +213,14 @@ class Tournament(db.Model):
         db.session.commit()
 
     def get_status(self):
-        statuses = {
-            10: "Créé",
-            20: "Ouvert aux inscriptions",
-            30: "En cours",
-            40: "Terminé"
-        }
-        return statuses.get(self.status)
+        if self.status == TournamentStatus.CREATED:
+            return _("tournament_status_created")
+        if self.status == TournamentStatus.REGISTRATION_OPEN:
+            return _("tournament_status_registration_open")
+        if self.status == TournamentStatus.ONGOING:
+            return _("tournament_status_ongoing")
+        if self.status == TournamentStatus.FINISHED:
+            return _("tournament_status_finished")
 
     def is_open_to_registration(self):
         return self.status == TournamentStatus.REGISTRATION_OPEN
