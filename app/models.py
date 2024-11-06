@@ -23,9 +23,6 @@ class User(UserMixin, db.Model):
     participations = db.relationship("Participation", backref="user", lazy="dynamic")
     rankings = db.relationship("Ranking", backref="user", lazy="dynamic")
 
-    def __repr__(self):
-        return "<User %r>" % self.username
-
     def is_anonymous(self):
         return False
 
@@ -227,9 +224,6 @@ class Role(db.Model):
             db.session.add(role)
         db.session.commit()
 
-    def __repr__(self):
-        return self.name
-
 
 class TournamentWeek(db.Model):
     __tablename__ = "tournament_weeks"
@@ -277,9 +271,6 @@ class Tournament(db.Model):
     participations = db.relationship("Participation", backref="tournament", lazy="dynamic")
     players = db.relationship("TournamentPlayer", backref="tournament", lazy="dynamic")
     matches = db.relationship("Match", backref="tournament", lazy="dynamic")
-
-    def __repr__(self):
-        return self.name
 
     def delete(self):
         db.session.delete(self)
@@ -472,9 +463,6 @@ class TournamentPlayer(db.Model):
         lazy='dynamic')
     participations = db.relationship("Participation", backref="tournament_player", lazy="dynamic")
 
-    def __repr__(self):
-        return f"{self.id}, {self.get_name()}"
-
     def get_name(self, format="full"):
         if self.player is None:
             full_name = ""
@@ -622,10 +610,6 @@ class Ranking(db.Model):
 
     tournament_week_id = db.Column(db.Integer, db.ForeignKey('tournament_weeks.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-    def __repr__(self):
-        return (f"User {self.user_id}, {self.year_to_date_points} points " +
-                f"(#{self.year_to_date_ranking})")
 
     @staticmethod
     def compute_rankings(week=None):
