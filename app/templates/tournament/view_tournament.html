@@ -311,8 +311,10 @@
     <div class="panel-heading">
         <h3 class="panel-title">
             <a data-toggle="collapse" href="#collapse3">
-                Participants{% if tournament.participations.count() %} ({{ tournament.participations.count() }}){% endif
-                %}
+                {{ _("participants") }}
+                {% if tournament.participations.count() %}
+                ({{ tournament.participations.count() }})
+                {% endif %}
             </a>
         </h3>
     </div>
