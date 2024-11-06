@@ -170,17 +170,17 @@ class TournamentWeek(db.Model):
     tournaments = db.relationship("Tournament", backref="week", lazy="dynamic")
     rankings = db.relationship("Ranking", backref="week", lazy="dynamic")
 
-    def get_name(self, format="long"):
+    def get_short_name(self):
         year, week_number, _ = self.start_date.isocalendar()
-        if format == "long":
-            name = f"{week_number} {year} - "
-            name += ", ".join([t.name for t in self.tournaments])
-            return name
-        if format == "ranking":
-            name = f"Semaine {week_number} {year} - "
-            name += ", ".join([t.name for t in self.tournaments])
-            return name
         return f"{year} Semaine {week_number}"
+
+    def get_long_name(self):
+        year, week_number, _ = self.start_date.isocalendar()
+        tournament_names = ", ".join([t.name for t in self.tournaments])
+        return f"{week_number} {year} - {tournament_names}"
+
+    def get_full_name(self):
+        return "Semaine " + self.get_long_name()
 
 
 class TournamentStatus:
