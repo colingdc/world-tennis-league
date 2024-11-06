@@ -20,10 +20,6 @@ def permission_required(permission=None):
     return decorator
 
 
-def admin_required(f):
-    return permission_required(Permission.ADMINISTER)(f)
-
-
 def manager_required(f):
     return permission_required(Permission.MANAGE_TOURNAMENT)(f)
 

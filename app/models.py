@@ -70,32 +70,6 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
-    @staticmethod
-    def create_or_update(email, username, password, confirmed=True, role_name="User"):
-        role = Role.query.filter_by(name=role_name).first()
-        if role is None:
-            raise ValueError("This role does not exist")
-        user = User.query.filter_by(email=email).first()
-        email_exists = user is not None
-        if not email_exists:
-            user = User(
-                email=email,
-                role=role,
-                confirmed=confirmed,
-                username=username,
-                password=password
-            )
-        try:
-            db.session.add(user)
-            db.session.commit()
-            if email_exists:
-                print(f"User {username} updated successfully")
-            else:
-                print(f"User {username} created successfully")
-        except Exception as e:
-            print(str(e))
-            db.session.rollback()
-
     def delete(self):
         db.session.delete(self)
         db.session.commit()
@@ -105,9 +79,6 @@ class User(UserMixin, db.Model):
             return False
 
         return (self.role.permissions & permissions) == permissions
-
-    def is_administrator(self):
-        return self.can(Permission.ADMINISTER)
 
     def is_manager(self):
         return self.can(Permission.MANAGE_TOURNAMENT)
@@ -177,9 +148,6 @@ class User(UserMixin, db.Model):
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
-        return False
-
-    def is_administrator(self):
         return False
 
     def is_manager(self):
