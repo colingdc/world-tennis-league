@@ -30,7 +30,7 @@ def make_forecast(tournament_id):
         return go_to_tournament_page(tournament_id)
 
     forecast = int(request.form["player"])
-    participation = current_user.participation(tournament)
+    participation = current_user.get_participation(tournament)
     forbidden_forecasts = participation.get_forbidden_forecasts()
     allowed_forecasts = [x.id for x in tournament.get_allowed_forecasts()]
 

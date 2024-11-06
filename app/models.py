@@ -111,7 +111,7 @@ class User(UserMixin, db.Model):
         return participations.first() or False
 
     def is_registered_to_tournament(self, tournament):
-        return self.participation(tournament) is not None
+        return self.get_participation(tournament) is not None
 
     def can_make_forecast(self, tournament):
         return (
@@ -119,7 +119,7 @@ class User(UserMixin, db.Model):
                 and self.is_registered_to_tournament(tournament)
         )
 
-    def participation(self, tournament):
+    def get_participation(self, tournament):
         return (
             self.participations
                 .join(Tournament)
@@ -127,7 +127,7 @@ class User(UserMixin, db.Model):
         )
 
     def make_forecast(self, tournament, tournament_player_id):
-        participation = self.participation(tournament)
+        participation = self.get_participation(tournament)
         participation.tournament_player_id = tournament_player_id
         db.session.add(self)
         db.session.commit()

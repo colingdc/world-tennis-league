@@ -16,7 +16,7 @@ def view_tournament(tournament_id):
     if current_user.can_make_forecast(tournament):
         form = MakeForecastForm()
 
-        participation = current_user.participation(tournament)
+        participation = current_user.get_participation(tournament)
 
         form.player.choices = [(-1, _("choose_a_player"))]
         form.player.choices += [(p.id, p.get_reversed_name())

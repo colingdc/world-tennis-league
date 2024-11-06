@@ -111,12 +111,12 @@
                     </div>
                     {% endif %}
 
-                    {% elif current_user.participation(tournament) %}
+                    {% elif current_user.get_participation(tournament) %}
                     <h4>{{ _("my_forecast") }}</h4>
                     <p>
                         {{
                         current_user
-                        .participation(tournament)
+                        .get_participation(tournament)
                         .tournament_player.get_standard_name()
                         }}
                     </p>
