@@ -370,8 +370,8 @@ class Player(db.Model):
                 return self.last_name.upper()
 
     @classmethod
-    def get_all(cls, format="last_name_first"):
-        return [(p.id, p.get_name(format))
+    def get_all(cls):
+        return [(p.id, p.get_name("last_name_first"))
                 for p in cls.query.order_by(cls.last_name, cls.first_name).all()]
 
 
