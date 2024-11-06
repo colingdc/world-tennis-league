@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% from "macros/tournament_panel_heading.html" import tournament_panel_heading %}
+{% from "macros/player_round_reached.html" import player_round_reached %}
 
 {% block styles %}
 {{ super() }}
@@ -38,7 +39,7 @@
                 <tr>
                     <td>{{ player.get_standard_name() }}</td>
                     <td>{{ player.participations.count() }}</td>
-                    <td>{{ player.get_status() | safe }}</td>
+                    <td>{{ player_round_reached(player.get_status()) }}</td>
                 </tr>
                 {% endif %}
                 {% endfor %}

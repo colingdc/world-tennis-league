@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% from "macros/confirmation_modal.html" import confirmation_modal %}
+{% from "macros/player_round_reached.html" import player_round_reached %}
 
 {% block styles %}
 {{ super() }}
@@ -354,7 +355,7 @@
 
                         {% if participant.tournament_player %}
                         <td>{{ participant.tournament_player.get_standard_name() }}</td>
-                        <td>{{ participant.get_status() | safe }}</td>
+                        <td>{{ player_round_reached(participant.get_status()) }}</td>
                         <td>{{ participant.compute_score() }}</td>
                         {% else %}
                         <td></td>

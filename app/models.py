@@ -425,6 +425,12 @@ class TournamentPlayer(db.Model):
         else:
             return self.player.get_standard_name()
 
+    def get_reversed_name(self):
+        if self.player is None:
+            return self.get_qualifier_name()
+        else:
+            return self.player.get_reversed_name()
+
     def get_opponent(self, match):
         if self.id == match.tournament_player1_id:
             return match.tournament_player2
@@ -483,12 +489,11 @@ class TournamentPlayer(db.Model):
         round_name = round_names[::-1][last_match.round - 1]
 
         if self.has_lost():
-            return f"Eliminé ({round_name}) <span class='fa fa-times'></span>"
-
-        if self.has_won_tournament():
-            return "Vainqueur <span class='fa fa-trophy'></span>"
-
-        return f"En course ({round_name})"
+            return {"status": "lost", "round_name": round_name}
+        elif self.has_won_tournament():
+            return {"status": "won_tournament"}
+        else:
+            return {"status": "still_playing", "round_name": round_name}
 
 
 class Match(db.Model):
