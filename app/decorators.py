@@ -7,13 +7,13 @@ from .models import Permission
 from .navigation import go_to_account_unconfirmed_page, go_to_login_page
 
 
-def permission_required(permission=None):
+def permission_required(permission):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_user.is_authenticated:
                 abort(401)
-            if permission is not None and not current_user.can(permission):
+            if not current_user.can(permission):
                 abort(403)
             return f(*args, **kwargs)
         return decorated_function
