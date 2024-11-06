@@ -222,6 +222,9 @@ class Tournament(db.Model):
         if self.status == TournamentStatus.FINISHED:
             return _("tournament_status_finished")
 
+    def is_special_tournament(self):
+        return self.category == "World Tour Finals"
+
     def is_open_to_registration(self):
         return self.status == TournamentStatus.REGISTRATION_OPEN
 
@@ -301,8 +304,9 @@ class Participation(db.Model):
         return self.tournament_player_id is not None
 
     def get_forbidden_forecasts(self):
-        if self.tournament.category == "World Tour Finals":
+        if self.tournament.is_special_tournament():
             return []
+
         players = self.tournament.get_allowed_forecasts()
         current_year = func.year(self.tournament.week.start_date)
         current_year_participations = (
@@ -321,8 +325,9 @@ class Participation(db.Model):
                 if p.player_id in players_already_picked]
 
     def compute_score(self):
-        if self.tournament.category == "World Tour Finals":
+        if self.tournament.is_special_tournament():
             return self.points or 0
+
         points = self.tournament.get_attributed_points()
         if self.tournament_player.has_won_tournament():
             return points[0]
