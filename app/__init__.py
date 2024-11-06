@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_babel import Babel, format_datetime
 from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
@@ -54,6 +54,7 @@ def create_app(config_name):
     register_loggers(app)
     register_datetime_filters(app)
     register_blueprints(app)
+    register_favicon_route(app)
     register_error_handlers(app)
 
     return app
@@ -121,6 +122,12 @@ def register_blueprints(app):
 
     from .player import bp as player_blueprint
     app.register_blueprint(player_blueprint, url_prefix="/wtl/player")
+
+
+def register_favicon_route(app):
+    @app.route("/favicon.ico")
+    def favicon():
+        return redirect(url_for("static", filename="images/logo.png"))
 
 
 def register_error_handlers(app):
