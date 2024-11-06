@@ -26,6 +26,11 @@ def signup():
 
         if user_exists or email_exists:
             return render_signup_page(form)
+
+        elif is_bot_attempt(form.username.data):
+            current_app.logger.warn("Blocked bot signup attempt: {}, {}".format(form.username.data, form.email.data))
+            return render_signup_page(form)
+
         else:
             user = create_user(form.username.data, form.email.data, form.password.data)
 
@@ -56,6 +61,10 @@ def signup():
             return go_to_account_unconfirmed_page()
     else:
         return render_signup_page(form)
+
+
+def is_bot_attempt(username):
+    return "http" in username
 
 
 def render_signup_page(form):
