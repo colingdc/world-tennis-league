@@ -1,13 +1,13 @@
 {% macro player_round_reached(player_status) %}
 
 {% if player_status["status"] == "lost" %}
-Eliminé ({{ player_status["round_name"] }}) <span class='fa fa-times'></span>
+{{ _("eliminated") }} ({{ player_status["round_name"] }}) <span class='fa fa-times'></span>
 
 {% elif player_status["status"] == "won_tournament" %}
-Vainqueur <span class='fa fa-trophy'></span>
+{{ _("winner") }} <span class='fa fa-trophy'></span>
 
 {% elif player_status["status"] == "still_playing" %}
-En course ({{ player_status["round_name"] }})
+{{ _("still_playing") }} ({{ player_status["round_name"] }})
 
 {% endif %}
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-06 13:22+0100\n"
+"POT-Creation-Date: 2024-11-06 14:08+0100\n"
 "PO-Revision-Date: 2024-11-04 13:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -38,11 +38,11 @@ msgstr "Créé"
 msgid "tournament_status_registration_open"
 msgstr "Ouvert aux inscriptions"
 
-#: app/models.py:222
+#: app/models.py:221
 msgid "tournament_status_ongoing"
 msgstr "En cours"
 
-#: app/models.py:225
+#: app/models.py:223
 msgid "tournament_status_finished"
 msgstr "Terminé"
 
@@ -290,7 +290,7 @@ msgstr "Classement"
 #: app/templates/ranking/monthly.html:36
 #: app/templates/tournament/create_tournament.html:63
 #: app/templates/tournament/edit_tournament.html:61
-#: app/templates/tournament/view_tournament.html:93
+#: app/templates/tournament/view_tournament.html:94
 msgid "confirm"
 msgstr "Valider"
 
@@ -368,8 +368,20 @@ msgstr "Oui"
 msgid "no"
 msgstr "Non"
 
+#: app/templates/macros/player_round_reached.html:4
+msgid "eliminated"
+msgstr "Eliminé"
+
+#: app/templates/macros/player_round_reached.html:7
+msgid "winner"
+msgstr "Vainqueur"
+
+#: app/templates/macros/player_round_reached.html:10
+msgid "still_playing"
+msgstr "En course"
+
 #: app/templates/macros/tournament_draw_creation.html:17
-#: app/templates/tournament/stats.html:30
+#: app/templates/tournament/stats.html:31
 msgid "player"
 msgstr "Joueur"
 
@@ -447,31 +459,31 @@ msgstr "Je me connecte"
 msgid "my_profile_settings"
 msgstr "Paramètres de mon profil"
 
-#: app/templates/main/view_user.html:7 app/user/views/view_user.py:25
+#: app/templates/main/view_user.html:9 app/user/views/view_user.py:25
 msgid "profile_of"
 msgstr "Profil de %(username)s"
 
-#: app/templates/main/view_user.html:25
-#: app/templates/tournament/view_tournament.html:159
+#: app/templates/main/view_user.html:27
+#: app/templates/tournament/view_tournament.html:160
 #: app/templates/tournament/view_tournaments.html:38
 msgid "tournament"
 msgstr "Tournoi"
 
-#: app/templates/main/view_user.html:26
+#: app/templates/main/view_user.html:28
 msgid "chosen_player"
 msgstr "Joueur choisi"
 
-#: app/templates/main/view_user.html:27 app/templates/tournament/stats.html:32
-#: app/templates/tournament/view_tournament.html:335
+#: app/templates/main/view_user.html:29 app/templates/tournament/stats.html:33
+#: app/templates/tournament/view_tournament.html:336
 msgid "round_reached"
 msgstr "Stade atteint"
 
-#: app/templates/main/view_user.html:28 app/templates/ranking/monthly.html:62
+#: app/templates/main/view_user.html:30 app/templates/ranking/monthly.html:62
 #: app/templates/ranking/ranking.html:34
 msgid "points"
 msgstr "Points"
 
-#: app/templates/main/view_user.html:29
+#: app/templates/main/view_user.html:31
 msgid "atp_ranking"
 msgstr "Classement ATP"
 
@@ -669,12 +681,12 @@ msgid "ranking_after_week"
 msgstr "Classement après la semaine"
 
 #: app/templates/tournament/create_tournament_draw.html:9
-#: app/templates/tournament/view_tournament.html:270
+#: app/templates/tournament/view_tournament.html:271
 msgid "create_draw"
 msgstr "Créer le tableau"
 
 #: app/templates/tournament/edit_tournament.html:20
-#: app/templates/tournament/view_tournament.html:167
+#: app/templates/tournament/view_tournament.html:168
 msgid "edit_tournament"
 msgstr "Modifier le tournoi"
 
@@ -682,16 +694,16 @@ msgstr "Modifier le tournoi"
 msgid "edit_draw"
 msgstr "Modifier le tableau"
 
-#: app/templates/tournament/stats.html:20
+#: app/templates/tournament/stats.html:21
 msgid "statistics"
 msgstr "Statistiques"
 
-#: app/templates/tournament/stats.html:31
+#: app/templates/tournament/stats.html:32
 msgid "number_of_forecasts"
 msgstr "Nombre de pronostics"
 
 #: app/templates/tournament/update_tournament_draw.html:16
-#: app/templates/tournament/view_tournament.html:295
+#: app/templates/tournament/view_tournament.html:296
 msgid "update_draw"
 msgstr "Mettre à jour le tableau"
 
@@ -707,122 +719,122 @@ msgstr "Ctrl + clic pour effacer le contenu d'une case du tableau."
 msgid "confirm_modifications"
 msgstr "Valider les modifications"
 
-#: app/templates/tournament/view_tournament.html:28
+#: app/templates/tournament/view_tournament.html:29
 msgid "this_tournament_is_finished"
 msgstr "Ce tournoi est désormais terminé."
 
-#: app/templates/tournament/view_tournament.html:39
+#: app/templates/tournament/view_tournament.html:40
 msgid "you_are_already_registered_to_other_tournament_this_week"
 msgstr ""
 "Tu es déjà inscrit au tournoi %(link)s cette semaine et ne peux donc pas "
 "t'inscrire à ce tournoi."
 
-#: app/templates/tournament/view_tournament.html:48
+#: app/templates/tournament/view_tournament.html:49
 msgid "the_tournament"
 msgstr "Le tournoi"
 
-#: app/templates/tournament/view_tournament.html:49
+#: app/templates/tournament/view_tournament.html:50
 #: app/templates/tournament/view_tournaments.html:40 app/tournament/forms.py:15
 msgid "category"
 msgstr "Catégorie"
 
-#: app/templates/tournament/view_tournament.html:52
+#: app/templates/tournament/view_tournament.html:53
 msgid "view_draw"
 msgstr "Voir le tableau"
 
-#: app/templates/tournament/view_tournament.html:59
+#: app/templates/tournament/view_tournament.html:60
 msgid "statistics_on_forecasts"
 msgstr "Statistiques sur les pronostics"
 
-#: app/templates/tournament/view_tournament.html:68
+#: app/templates/tournament/view_tournament.html:69
 #: app/templates/tournament/view_tournaments.html:42
 msgid "registration_deadline"
 msgstr "Date limite d'inscription"
 
-#: app/templates/tournament/view_tournament.html:74
+#: app/templates/tournament/view_tournament.html:75
 msgid "I_register_to_tournament"
 msgstr "Je m'inscris au tournoi"
 
-#: app/templates/tournament/view_tournament.html:80
-#: app/templates/tournament/view_tournament.html:114
+#: app/templates/tournament/view_tournament.html:81
+#: app/templates/tournament/view_tournament.html:115
 msgid "my_forecast"
 msgstr "Mon pronostic"
 
-#: app/templates/tournament/view_tournament.html:99
-#: app/templates/tournament/view_tournament.html:107
-#: app/templates/tournament/view_tournament.html:125
-#: app/templates/tournament/view_tournament.html:133
+#: app/templates/tournament/view_tournament.html:100
+#: app/templates/tournament/view_tournament.html:108
+#: app/templates/tournament/view_tournament.html:126
+#: app/templates/tournament/view_tournament.html:134
 msgid "withdraw_from_tournament"
 msgstr "Me retirer du tournoi"
 
-#: app/templates/tournament/view_tournament.html:101
-#: app/templates/tournament/view_tournament.html:127
+#: app/templates/tournament/view_tournament.html:102
+#: app/templates/tournament/view_tournament.html:128
 msgid "confirm_withdraw_from_tournament"
 msgstr "Confirmer la désinscription du tournoi ?"
 
-#: app/templates/tournament/view_tournament.html:150
+#: app/templates/tournament/view_tournament.html:151
 msgid "tournament_management"
 msgstr "Gestion du tournoi"
 
-#: app/templates/tournament/view_tournament.html:178
-#: app/templates/tournament/view_tournament.html:186
+#: app/templates/tournament/view_tournament.html:179
+#: app/templates/tournament/view_tournament.html:187
 msgid "close_tournament"
 msgstr "Clôturer le tournoi"
 
-#: app/templates/tournament/view_tournament.html:180
+#: app/templates/tournament/view_tournament.html:181
 msgid "confirm_close_tournament"
 msgstr "Confirmer la clôture du tournoi ?"
 
-#: app/templates/tournament/view_tournament.html:197
+#: app/templates/tournament/view_tournament.html:198
 msgid "registrations"
 msgstr "Inscriptions"
 
-#: app/templates/tournament/view_tournament.html:204
-#: app/templates/tournament/view_tournament.html:212
+#: app/templates/tournament/view_tournament.html:205
+#: app/templates/tournament/view_tournament.html:213
 msgid "close_registrations"
 msgstr "Fermer les inscriptions"
 
-#: app/templates/tournament/view_tournament.html:206
+#: app/templates/tournament/view_tournament.html:207
 msgid "confirm_close_registrations"
 msgstr "Confirmer la fermeture des inscriptions ?"
 
-#: app/templates/tournament/view_tournament.html:222
-#: app/templates/tournament/view_tournament.html:230
+#: app/templates/tournament/view_tournament.html:223
+#: app/templates/tournament/view_tournament.html:231
 msgid "send_notification_emails"
 msgstr "Envoyer les mails de notification"
 
-#: app/templates/tournament/view_tournament.html:224
+#: app/templates/tournament/view_tournament.html:225
 msgid "confirm_send_notification_emails"
 msgstr ""
 "Les utilisateurs seront notifiés de l'ouverture des inscriptions des "
 "tournois de la semaine. Confirmer l'envoi du mail ?"
 
-#: app/templates/tournament/view_tournament.html:242
-#: app/templates/tournament/view_tournament.html:250
+#: app/templates/tournament/view_tournament.html:243
+#: app/templates/tournament/view_tournament.html:251
 msgid "open_registrations"
 msgstr "Ouvrir les inscriptions"
 
-#: app/templates/tournament/view_tournament.html:244
+#: app/templates/tournament/view_tournament.html:245
 msgid "confirm_open_registrations"
 msgstr "Confirmer l'ouverture des inscriptions ?"
 
-#: app/templates/tournament/view_tournament.html:283
+#: app/templates/tournament/view_tournament.html:284
 msgid "edit_starting_draw"
 msgstr "Modifier le tableau de départ"
 
-#: app/templates/tournament/view_tournament.html:322
+#: app/templates/tournament/view_tournament.html:323
 msgid "no_participant_yet"
 msgstr "Aucun participant à ce tournoi pour le moment"
 
-#: app/templates/tournament/view_tournament.html:332
+#: app/templates/tournament/view_tournament.html:333
 msgid "participant"
 msgstr "Participant"
 
-#: app/templates/tournament/view_tournament.html:334
+#: app/templates/tournament/view_tournament.html:335
 msgid "forecast"
 msgstr "Pronostic"
 
-#: app/templates/tournament/view_tournament.html:336
+#: app/templates/tournament/view_tournament.html:337
 msgid "score"
 msgstr "Score"
 
