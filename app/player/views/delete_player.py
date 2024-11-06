@@ -21,6 +21,6 @@ def delete_player(player_id):
 
     player.delete()
 
-    display_info_message(_("player_deleted", player_name=player.get_name()))
+    display_info_message(_("player_deleted", player_name=player.get_standard_name()))
 
     return redirect(url_for(".view_players"))

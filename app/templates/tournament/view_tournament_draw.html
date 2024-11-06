@@ -45,7 +45,7 @@
                                 {% elif match.get_previous_match(0).has_bye() %}non-forecasted{% endif %}"
                         >
                             {% if match.tournament_player1_id %}
-                            {{ match.tournament_player1.get_name() | truncate(35) }}
+                            {{ match.tournament_player1.get_full_name() | truncate(35) }}
                             {% else %}
                             {% endif %}
                         </div>
@@ -60,7 +60,7 @@
                                 {% elif match.get_previous_match(1).has_bye() %}non-forecasted{% endif %}"
                         >
                             {% if match.tournament_player2_id %}
-                            {{ match.tournament_player2.get_name() | truncate(35) }}
+                            {{ match.tournament_player2.get_full_name() | truncate(35) }}
                             {% else %}
                             {% endif %}
                         </div>
@@ -76,7 +76,7 @@
                     <a href="#">
                         <div id="player-0-1" class="game game-player">
                             {% if tournament.get_last_match().winner %}
-                            {{ tournament.get_last_match().winner.get_name() | truncate(35) }}
+                            {{ tournament.get_last_match().winner.get_full_name() | truncate(35) }}
                             {% else %}
                             {% endif %}
                         </div>

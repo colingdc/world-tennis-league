@@ -12,6 +12,6 @@ def view_player(player_id):
 
     return render_template(
         "player/view_player.html",
-        title=player.get_name(),
+        title=player.get_standard_name(),
         player=player
     )

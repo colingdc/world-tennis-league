@@ -36,7 +36,7 @@
                 {% for player in tournament.players %}
                 {% if player.participations.count() %}
                 <tr>
-                    <td>{{ player.get_name() }}</td>
+                    <td>{{ player.get_standard_name() }}</td>
                     <td>{{ player.participations.count() }}</td>
                     <td>{{ player.get_status() | safe }}</td>
                 </tr>

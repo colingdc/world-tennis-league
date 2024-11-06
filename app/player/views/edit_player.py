@@ -21,12 +21,12 @@ def edit_player(player_id):
     if form.validate_on_submit():
         update_player(player, form.first_name.data, form.last_name.data)
 
-        display_info_message(_("player_updated", player_name=player.get_name()))
+        display_info_message(_("player_updated", player_name=player.get_standard_name()))
         return redirect(url_for(".view_players"))
     else:
         return render_template(
             "player/edit_player.html",
-            title=player.get_name(),
+            title=player.get_standard_name(),
             form=form,
             player=player
         )

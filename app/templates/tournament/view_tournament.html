@@ -116,7 +116,7 @@
                         {{
                         current_user
                         .participation(tournament)
-                        .tournament_player.get_name("standard")
+                        .tournament_player.get_standard_name()
                         }}
                     </p>
                     {% if tournament.is_open_to_registration() %}
@@ -353,7 +353,7 @@
                         {% if not tournament.is_open_to_registration() %}
 
                         {% if participant.tournament_player %}
-                        <td>{{ participant.tournament_player.get_name("standard") }}</td>
+                        <td>{{ participant.tournament_player.get_standard_name() }}</td>
                         <td>{{ participant.get_status() | safe }}</td>
                         <td>{{ participant.compute_score() }}</td>
                         {% else %}

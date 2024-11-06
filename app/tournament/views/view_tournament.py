@@ -19,7 +19,7 @@ def view_tournament(tournament_id):
         participation = current_user.participation(tournament)
 
         form.player.choices = [(-1, _("choose_a_player"))]
-        form.player.choices += [(p.id, p.get_name("last_name_first"))
+        form.player.choices += [(p.id, p.get_reversed_name())
                                 for p in tournament.get_allowed_forecasts()]
 
         forbidden_forecasts = participation.get_forbidden_forecasts()

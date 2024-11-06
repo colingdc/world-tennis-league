@@ -61,7 +61,7 @@
                         </div>
                         <div class="btn-group" role="group">
                             <div
-                                    data-title="{{ _('delete_player') }} {{ player.get_name() }}"
+                                    data-title="{{ _('delete_player') }} {{ player.get_standard_name() }}"
                                     data-action="{{ url_for('.delete_player', player_id=player.id) }}"
                                     data-message="{{ _('confirm_player_deletion') }}"
                             >

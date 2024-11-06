@@ -360,21 +360,24 @@ class Player(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def get_name(self, format="standard"):
-        if format == "standard":
-            return f"{self.first_name} {self.last_name.upper()}"
-        elif format == "last_name_first":
-            return f"{self.last_name.upper()}, {self.first_name}"
-        elif format == "first_name_initial":
-            if self.first_name:
-                return f"{self.first_name[0]}. {self.last_name.upper()}"
-            else:
-                return self.last_name.upper()
+    def get_standard_name(self):
+        return f"{self.first_name} {self.last_name.upper()}"
+
+    def get_reversed_name(self):
+        return f"{self.last_name.upper()}, {self.first_name}"
+
+    def get_short_name(self):
+        if self.first_name:
+            return f"{self.first_name[0]}. {self.last_name.upper()}"
+        else:
+            return self.last_name.upper()
 
     @classmethod
     def get_all(cls):
-        return [(p.id, p.get_name("last_name_first"))
-                for p in cls.query.order_by(cls.last_name, cls.first_name).all()]
+        return [
+            (p.id, p.get_reversed_name())
+            for p in cls.query.order_by(cls.last_name, cls.first_name).all()
+        ]
 
 
 class TournamentPlayer(db.Model):
@@ -397,25 +400,25 @@ class TournamentPlayer(db.Model):
         lazy='dynamic')
     participations = db.relationship("Participation", backref="tournament_player", lazy="dynamic")
 
-    def get_name(self, format="full"):
+    def get_qualifier_name(self):
+        return f"Qualifié {self.qualifier_id}"
+
+    def get_full_name(self):
+        full_name = ""
+        if self.status:
+            full_name += f"[{self.status}] "
+        if self.seed:
+            full_name += f"[{self.seed}] "
         if self.player is None:
-            full_name = ""
-            if self.status:
-                full_name += f"[{self.status}] "
-            if self.seed:
-                full_name += f"[{self.seed}] "
-            full_name += f"Qualifié {self.qualifier_id}"
-            return full_name
-        if format == "full":
-            full_name = ""
-            if self.status:
-                full_name += f"[{self.status}] "
-            if self.seed:
-                full_name += f"[{self.seed}] "
-            full_name += self.player.get_name(format="first_name_initial")
-            return full_name
+            return full_name + self.get_qualifier_name()
         else:
-            return self.player.get_name(format)
+            return full_name + self.player.get_reversed_name()
+
+    def get_standard_name(self):
+        if self.player is None:
+            return self.get_qualifier_name()
+        else:
+            return self.player.get_standard_name()
 
     def get_opponent(self, match):
         if self.id == match.tournament_player1_id:
