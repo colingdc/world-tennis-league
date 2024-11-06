@@ -12,7 +12,6 @@ from .constants import Permission, roles, tournament_categories
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    deleted_at = db.Column(db.DateTime, default=None)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
     confirmed = db.Column(db.Boolean, default=False)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -166,7 +165,6 @@ login_manager.anonymous_user = AnonymousUser
 class TournamentWeek(db.Model):
     __tablename__ = "tournament_weeks"
     id = db.Column(db.Integer, primary_key=True)
-    deleted_at = db.Column(db.DateTime, default=None)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
     start_date = db.Column(db.Date)
     tournaments = db.relationship("Tournament", backref="week", lazy="dynamic")
@@ -196,7 +194,6 @@ class Tournament(db.Model):
     __tablename__ = "tournaments"
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
-    deleted_at = db.Column(db.DateTime, default=None)
 
     name = db.Column(db.String(64))
     started_at = db.Column(db.DateTime)
@@ -287,7 +284,6 @@ class Participation(db.Model):
     __tablename__ = "participations"
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
-    deleted_at = db.Column(db.DateTime, default=None)
     round_reached = db.Column(db.Integer)
     points = db.Column(db.Integer)
 
@@ -354,7 +350,6 @@ class Player(db.Model):
     __tablename__ = "players"
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
-    deleted_at = db.Column(db.DateTime, default=None)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
     tournament_players = db.relationship("TournamentPlayer", backref="player", lazy="dynamic")
@@ -384,7 +379,6 @@ class TournamentPlayer(db.Model):
     __tablename__ = "tournament_players"
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
-    deleted_at = db.Column(db.DateTime, default=None)
     player_id = db.Column(db.Integer, db.ForeignKey('players.id'))
 
     seed = db.Column(db.Integer)
@@ -491,7 +485,6 @@ class Match(db.Model):
     __tablename__ = "matches"
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
-    deleted_at = db.Column(db.DateTime)
 
     position = db.Column(db.Integer)
     round = db.Column(db.Integer)
@@ -540,7 +533,6 @@ class Ranking(db.Model):
     __tablename__ = "rankings"
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
-    deleted_at = db.Column(db.DateTime)
 
     year_to_date_points = db.Column(db.Integer)
     year_to_date_ranking = db.Column(db.Integer)
