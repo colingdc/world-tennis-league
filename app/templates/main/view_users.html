@@ -43,7 +43,7 @@
                         </a>
                     </td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.role }}</td>
+                    <td>{{ user.get_role_name() }}</td>
                     <td>{% if user.confirmed %}{{ _("yes") }}{% else %}{{ _("no") }}{% endif %}</td>
                     <td>{{ user.participations.count() }}</td>
                 </tr>

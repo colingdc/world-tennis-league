@@ -1,3 +1,24 @@
+class Permission:
+    PARTICIPATE_TOURNAMENT = 0x01
+    MANAGE_TOURNAMENT = 0x02
+    ADMINISTER = 0x80
+
+
+roles = {
+    1: {
+        "name": "User",
+        "permissions": Permission.PARTICIPATE_TOURNAMENT,
+    },
+    2: {
+        "name": "Tournament Manager",
+        "permissions": Permission.PARTICIPATE_TOURNAMENT | Permission.MANAGE_TOURNAMENT,
+    },
+    3: {
+        "name": "Administrator",
+        "permissions": 0xff,
+    }
+}
+
 tournament_categories = {
     "Test 3 tours": {
         "full_name": "Test 3 tours",

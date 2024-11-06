@@ -2,7 +2,7 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
 
 from app import create_app, db
-from app.models import Match, Participation, Player, Ranking, Role, Tournament, TournamentPlayer, TournamentStatus, \
+from app.models import Match, Participation, Player, Ranking, Tournament, TournamentPlayer, TournamentStatus, \
     TournamentWeek, User
 from instance import instance
 
@@ -15,7 +15,6 @@ def make_shell_context():
         Participation=Participation,
         Player=Player,
         Ranking=Ranking,
-        Role=Role,
         Tournament=Tournament,
         TournamentPlayer=TournamentPlayer,
         TournamentStatus=TournamentStatus,

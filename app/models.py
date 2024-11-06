@@ -6,7 +6,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy import func
 
 from . import bcrypt, db, login_manager
-from .constants import tournament_categories
+from .constants import Permission, roles, tournament_categories
 
 
 class User(UserMixin, db.Model):
@@ -19,7 +19,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True)
     password_hash = db.Column(db.String(128))
     notifications_activated = db.Column(db.Boolean, default=False)
-    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
+    role_id = db.Column(db.Integer)
     participations = db.relationship("Participation", backref="user", lazy="dynamic")
     rankings = db.relationship("Ranking", backref="user", lazy="dynamic")
 
@@ -75,10 +75,13 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
     def can(self, permissions):
-        if self.role is None:
+        if self.role_id is None:
             return False
 
-        return (self.role.permissions & permissions) == permissions
+        return (roles[self.role_id]["permissions"] & permissions) == permissions
+
+    def get_role_name(self):
+        return roles[self.role_id]["name"]
 
     def is_manager(self):
         return self.can(Permission.MANAGE_TOURNAMENT)
@@ -158,39 +161,6 @@ class AnonymousUser(AnonymousUserMixin):
 
 
 login_manager.anonymous_user = AnonymousUser
-
-
-class Permission:
-    PARTICIPATE_TOURNAMENT = 0x01
-    MANAGE_TOURNAMENT = 0x02
-    ADMINISTER = 0x80
-
-
-class Role(db.Model):
-    __tablename__ = "roles"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True)
-    default = db.Column(db.Boolean, default=False, index=True)
-    permissions = db.Column(db.Integer)
-    users = db.relationship("User", backref="role", lazy="dynamic")
-
-    @staticmethod
-    def insert_roles():
-        roles = {
-            "User": (Permission.PARTICIPATE_TOURNAMENT, True),
-            "Tournament Manager": (Permission.PARTICIPATE_TOURNAMENT |
-                                   Permission.MANAGE_TOURNAMENT,
-                                   False),
-            "Administrator": (0xff, False)
-        }
-        for r in roles:
-            role = Role.query.filter_by(name=r).first()
-            if role is None:
-                role = Role(name=r)
-            role.permissions = roles[r][0]
-            role.default = roles[r][1]
-            db.session.add(role)
-        db.session.commit()
 
 
 class TournamentWeek(db.Model):

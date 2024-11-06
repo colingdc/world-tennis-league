@@ -1,5 +1,5 @@
 from .. import db
-from ..models import User, Role
+from ..models import User
 
 
 def get_user_by_username(username):
@@ -11,13 +11,14 @@ def get_user_by_email(email):
 
 
 def create_user(username, email, password):
-    role = Role.query.filter(Role.name == "User").first()
     user = User(
         username=username,
         email=email,
         password=password,
-        role=role
+        role_id=1
     )
 
     db.session.add(user)
     db.session.commit()
+
+    return user
