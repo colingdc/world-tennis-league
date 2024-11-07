@@ -76,8 +76,11 @@
                     </div>
                     {% endif %}
 
-                    {% if current_user.can_make_forecast(tournament) %}
+                    {% if current_user.is_registered_to_tournament(tournament) %}
+
                     <h4>{{ _("my_forecast") }}</h4>
+
+                    {% if tournament.is_open_to_registration() %}
                     <form
                             action="{{ url_for('.make_forecast', tournament_id=tournament.id) }}"
                             method="POST"
@@ -93,7 +96,6 @@
                             <button class="btn btn-success" type="submit">{{ _("confirm") }}</button>
                         </div>
                     </form>
-                    {% if tournament.is_open_to_registration() %}
                     <div class="btn-group" role="group">
                         <div
                                 data-title="{{ _('withdraw_from_tournament') }}"
@@ -108,17 +110,16 @@
                             </a>
                         </div>
                     </div>
+                    {% else %}
+
+                    {% with participation=current_user.get_participation(tournament) %}
+                    {% if participation.tournament_player %}
+                    <p>{{ participation.tournament_player.get_standard_name() }}</p>
+                    {% endif %}
+                    {% endwith %}
+
                     {% endif %}
 
-                    {% elif current_user.get_participation(tournament) %}
-                    <h4>{{ _("my_forecast") }}</h4>
-                    <p>
-                        {{
-                        current_user
-                        .get_participation(tournament)
-                        .tournament_player.get_standard_name()
-                        }}
-                    </p>
                     {% endif %}
                 </div>
             </div>
