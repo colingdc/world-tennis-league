@@ -12,7 +12,7 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
-                {% if user.get_participations().count() > 3 %}
+                {% if participations | length > 3 %}
                 <div
                         id="ranking-chart"
                         class="chart"
@@ -32,8 +32,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for participation in user.get_participations() %}
-                        {% if not participation.tournament.is_open_to_registration() %}
+                        {% for participation in participations %}
                         <tr>
                             <td>
                                 <a href="{{ url_for('tournament.view_tournament', tournament_id = participation.tournament.id, _external = True) }}">
@@ -47,7 +46,6 @@
                             <td>{{ participation.points }}</td>
                             <td>{{ participation.get_ranking() or "" }}</td>
                         </tr>
-                        {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>

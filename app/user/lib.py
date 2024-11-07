@@ -1,5 +1,5 @@
 from .. import db
-from ..models import Tournament, TournamentWeek, Ranking, User
+from ..models import Tournament, TournamentWeek, Ranking, User, TournamentStatus
 
 
 def fetch_users_that_can_receive_notifications():
@@ -11,6 +11,16 @@ def update_notification_preferences(user, notifications_activated):
 
     db.session.add(user)
     db.session.commit()
+
+
+def get_participations_in_started_tournaments(user):
+    return (
+        user.participations
+            .join(Tournament)
+            .filter(Tournament.status != TournamentStatus.REGISTRATION_OPEN)
+            .order_by(Tournament.started_at.desc())
+            .all()
+    )
 
 
 def generate_chart(user):

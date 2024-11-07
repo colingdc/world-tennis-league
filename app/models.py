@@ -132,9 +132,6 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def get_participations(self):
-        return self.participations.join(Tournament).order_by(Tournament.started_at.desc())
-
     def get_current_ranking(self):
         return (
             Ranking.query
