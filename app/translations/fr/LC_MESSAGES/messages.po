@@ -437,7 +437,7 @@ msgstr "fermeture"
 
 #: app/templates/main/dashboard.html:92
 msgid "registrations_are_open_for_the_following_tournaments"
-msgstr "Les inscriptions sont toujours ouvertes pour les tournois suivants:"
+msgstr "Les inscriptions sont toujours ouvertes pour les tournois suivants :"
 
 #: app/templates/main/index.html:7
 msgid "wtl"

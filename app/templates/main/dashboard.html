@@ -56,45 +56,38 @@
             </div>
             <div class="panel-body">
                 {% with number_ongoing_tournaments = ongoing_tournaments.count() %}
+
                 {% if number_ongoing_tournaments == 1 %}
                 <p>{{ _("one_tournament_ongoing") }}</p>
-                <p>
-                    <span class="fa fa-chevron-right"></span>
-                    {{ link_to_tournament(ongoing_tournaments.first()) }}
-                </p>
                 {% elif number_ongoing_tournaments > 1 %}
-                <p>
-                    {{ _("n_tournaments_ongoing", n=number_ongoing_tournaments) }}
-                </p>
-                {% for t in ongoing_tournaments %}
+                <p>{{ _("n_tournaments_ongoing", n=number_ongoing_tournaments) }}</p>
+                {% endif %}
+
+                {% for tournament in ongoing_tournaments %}
                 <p>
                     <span class="fa fa-chevron-right"></span>
-                    {{ link_to_tournament(t) }}
+                    {{ link_to_tournament(tournament) }}
                 </p>
                 {% endfor %}
-                {% endif %}
+
                 {% endwith %}
 
                 {% with number_open_tournaments = open_tournaments.count() %}
+
                 {% if number_open_tournaments == 1 %}
                 <p>{{ _("registrations_are_open_for_one_tournament") }}</p>
-                <p>
-                    <span class="fa fa-chevron-right"></span>
-                    {{ link_to_tournament(open_tournaments.first()) }}
-                    ({{ _("closing") }} {{ open_tournaments.first().started_at | dt_diff }}).
-                </p>
                 {% elif number_open_tournaments > 1 %}
-                <p>
-                    {{ _("registrations_are_open_for_the_following_tournaments") }}
-                </p>
-                {% for t in open_tournaments %}
+                <p>{{ _("registrations_are_open_for_the_following_tournaments") }}</p>
+                {% endif %}
+
+                {% for tournament in open_tournaments %}
                 <p>
                     <span class="fa fa-chevron-right"></span>
-                    {{ link_to_tournament(t) }}
-                    ({{ _("closing") }} {{ t.started_at | dt_diff }})
+                    {{ link_to_tournament(tournament) }}
+                    ({{ _("closing") }} {{ tournament.started_at | dt_diff }})
                 </p>
                 {% endfor %}
-                {% endif %}
+
                 {% endwith %}
             </div>
         </div>
