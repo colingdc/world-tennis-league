@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% from "macros/confirmation_modal.html" import confirmation_modal %}
+{% from "macros/link_to_tournament.html" import link_to_tournament %}
 {% from "macros/player_round_reached.html" import player_round_reached %}
 
 {% block styles %}
@@ -33,9 +34,7 @@
             {% if participation %}
             <div class="alert alert-info">
                 {% set other_tournament_link %}
-                <a href="{{ url_for('tournament.view_tournament', tournament_id=participation.tournament_id) }}">
-                    {{ participation.tournament.name }}
-                </a>
+                {{ link_to_tournament(participation.tournament) }}
                 {% endset %}
                 {{ _("you_are_already_registered_to_other_tournament_this_week", link=other_tournament_link) }}
             </div>

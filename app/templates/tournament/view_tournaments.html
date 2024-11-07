@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% from "macros/link_to_tournament.html" import link_to_tournament %}
+
 {% block styles %}
 {{ super() }}
 <link
@@ -46,9 +48,7 @@
                 {% for tournament in tournaments | reverse %}
                 <tr>
                     <td>
-                        <a href="{{ url_for('tournament.view_tournament', tournament_id=tournament.id) }}">
-                            {{ tournament.name }}
-                        </a>
+                        {{ link_to_tournament(tournament) }}
                     </td>
                     <td>{{ tournament.week.get_short_name() }}</td>
                     <td>{{ tournament.category }}</td>

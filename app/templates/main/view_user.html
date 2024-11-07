@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% from "macros/link_to_tournament.html" import link_to_tournament %}
 {% from "macros/player_round_reached.html" import player_round_reached %}
 
 {% block content %}
@@ -35,9 +36,7 @@
                         {% for participation in participations %}
                         <tr>
                             <td>
-                                <a href="{{ url_for('tournament.view_tournament', tournament_id = participation.tournament.id, _external = True) }}">
-                                    {{ participation.tournament.name }}
-                                </a>
+                                {{ link_to_tournament(participation.tournament) }}
                             </td>
                             <td>
                                 {{ participation.tournament_player.get_standard_name() }}

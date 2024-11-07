@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% from "macros/link_to_tournament.html" import link_to_tournament %}
+
 {% block styles %}
 {{ super() }}
 <link
@@ -58,9 +60,7 @@
                 <p>{{ _("one_tournament_ongoing") }}</p>
                 <p>
                     <span class="fa fa-chevron-right"></span>
-                    <a href="{{ url_for('tournament.view_tournament', tournament_id=ongoing_tournaments.first().id) }}">
-                        {{ ongoing_tournaments.first().name }}
-                    </a>
+                    {{ link_to_tournament(ongoing_tournaments.first()) }}
                 </p>
                 {% elif number_ongoing_tournaments > 1 %}
                 <p>
@@ -69,9 +69,7 @@
                 {% for t in ongoing_tournaments %}
                 <p>
                     <span class="fa fa-chevron-right"></span>
-                    <a href="{{ url_for('tournament.view_tournament', tournament_id=t.id) }}">
-                        {{ t.name }}
-                    </a>
+                    {{ link_to_tournament(t) }}
                 </p>
                 {% endfor %}
                 {% endif %}
@@ -82,9 +80,7 @@
                 <p>{{ _("registrations_are_open_for_one_tournament") }}</p>
                 <p>
                     <span class="fa fa-chevron-right"></span>
-                    <a href="{{ url_for('tournament.view_tournament', tournament_id=open_tournaments.first().id) }}">
-                        {{ open_tournaments.first().name }}
-                    </a>
+                    {{ link_to_tournament(open_tournaments.first()) }}
                     ({{ _("closing") }} {{ open_tournaments.first().started_at | dt_diff }}).
                 </p>
                 {% elif number_open_tournaments > 1 %}
@@ -94,9 +90,7 @@
                 {% for t in open_tournaments %}
                 <p>
                     <span class="fa fa-chevron-right"></span>
-                    <a href="{{ url_for('tournament.view_tournament', tournament_id=t.id) }}">
-                        {{ t.name }}
-                    </a>
+                    {{ link_to_tournament(t) }}
                     ({{ _("closing") }} {{ t.started_at | dt_diff }})
                 </p>
                 {% endfor %}

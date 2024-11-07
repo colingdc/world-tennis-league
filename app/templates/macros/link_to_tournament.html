@@ -1,0 +1,7 @@
+{% macro link_to_tournament(tournament) %}
+
+<a href="{{ url_for('tournament.view_tournament', tournament_id=tournament.id) }}">
+    {{ tournament.name }}
+</a>
+
+{% endmacro %}

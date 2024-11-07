@@ -1,9 +1,10 @@
+{% from "macros/link_to_tournament.html" import link_to_tournament %}
+
 {% macro tournament_panel_heading(tournament, suffix) %}
 
 <div class="panel-heading">
     <h3 class="panel-title">
-        <a href="{{ url_for('.view_tournament', tournament_id=tournament.id) }}">{{ tournament.name }}</a>
-        - {{ suffix }}
+        {{ link_to_tournament(tournament) }} - {{ suffix }}
     </h3>
 </div>
 
