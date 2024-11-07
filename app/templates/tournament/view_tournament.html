@@ -119,22 +119,6 @@
                         .tournament_player.get_standard_name()
                         }}
                     </p>
-                    {% if tournament.is_open_to_registration() %}
-                    <div class="btn-group" role="group">
-                        <div
-                                data-title="{{ _('withdraw_from_tournament') }}"
-                                data-action="{{ url_for('.withdraw', tournament_id=tournament.id) }}"
-                                data-message="{{ _('confirm_withdraw_from_tournament') }}"
-                        >
-                            <a
-                                    class="btn btn-warning formConfirm"
-                                    href="{{ url_for('.withdraw', tournament_id=tournament.id) }}"
-                            >
-                                <span class="fa fa-sign-out"></span> {{ _("withdraw_from_tournament") }}
-                            </a>
-                        </div>
-                    </div>
-                    {% endif %}
                     {% endif %}
                 </div>
             </div>
