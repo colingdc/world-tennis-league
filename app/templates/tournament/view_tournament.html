@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% from "macros/confirmation_modal.html" import confirmation_modal %}
-{% from "macros/link_to_tournament.html" import link_to_tournament %}
 {% from "macros/player_round_reached.html" import player_round_reached %}
 
 {% block styles %}
@@ -18,114 +17,7 @@
 
 {% block content %}
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            <a data-toggle="collapse" href="#collapse1"> {{ tournament.name }}</a>
-        </h3>
-    </div>
-    <div id="collapse1" class="panel-collapse collapse in">
-        <div class="panel-body">
-            {% if tournament.is_finished() %}
-            <div class="alert alert-info">{{ _("this_tournament_is_finished") }}</div>
-            {% endif %}
-
-            {% with participation = current_user.is_registered_to_other_tournament(tournament) %}
-            {% if participation %}
-            <div class="alert alert-info">
-                {% set other_tournament_link %}
-                {{ link_to_tournament(participation.tournament) }}
-                {% endset %}
-                {{ _("you_are_already_registered_to_other_tournament_this_week", link=other_tournament_link) }}
-            </div>
-            {% endif %}
-            {% endwith %}
-
-            <div class="row">
-                <!-- Tournament draw -->
-                {% if tournament.is_draw_created() %}
-                <div class="col-md-6 col-sm-6">
-                    <h4>{{ _("the_tournament") }}</h4>
-                    <p>{{ _("category") }} : {{ tournament.category }}</p>
-                    <p>
-                        <a href="{{ url_for('.view_tournament_draw', tournament_id=tournament.id) }}">
-                            <span class="fa fa-chevron-right"></span> {{ _("view_draw") }}
-                        </a>
-                    </p>
-                    {% if tournament.is_finished() or tournament.is_ongoing() %}
-                    <p>
-                        <a href="{{ url_for('.stats', tournament_id=tournament.id) }}">
-                            <span class="fa fa-chevron-right"></span>
-                            {{ _("statistics_on_forecasts") }}
-                        </a>
-                    </p>
-                    {% endif %}
-                </div>
-                {% endif %}
-                <div class="col-md-6">
-                    <!-- Registration -->
-                    {% if current_user.can_register_to_tournament(tournament) %}
-                    <p>{{ _("registration_deadline") }} : {{ tournament.started_at | dt }}</p>
-                    <div class="btn-group" role="group">
-                        <a
-                                class="btn btn-success"
-                                href="{{ url_for('.register', tournament_id=tournament.id) }}"
-                        >
-                            <span class="fa fa-user-plus"></span> {{ _("I_register_to_tournament") }}
-                        </a>
-                    </div>
-                    {% endif %}
-
-                    {% if current_user.is_registered_to_tournament(tournament) %}
-
-                    <h4>{{ _("my_forecast") }}</h4>
-
-                    {% if tournament.is_open_to_registration() %}
-                    <form
-                            action="{{ url_for('.make_forecast', tournament_id=tournament.id) }}"
-                            method="POST"
-                    >
-                        {{ form.hidden_tag() }}
-                        <div class="form-group {% if form.player.errors %} has-error {% endif %}">
-                            <div id="player-choice">
-                                {{ form.player(class="form-control") }}
-                            </div>
-                            <p class="help-block">{{ form.player.errors[0] }}</p>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-success" type="submit">{{ _("confirm") }}</button>
-                        </div>
-                    </form>
-                    <div class="btn-group" role="group">
-                        <div
-                                data-title="{{ _('withdraw_from_tournament') }}"
-                                data-action="{{ url_for('.withdraw', tournament_id=tournament.id) }}"
-                                data-message="{{ _('confirm_withdraw_from_tournament') }}"
-                        >
-                            <a
-                                    class="btn btn-warning formConfirm"
-                                    href="{{ url_for('.withdraw', tournament_id=tournament.id) }}"
-                            >
-                                <span class="fa fa-sign-out"></span> {{ _("withdraw_from_tournament") }}
-                            </a>
-                        </div>
-                    </div>
-                    {% else %}
-
-                    {% with participation=current_user.get_participation(tournament) %}
-                    {% if participation.tournament_player %}
-                    <p>{{ participation.tournament_player.get_standard_name() }}</p>
-                    {% endif %}
-                    {% endwith %}
-
-                    {% endif %}
-
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{% include "tournament/view_tournament_main_section.html" %}
 
 {% if current_user.is_manager() %}
 {% include "tournament/view_tournament_manager_section.html" %}
