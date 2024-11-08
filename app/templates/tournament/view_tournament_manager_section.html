@@ -14,52 +14,13 @@
                 </div>
 
                 <div class="col-md-4 col-sm-4">
-                    <h4>{{ _('registrations') }}</h4>
+                    <h4>{{ _("registrations") }}</h4>
                     {% include "tournament/view_tournament_manager_section_registrations.html" %}
                 </div>
 
-                <!-- Tournament draw -->
                 <div class="col-md-4 col-sm-4">
-                    <h4>Tableau</h4>
-                    {% if not tournament.is_draw_created() %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="btn-group" role="group">
-                                <a
-                                        class="btn btn-secondary btn-outline"
-                                        href="{{ url_for('.create_tournament_draw', tournament_id=tournament.id) }}"
-                                >
-                                    <span class="fa fa-list"></span> {{ _("create_draw") }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="btn-group" role="group">
-                                <a
-                                        class="btn btn-secondary btn-outline"
-                                        href="{{ url_for('.edit_tournament_draw', tournament_id=tournament.id) }}"
-                                >
-                                    <span class="fa fa-list"></span> {{ _("edit_starting_draw") }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="btn-group" role="group">
-                                <a
-                                        class="btn btn-secondary btn-outline"
-                                        href="{{ url_for('.update_tournament_draw', tournament_id=tournament.id) }}"
-                                >
-                                    <span class="fa fa-pencil-alt"></span> {{ _('update_draw') }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
+                    <h4>{{ _("draw") }}</h4>
+                    {% include "tournament/view_tournament_manager_section_draw.html" %}
                 </div>
             </div>
         </div>
