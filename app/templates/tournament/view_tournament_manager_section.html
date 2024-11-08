@@ -13,68 +13,9 @@
                     {% include "tournament/view_tournament_manager_section_tournament.html" %}
                 </div>
 
-                <!-- Registrations -->
                 <div class="col-md-4 col-sm-4">
                     <h4>{{ _('registrations') }}</h4>
-
-                    {% if tournament.is_open_to_registration() %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="btn-group" role="group">
-                                <div
-                                        data-title="{{ _('close_registrations') }}"
-                                        data-action="{{ url_for('.close_registrations', tournament_id=tournament.id) }}"
-                                        data-message="{{ _('confirm_close_registrations') }}"
-                                >
-                                    <a
-                                            class="btn btn-secondary btn-outline formConfirm"
-                                            href="{{ url_for('.close_registrations', tournament_id=tournament.id) }}"
-                                    >
-                                        <span class="fa fa-lock"></span> {{ _("close_registrations") }}
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="btn-group" role="group">
-                                <div
-                                        data-title="{{ _('send_notification_emails') }}"
-                                        data-action="{{ url_for('.send_notification_email', tournament_id=tournament.id) }}"
-                                        data-message="{{ _('confirm_send_notification_emails') }}"
-                                >
-                                    <a
-                                            class="btn btn-secondary btn-outline formConfirm"
-                                            href="{{ url_for('.send_notification_email', tournament_id=tournament.id) }}"
-                                    >
-                                        <span class="fa fa-lock"></span> {{ _("send_notification_emails") }}
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% else %}
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="btn-group" role="group">
-                                <div
-                                        data-title="{{ _('open_registrations') }}"
-                                        data-action="{{ url_for('.open_registrations', tournament_id=tournament.id) }}"
-                                        data-message="{{ _('confirm_open_registrations') }}"
-                                >
-                                    <a
-                                            class="btn btn-secondary btn-outline formConfirm"
-                                            href="{{ url_for('.open_registrations', tournament_id=tournament.id) }}"
-                                    >
-                                        <span class="fa fa-unlock"></span> {{ _("open_registrations") }}
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
+                    {% include "tournament/view_tournament_manager_section_registrations.html" %}
                 </div>
 
                 <!-- Tournament draw -->
