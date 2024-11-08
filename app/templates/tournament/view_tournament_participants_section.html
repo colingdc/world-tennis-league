@@ -1,0 +1,89 @@
+{% from "macros/player_round_reached.html" import player_round_reached %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tables.css') }}"/>
+{% endblock styles %}
+
+<div class="panel panel-default panel-table">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <a data-toggle="collapse" href="#collapse3">
+                {{ _("participants") }}
+                {% if tournament.participations.count() %}
+                ({{ tournament.participations.count() }})
+                {% endif %}
+            </a>
+        </h3>
+    </div>
+
+    <div id="collapse3" class="panel-collapse collapse in">
+        <div class="panel-body">
+            {% if not tournament.participations.first() %}
+            {{ _("no_participant_yet") }}
+            {% else %}
+
+            <div class="table">
+                <table
+                        id="participants-table"
+                        class="table table-striped table-bordered table-hover"
+                >
+                    <thead>
+                    <tr>
+                        <th>{{ _("participant") }}</th>
+                        {% if not tournament.is_open_to_registration() %}
+                        <th>{{ _("forecast") }}</th>
+                        <th>{{ _("round_reached") }}</th>
+                        <th>{{ _("score") }}</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for participant in tournament.participations %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('user.view_user', user_id=participant.user_id) }}">
+                                {% if current_user.id == participant.user_id %}
+                                <b>{{ participant.user.username }}</b>
+                                {% else %}
+                                {{ participant.user.username }}
+                                {% endif %}
+                            </a>
+                        </td>
+
+                        {% if not tournament.is_open_to_registration() %}
+
+                        {% if participant.tournament_player %}
+                        <td>{{ participant.tournament_player.get_standard_name() }}</td>
+                        <td>{{ player_round_reached(participant.get_status()) }}</td>
+                        <td>{{ participant.compute_score() }}</td>
+                        {% else %}
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        {% endif %}
+
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% block extrajs %}
+
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="{{ url_for('static', filename='js/dataTableConfig.js') | autoversion }}"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#participants-table").DataTable({ ...dataTableConfig, order: [[3, "desc"]] });
+  });
+
+</script>
+
+{% endblock extrajs %}

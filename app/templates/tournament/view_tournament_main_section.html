@@ -108,3 +108,20 @@
         </div>
     </div>
 </div>
+
+
+{% block extrajs %}
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var forbidden_forecasts = "{{ forbidden_forecasts }}";
+    $("#player-choice option").each(function(i, x) {
+      if (forbidden_forecasts.indexOf(x.value) > -1) {
+        x.disabled = true;
+      }
+    });
+  });
+
+</script>
+
+{% endblock extrajs %}
