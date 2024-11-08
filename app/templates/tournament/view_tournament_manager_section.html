@@ -8,42 +8,9 @@
     <div id="collapse2" class="panel-collapse collapse in">
         <div class="panel-body">
             <div class="row">
-                <!-- Tournament -->
                 <div class="col-md-4 col-sm-4">
                     <h4>{{ _("tournament") }}</h4>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="btn-group" role="group">
-                                <a
-                                        class="btn btn-secondary btn-outline"
-                                        href="{{ url_for('.edit_tournament', tournament_id=tournament.id) }}"
-                                >
-                                    <span class="fa fa-pencil-alt"></span> {{ _("edit_tournament") }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    {% if tournament.is_ongoing() %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="btn-group" role="group">
-                                <div
-                                        data-title="{{ _('close_tournament') }}"
-                                        data-action="{{ url_for('.close_tournament', tournament_id=tournament.id) }}"
-                                        data-message="{{ _('confirm_close_tournament') }}"
-                                >
-                                    <a
-                                            class="btn btn-secondary btn-outline formConfirm"
-                                            href="{{ url_for('.close_tournament', tournament_id=tournament.id) }}"
-                                    >
-                                        <span class="fa fa-lock"></span> {{ _("close_tournament") }}
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
+                    {% include "tournament/view_tournament_manager_section_tournament.html" %}
                 </div>
 
                 <!-- Registrations -->
