@@ -409,7 +409,7 @@ class TournamentPlayer(db.Model):
         if self.player is None:
             return full_name + self.get_qualifier_name()
         else:
-            return full_name + self.player.get_reversed_name()
+            return full_name + self.player.get_short_name()
 
     def get_standard_name(self):
         if self.player is None:
