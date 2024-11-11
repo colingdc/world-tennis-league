@@ -1,20 +1,15 @@
-class Permission:
-    PARTICIPATE_TOURNAMENT = 0x01
-    MANAGE_TOURNAMENT = 0x02
-
-
 roles = {
     1: {
         "name": "User",
-        "permissions": Permission.PARTICIPATE_TOURNAMENT,
+        "can_manage_tournaments": False,
     },
     2: {
         "name": "Tournament Manager",
-        "permissions": Permission.PARTICIPATE_TOURNAMENT | Permission.MANAGE_TOURNAMENT,
+        "can_manage_tournaments": True,
     },
     3: {
         "name": "Administrator",
-        "permissions": 0xff,
+        "can_manage_tournaments": True,
     }
 }
 

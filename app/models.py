@@ -7,7 +7,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy import func
 
 from . import bcrypt, db, login_manager
-from .constants import Permission, roles, tournament_categories
+from .constants import roles, tournament_categories
 
 
 class User(UserMixin, db.Model):
@@ -74,17 +74,11 @@ class User(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def can(self, permissions):
-        if self.role_id is None:
-            return False
-
-        return (roles[self.role_id]["permissions"] & permissions) == permissions
-
     def get_role_name(self):
         return roles[self.role_id]["name"]
 
     def is_manager(self):
-        return self.can(Permission.MANAGE_TOURNAMENT)
+        return roles[self.role_id]["can_manage_tournaments"]
 
     def can_register_to_tournament(self, tournament):
         if not tournament.status == TournamentStatus.REGISTRATION_OPEN:
@@ -142,9 +136,6 @@ class User(UserMixin, db.Model):
 
 
 class AnonymousUser(AnonymousUserMixin):
-    def can(self, permissions):
-        return False
-
     def is_manager(self):
         return False
 
