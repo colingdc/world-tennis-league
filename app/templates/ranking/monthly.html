@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% from "macros/link_to_user.html" import link_to_user %}
+
 {% block styles %}
 {{ super() }}
 <link
@@ -67,11 +69,7 @@
                 {% for r in ranking %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>
-                        <a href="{{ url_for('user.view_user', user_id=r[0].id) }}">
-                            {{ r[0].username }}
-                        </a>
-                    </td>
+                    <td>{{ link_to_user(r[0]) }}</td>
                     <td>{{ r[1]["score"] }}</td>
                     <td>{{ r[1]["number_of_tournaments"] }}</td>
                 </tr>

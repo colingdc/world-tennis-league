@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% from "macros/link_to_user.html" import link_to_user %}
+
 {% block styles %}
 {{ super() }}
 <link
@@ -37,11 +39,7 @@
                 <tbody>
                 {% for user in users %}
                 <tr>
-                    <td>
-                        <a href="{{ url_for('user.view_user', user_id = user.id) }}">
-                            {{ user.username }}
-                        </a>
-                    </td>
+                    <td>{{ link_to_user(user) }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.get_role_name() }}</td>
                     <td>{% if user.confirmed %}{{ _("yes") }}{% else %}{{ _("no") }}{% endif %}</td>

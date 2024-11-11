@@ -1,0 +1,11 @@
+{% macro link_to_user(user, is_bold=False) %}
+
+<a href="{{ url_for('user.view_user', user_id=user.id) }}">
+    {% if is_bold %}
+    <b>{{ user.username }}</b>
+    {% else %}
+    {{ user.username }}
+    {% endif %}
+</a>
+
+{% endmacro %}

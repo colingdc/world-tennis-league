@@ -1,4 +1,5 @@
 {% from "macros/player_round_reached.html" import player_round_reached %}
+{% from "macros/link_to_user.html" import link_to_user %}
 
 {% block styles %}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
@@ -41,15 +42,7 @@
                     <tbody>
                     {% for participant in tournament.participations %}
                     <tr>
-                        <td>
-                            <a href="{{ url_for('user.view_user', user_id=participant.user_id) }}">
-                                {% if current_user.id == participant.user_id %}
-                                <b>{{ participant.user.username }}</b>
-                                {% else %}
-                                {{ participant.user.username }}
-                                {% endif %}
-                            </a>
-                        </td>
+                        <td>{{ link_to_user(participant.user, is_bold=(current_user.id == participant.user_id)) }}</td>
 
                         {% if not tournament.is_open_to_registration() %}
 
