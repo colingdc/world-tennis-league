@@ -38,18 +38,18 @@ class User(UserMixin, db.Model):
         return bcrypt.check_password_hash(self.password_hash, password)
 
     def generate_confirmation_token(self, expiration=3600):
-        s = Serializer(current_app.config["SECRET_KEY"], expiration)
-        return s.dumps({"confirm": self.id})
+        serializer = Serializer(current_app.config["SECRET_KEY"], expiration)
+        return serializer.dumps({"confirm": self.id})
 
     def generate_reset_token(self, expiration=3600):
-        s = Serializer(current_app.config["SECRET_KEY"], expiration)
-        return s.dumps({"reset": self.id})
+        serializer = Serializer(current_app.config["SECRET_KEY"], expiration)
+        return serializer.dumps({"reset": self.id})
 
     def confirm(self, token):
-        s = Serializer(current_app.config["SECRET_KEY"])
+        serializer = Serializer(current_app.config["SECRET_KEY"])
         try:
-            data = s.loads(token)
-        except Exception as e:
+            data = serializer.loads(token)
+        except Exception:
             return False
         if data.get("confirm") != self.id:
             return False
@@ -59,10 +59,10 @@ class User(UserMixin, db.Model):
         return True
 
     def reset_password(self, token, new_password):
-        s = Serializer(current_app.config["SECRET_KEY"])
+        serializer = Serializer(current_app.config["SECRET_KEY"])
         try:
-            data = s.loads(token)
-        except Exception as e:
+            data = serializer.loads(token)
+        except Exception:
             return False
         if data.get("reset") != self.id:
             return False
@@ -164,12 +164,12 @@ class TournamentWeek(db.Model):
     rankings = db.relationship("Ranking", backref="week", lazy="dynamic")
 
     def get_short_name(self):
-        year, week_number, _ = self.start_date.isocalendar()
+        year, week_number, __ = self.start_date.isocalendar()
         return f"{year} Semaine {week_number}"
 
     def get_long_name(self):
-        year, week_number, _ = self.start_date.isocalendar()
-        tournament_names = ", ".join([t.name for t in self.tournaments])
+        year, week_number, __ = self.start_date.isocalendar()
+        tournament_names = ", ".join([tournament.name for tournament in self.tournaments])
         return f"{week_number} {year} - {tournament_names}"
 
     def get_full_name(self):
@@ -227,7 +227,7 @@ class Tournament(db.Model):
         return self.status == TournamentStatus.FINISHED
 
     def get_matches_first_round(self):
-        return [m for m in self.matches if m.round == self.number_rounds]
+        return [match for match in self.matches if match.round == self.number_rounds]
 
     def is_draw_created(self):
         players = (TournamentPlayer.query
@@ -235,10 +235,10 @@ class Tournament(db.Model):
         return players.first() is not None
 
     def get_matches_by_round(self):
-        return [{"round": i,
-                 "matches": self.matches.filter(Match.round == i).all(),
-                 "first_round": i == self.number_rounds}
-                for i in range(self.number_rounds, 0, -1)]
+        return [{"round": round_index,
+                 "matches": self.matches.filter(Match.round == round_index).all(),
+                 "first_round": round_index == self.number_rounds}
+                for round_index in range(self.number_rounds, 0, -1)]
 
     def get_last_match(self):
         return self.matches.filter(Match.position == 1).first()
@@ -256,15 +256,15 @@ class Tournament(db.Model):
         return tournament_categories.get(self.category)["points"]
 
     def get_allowed_forecasts(self):
-        players = [p for p in self.players
-                   if not p.is_bye() and p.player_id]
+        players = [player for player in self.players
+                   if not player.is_bye() and player.player_id]
         return players
 
     def compute_scores(self):
-        for p in self.participations:
-            p.points = p.compute_score()
-            p.round_reached = p.tournament_player.get_last_match().round - 1
-            db.session.add(p)
+        for participation in self.participations:
+            participation.points = participation.compute_score()
+            participation.round_reached = participation.tournament_player.get_last_match().round - 1
+            db.session.add(participation)
         db.session.commit()
 
     @staticmethod
@@ -309,12 +309,12 @@ class Participation(db.Model):
                 .filter(Participation.id != self.id)
         )
         players_already_picked = [
-            p.tournament_player.player_id
-            for p in current_year_participations
-            if p.tournament_player
+            participation.tournament_player.player_id
+            for participation in current_year_participations
+            if participation.tournament_player
         ]
-        return [p.id for p in players
-                if p.player_id in players_already_picked]
+        return [player.id for player in players
+                if player.player_id in players_already_picked]
 
     def compute_score(self):
         if self.tournament.is_special_tournament():
@@ -372,8 +372,8 @@ class Player(db.Model):
     @classmethod
     def get_all(cls):
         return [
-            (p.id, p.get_reversed_name())
-            for p in cls.query.order_by(cls.last_name, cls.first_name).all()
+            (player.id, player.get_reversed_name())
+            for player in cls.query.order_by(cls.last_name, cls.first_name).all()
         ]
 
 
