@@ -13,16 +13,12 @@ from ...notifications import display_success_message
 def login():
     form = LoginForm()
 
-    # Redirect user to homepage if they are already authenticated
     if current_user is not None and current_user.is_authenticated:
         return go_to_homepage()
 
-    # If form was submitted via a POST request
     if form.validate_on_submit():
         user = get_user_by_username(form.username.data)
 
-        # If the credentials are incorrect, render the login page
-        # with an error message
         if user is None:
             form.username.errors.append(_("invalid_credentials"))
             form.password.errors.append("")
@@ -36,7 +32,6 @@ def login():
 
             return render_login_page(form)
 
-        # Otherwise log the user in
         login_user(user, remember=form.remember_me.data)
         session["signed"] = True
         session["username"] = user.username
