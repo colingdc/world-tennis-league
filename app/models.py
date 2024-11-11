@@ -564,24 +564,19 @@ class Ranking(db.Model):
                 .filter(Tournament.status == TournamentStatus.FINISHED)
         )
 
-        scoreboard = {}
+        stats_by_user = {}
         for participation in participations:
-            if participation.user_id in scoreboard:
-                scoreboard[participation.user_id]["points"] += participation.points
-                scoreboard[participation.user_id]["number_tournaments"] += 1
+            if participation.user_id in stats_by_user:
+                stats_by_user[participation.user_id]["points"] += participation.points
+                stats_by_user[participation.user_id]["number_tournaments"] += 1
             else:
-                scoreboard[participation.user_id] = {
+                stats_by_user[participation.user_id] = {
+                    "user_id": participation.user_id,
                     "points": participation.points,
                     "number_tournaments": 1
                 }
 
-        scoreboard = [{
-            "user_id": user_id,
-            "points": stats["points"],
-            "number_tournaments": stats["number_tournaments"],
-        } for user_id, stats in scoreboard.items()]
-
-        scoreboard = sorted(scoreboard, key=lambda stats: -stats["points"])
+        scoreboard = sorted(stats_by_user.values(), key=lambda stats: -stats["points"])
 
         for rank, score in enumerate(scoreboard):
             ranking = (
