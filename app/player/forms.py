@@ -54,9 +54,13 @@ class EditPlayerForm(FlaskForm):
         if not FlaskForm.validate(self):
             return False
 
-        if ((self.first_name.data != self.player["first_name"]
-             or self.last_name.data != self.player["last_name"])
-                and exists_by_name(self.first_name.data, self.last_name.data)):
+        if (
+                self.first_name.data == self.player["first_name"] and
+                self.last_name.data == self.player["last_name"]
+        ):
+            return True
+
+        if exists_by_name(self.first_name.data, self.last_name.data):
             self.first_name.errors.append("")
             self.last_name.errors.append(_l("player_already_exists"))
             return False
