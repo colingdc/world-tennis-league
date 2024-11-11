@@ -17,8 +17,8 @@ def create_tournament():
     form = CreateTournamentForm(request.form)
     form.category.choices = [("", _("choose_a_category"))]
     form.category.choices += [(
-        i, c["full_name"])
-        for i, c in tournament_categories.items()]
+        index, category["full_name"])
+        for index, category in tournament_categories.items()]
 
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())

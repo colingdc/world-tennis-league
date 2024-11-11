@@ -32,7 +32,7 @@ def make_forecast(tournament_id):
     forecast = int(request.form["player"])
     participation = current_user.get_participation(tournament)
     forbidden_forecasts = participation.get_forbidden_forecasts()
-    allowed_forecasts = [x.id for x in tournament.get_allowed_forecasts()]
+    allowed_forecasts = [forecast.id for forecast in tournament.get_allowed_forecasts()]
 
     if forecast in allowed_forecasts and forecast not in forbidden_forecasts:
         current_user.make_forecast(tournament, forecast)

@@ -18,11 +18,11 @@ def view_user(user_id):
         "name": _("ranking"),
         "data": [
             {
-                "x": int(t.started_at.strftime("%s")) * 1000,
-                "y": t.year_to_date_ranking or "null",
-                "tournament_name": t.name
+                "x": int(ranking.started_at.strftime("%s")) * 1000,
+                "y": ranking.year_to_date_ranking or "null",
+                "tournament_name": ranking.name
             }
-            for t in rankings
+            for ranking in rankings
         ]
     }]
 

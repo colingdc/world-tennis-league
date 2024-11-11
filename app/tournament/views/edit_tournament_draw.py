@@ -18,9 +18,11 @@ def edit_tournament_draw(tournament_id):
     tournament = fetch_tournament(tournament_id)
 
     matches = tournament.get_matches_first_round()
-    participations = {p: p.tournament_player.player
-                      for p in tournament.participations
-                      if p.tournament_player}
+    participations = {
+        participation: participation.tournament_player.player
+        for participation in tournament.participations
+        if participation.tournament_player
+    }
 
     if not request.form:
         form = CreateTournamentDrawForm()
@@ -33,62 +35,61 @@ def edit_tournament_draw(tournament_id):
 
     player_names = [(-1, _("choose_a_player"))] + Player.get_all()
 
-    for p in form.player:
-        p.player1_name.choices = player_names
-        p.player2_name.choices = player_names
+    for player in form.player:
+        player.player1_name.choices = player_names
+        player.player2_name.choices = player_names
 
     if request.method == "GET":
-        for p, match in zip(form.player, matches):
+        for player, match in zip(form.player, matches):
             if match.tournament_player1 and match.tournament_player1.player:
-                p.player1_name.data = match.tournament_player1.player.id
+                player.player1_name.data = match.tournament_player1.player.id
 
             if match.tournament_player2 and match.tournament_player2.player:
-                p.player2_name.data = match.tournament_player2.player.id
+                player.player2_name.data = match.tournament_player2.player.id
 
-            p.player1_status.data = match.tournament_player1.status
-            p.player2_status.data = match.tournament_player2.status
-            p.player1_seed.data = match.tournament_player1.seed
-            p.player2_seed.data = match.tournament_player2.seed
+            player.player1_status.data = match.tournament_player1.status
+            player.player2_status.data = match.tournament_player2.status
+            player.player1_seed.data = match.tournament_player1.seed
+            player.player2_seed.data = match.tournament_player2.seed
 
     if form.validate_on_submit():
         qualifier_count = 0
         modified_players = []
-        for match, p in zip(matches, form.player):
-            if p.data["player1_name"] >= 0:
-                player_id = p.data["player1_name"]
+        for match, player in zip(matches, form.player):
+            if player.data["player1_name"] >= 0:
+                player_id = player.data["player1_name"]
                 qualifier_id = None
             else:
                 player_id = None
                 qualifier_count += 1
                 qualifier_id = qualifier_count
 
-            t1 = match.tournament_player1
-            if t1.player_id != player_id:
-                modified_players.append(t1.player)
-            t1.player_id = player_id
-            t1.seed = p.data["player1_seed"]
-            t1.status = p.data["player1_status"]
-            t1.qualifier_id = qualifier_id
+            tournament_player1 = match.tournament_player1
+            if tournament_player1.player_id != player_id:
+                modified_players.append(tournament_player1.player)
+            tournament_player1.player_id = player_id
+            tournament_player1.seed = player.data["player1_seed"]
+            tournament_player1.status = player.data["player1_status"]
+            tournament_player1.qualifier_id = qualifier_id
 
-            if p.data["player2_name"] >= 0:
-                player_id = p.data["player2_name"]
+            if player.data["player2_name"] >= 0:
+                player_id = player.data["player2_name"]
                 qualifier_id = None
             else:
                 player_id = None
                 qualifier_count += 1
                 qualifier_id = qualifier_count
 
-            t2 = match.tournament_player2
-            if t2.player_id != player_id:
-                modified_players.append(t2.player)
-            t2.player_id = player_id
-            t2.seed = p.data["player2_seed"]
-            t2.status = p.data["player2_status"]
-            t2.qualifier_id = qualifier_id
+            tournament_player2 = match.tournament_player2
+            if tournament_player2.player_id != player_id:
+                modified_players.append(tournament_player2.player)
+            tournament_player2.player_id = player_id
+            tournament_player2.seed = player.data["player2_seed"]
+            tournament_player2.status = player.data["player2_status"]
+            tournament_player2.qualifier_id = qualifier_id
 
-            # Add tournament players
-            db.session.add(t1)
-            db.session.add(t2)
+            db.session.add(tournament_player1)
+            db.session.add(tournament_player2)
             db.session.commit()
 
         if tournament.is_open_to_registration():

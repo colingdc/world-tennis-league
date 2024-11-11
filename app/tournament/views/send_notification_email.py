@@ -17,13 +17,13 @@ from ...user.lib import fetch_users_that_can_receive_notifications
 def send_notification_email(tournament_id):
     tournament = fetch_tournament(tournament_id)
 
-    if all(t.notification_sent_at is not None for t in tournament.week.tournaments):
+    if all(week_tournament.notification_sent_at is not None for week_tournament in tournament.week.tournaments):
         display_info_message(_("participants_already_notified"))
         return go_to_tournament_page(tournament.id)
 
-    for t in tournament.week.tournaments:
-        t.notification_sent_at = datetime.now()
-        db.session.add(t)
+    for week_tournament in tournament.week.tournaments:
+        week_tournament.notification_sent_at = datetime.now()
+        db.session.add(week_tournament)
     db.session.commit()
 
     users_to_notify = fetch_users_that_can_receive_notifications()

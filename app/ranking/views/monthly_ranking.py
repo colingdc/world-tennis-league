@@ -16,13 +16,15 @@ from ...models import Tournament
 def monthly_ranking(year=None, month=None):
     form = MonthlyRankingForm()
 
-    months = list(reversed(sorted(set((t.started_at.year, t.started_at.month) for t in Tournament.query))))
+    months = list(reversed(sorted(set(
+        (tournament.started_at.year, tournament.started_at.month)
+        for tournament in Tournament.query
+    ))))
 
     def format_date(year, month):
         return format_datetime(date(int(year), int(month), 1), "MMMM yyyy").capitalize()
 
-    form.month_name.choices = [("", _("choose_a_month"))] + [
-        (f"{year}-{month}", format_date(year, month)) for year, month in months]
+    form.month_name.choices = [("", _("choose_a_month"))] + [(f"{year}-{month}", format_date(year, month)) for year, month in months]
 
     if form.validate_on_submit() and form.month_name.data != "":
         year, month = form.month_name.data.split("-")
