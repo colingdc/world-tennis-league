@@ -165,7 +165,7 @@ class TournamentWeek(db.Model):
 
     def get_short_name(self):
         year, week_number, __ = self.start_date.isocalendar()
-        return f"{year} Semaine {week_number}"
+        return f"{year} {_('week')} {week_number}"
 
     def get_long_name(self):
         year, week_number, __ = self.start_date.isocalendar()
@@ -173,7 +173,7 @@ class TournamentWeek(db.Model):
         return f"{week_number} {year} - {tournament_names}"
 
     def get_full_name(self):
-        return "Semaine " + self.get_long_name()
+        return f"{_('week')} {self.get_long_name()}"
 
 
 class TournamentStatus:
