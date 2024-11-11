@@ -1,7 +1,6 @@
 class Permission:
     PARTICIPATE_TOURNAMENT = 0x01
     MANAGE_TOURNAMENT = 0x02
-    ADMINISTER = 0x80
 
 
 roles = {
