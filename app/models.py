@@ -249,12 +249,8 @@ class Tournament(db.Model):
 
     def get_round_names(self):
         names = ["F", "DF", "QF", "HF"]
-        if self.number_rounds > 4:
-            names += ["T" + str(i)
-                      for i in range(self.number_rounds - 4, 0, -1)]
-            return names[::-1]
-        else:
-            return names[:self.number_rounds][::-1]
+        names += [f"T{i}" for i in range(self.number_rounds - 4, 0, -1)]
+        return names[:self.number_rounds][::-1]
 
     def get_attributed_points(self):
         return tournament_categories.get(self.category)["points"]
