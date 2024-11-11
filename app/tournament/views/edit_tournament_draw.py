@@ -28,19 +28,19 @@ def edit_tournament_draw(tournament_id):
         form = CreateTournamentDrawForm()
 
         for __ in matches:
-            form.player.append_entry()
+            form.players.append_entry()
 
     else:
         form = CreateTournamentDrawForm(request.form)
 
     player_names = [(-1, _("choose_a_player"))] + Player.get_all()
 
-    for player in form.player:
+    for player in form.players:
         player.player1_name.choices = player_names
         player.player2_name.choices = player_names
 
     if request.method == "GET":
-        for player, match in zip(form.player, matches):
+        for player, match in zip(form.players, matches):
             if match.tournament_player1 and match.tournament_player1.player:
                 player.player1_name.data = match.tournament_player1.player.id
 
@@ -55,7 +55,7 @@ def edit_tournament_draw(tournament_id):
     if form.validate_on_submit():
         qualifier_count = 0
         modified_players = []
-        for match, player in zip(matches, form.player):
+        for match, player in zip(matches, form.players):
             if player.data["player1_name"] >= 0:
                 player_id = player.data["player1_name"]
                 qualifier_id = None

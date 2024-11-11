@@ -21,7 +21,7 @@
                     </thead>
 
                     <tbody>
-                    {% for match in form.player %}
+                    {% for match in form.players %}
                     <tr>
                         <th scope="row">{{ 2 * loop.index - 1 }}</th>
                         <td class="form-group {% if match.player1_name.errors %} has-error {% endif %}">

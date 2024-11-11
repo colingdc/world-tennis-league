@@ -66,7 +66,7 @@ class PlayerTournamentDrawForm(FlaskForm):
 
 
 class CreateTournamentDrawForm(FlaskForm):
-    player = FieldList(FormField(PlayerTournamentDrawForm))
+    players = FieldList(FormField(PlayerTournamentDrawForm))
 
 
 class MakeForecastForm(FlaskForm):
