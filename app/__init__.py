@@ -40,17 +40,7 @@ def create_app(config_name):
     def load_user(user_id):
         return User.query.get(user_id)
 
-    @app.template_filter("autoversion")
-    def autoversion_filter(filename):
-        # determining fullpath might be project specific
-        fullpath = os.path.join("app/", filename[1:])
-        try:
-            timestamp = str(os.path.getmtime(fullpath))
-        except OSError:
-            return filename
-        newfilename = "{0}?v={1}".format(filename, timestamp)
-        return newfilename
-
+    register_filters(app)
     register_loggers(app)
     register_datetime_filters(app)
     register_blueprints(app)
@@ -58,6 +48,17 @@ def create_app(config_name):
     register_error_handlers(app)
 
     return app
+
+
+def register_filters(app):
+    @app.template_filter("autoversion")
+    def autoversion_filter(filename):
+        fullpath = os.path.join("app/", filename[1:])
+        try:
+            timestamp = str(os.path.getmtime(fullpath))
+        except OSError:
+            return filename
+        return f"{filename}?v={timestamp}"
 
 
 def register_loggers(app):
