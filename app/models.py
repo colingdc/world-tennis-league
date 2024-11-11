@@ -565,39 +565,39 @@ class Ranking(db.Model):
         )
 
         scoreboard = {}
-        for p in participations:
-            if p.user_id in scoreboard:
-                scoreboard[p.user_id]["points"] += p.points
-                scoreboard[p.user_id]["number_tournaments"] += 1
+        for participation in participations:
+            if participation.user_id in scoreboard:
+                scoreboard[participation.user_id]["points"] += participation.points
+                scoreboard[participation.user_id]["number_tournaments"] += 1
             else:
-                scoreboard[p.user_id] = {
-                    "points": p.points,
+                scoreboard[participation.user_id] = {
+                    "points": participation.points,
                     "number_tournaments": 1
                 }
 
         scoreboard = [{
-            "user_id": k,
-            "points": v["points"],
-            "number_tournaments": v["number_tournaments"],
-        } for k, v in scoreboard.items()]
+            "user_id": user_id,
+            "points": stats["points"],
+            "number_tournaments": stats["number_tournaments"],
+        } for user_id, stats in scoreboard.items()]
 
-        scoreboard = sorted(scoreboard, key=lambda x: -x["points"])
+        scoreboard = sorted(scoreboard, key=lambda stats: -stats["points"])
 
         for rank, score in enumerate(scoreboard):
-            r = (
+            ranking = (
                 Ranking.query
                     .filter(Ranking.tournament_week_id == week.id)
                     .filter(Ranking.user_id == score["user_id"]).first()
             )
-            if r is None:
-                r = Ranking(
+            if ranking is None:
+                ranking = Ranking(
                     user_id=score["user_id"],
                     tournament_week_id=week.id
                 )
 
-            r.year_to_date_points = score["points"]
-            r.year_to_date_ranking = rank + 1
-            r.year_to_date_number_tournaments = score["number_tournaments"]
-            db.session.add(r)
+            ranking.year_to_date_points = score["points"]
+            ranking.year_to_date_ranking = rank + 1
+            ranking.year_to_date_number_tournaments = score["number_tournaments"]
+            db.session.add(ranking)
 
         db.session.commit()
