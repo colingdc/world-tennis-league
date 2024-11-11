@@ -26,3 +26,8 @@ def update_player(player, first_name, last_name):
 
     db.session.add(player)
     db.session.commit()
+
+
+def exists_by_name(first_name, last_name):
+    player = Player.query.filter_by(first_name=first_name).filter_by(last_name=last_name).first()
+    return player is not None
