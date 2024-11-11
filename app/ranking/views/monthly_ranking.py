@@ -24,7 +24,11 @@ def monthly_ranking(year=None, month=None):
     def format_date(year, month):
         return format_datetime(date(int(year), int(month), 1), "MMMM yyyy").capitalize()
 
-    form.month_name.choices = [("", _("choose_a_month"))] + [(f"{year}-{month}", format_date(year, month)) for year, month in months]
+    form.month_name.choices = [("", _("choose_a_month"))]
+    form.month_name.choices += [
+        (f"{year}-{month}", format_date(year, month))
+        for year, month in months
+    ]
 
     if form.validate_on_submit() and form.month_name.data != "":
         year, month = form.month_name.data.split("-")

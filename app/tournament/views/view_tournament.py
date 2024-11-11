@@ -19,8 +19,10 @@ def view_tournament(tournament_id):
         participation = current_user.get_participation(tournament)
 
         form.player.choices = [(-1, _("choose_a_player"))]
-        form.player.choices += [(tournament_player.id, tournament_player.get_reversed_name())
-                                for tournament_player in tournament.get_allowed_forecasts()]
+        form.player.choices += [
+            (tournament_player.id, tournament_player.get_reversed_name())
+            for tournament_player in tournament.get_allowed_forecasts()
+        ]
 
         forbidden_forecasts = participation.get_forbidden_forecasts()
         forbidden_forecasts = ";".join([str(forecast) for forecast in forbidden_forecasts])

@@ -16,9 +16,10 @@ from ...notifications import display_info_message
 def create_tournament():
     form = CreateTournamentForm(request.form)
     form.category.choices = [("", _("choose_a_category"))]
-    form.category.choices += [(
-        index, category["full_name"])
-        for index, category in tournament_categories.items()]
+    form.category.choices += [
+        (index, category["full_name"])
+        for index, category in tournament_categories.items()
+    ]
 
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())

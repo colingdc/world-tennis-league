@@ -17,7 +17,11 @@ def index():
              .filter(Tournament.status == TournamentStatus.FINISHED)
              .order_by(TournamentWeek.start_date.desc()))
 
-    form.week_name.choices = [(-1, _("choose_a_week"))] + [(week.id, week.get_full_name()) for week in weeks]
+    form.week_name.choices = [(-1, _("choose_a_week"))]
+    form.week_name.choices += [
+        (week.id, week.get_full_name())
+        for week in weeks
+    ]
 
     if form.validate_on_submit() and form.week_name.data != -1:
         return redirect(url_for(".weekly_ranking", tournament_week_id=form.week_name.data))
