@@ -235,10 +235,14 @@ class Tournament(db.Model):
         return players.first() is not None
 
     def get_matches_by_round(self):
-        return [{"round": round_index,
-                 "matches": self.matches.filter(Match.round == round_index).all(),
-                 "first_round": round_index == self.number_rounds}
-                for round_index in range(self.number_rounds, 0, -1)]
+        return [
+            {
+                "round": round_index,
+                "matches": self.matches.filter(Match.round == round_index).all(),
+                "first_round": round_index == self.number_rounds
+            }
+            for round_index in range(self.number_rounds, 0, -1)
+        ]
 
     def get_last_match(self):
         return self.matches.filter(Match.position == 1).first()
