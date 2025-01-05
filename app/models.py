@@ -799,8 +799,9 @@ class Ranking(db.Model):
                         "score": 0,
                         "number_of_tournaments": 0
                     }
-                scores[user]["score"] += participant.points
                 scores[user]["number_of_tournaments"] += 1
+                if participant.points is not None:
+                    scores[user]["score"] += participant.points
         return sorted(scores.items(), key=lambda x: -x[1]["score"])
 
     @classmethod
