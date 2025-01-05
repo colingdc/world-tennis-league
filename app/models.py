@@ -726,7 +726,8 @@ class Ranking(db.Model):
         if week is None:
             week = Tournament.get_latest_finished_tournament().week
 
-        year = week.start_date.year
+        # Artificially add 1 week to handle the case of tournaments starting just before Jan 1
+        year = (week.start_date + datetime.timedelta(days=7)).year
 
         participations = (
             Participation.query
