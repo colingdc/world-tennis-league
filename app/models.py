@@ -462,14 +462,21 @@ class Participation(db.Model):
         if self.tournament.category == "World Tour Finals":
             return []
         players = self.tournament.get_allowed_forecasts()
-        current_year = func.year(self.tournament.week.start_date)
-        current_year_participations = (
+        current_year = (self.tournament.week.start_date + datetime.timedelta(days=7)).year
+
+        participations = (
             self.user.participations
             .join(Tournament)
             .join(TournamentWeek)
-            .filter(func.year(TournamentWeek.start_date) == current_year)
             .filter(Participation.id != self.id)
         )
+
+        current_year_participations = [
+            participation
+            for participation in participations
+            if (participation.tournament.week.start_date + datetime.timedelta(days=7)).year == current_year
+        ]
+
         players_already_picked = [
             p.tournament_player.player_id
             for p in current_year_participations
