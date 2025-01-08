@@ -12,7 +12,7 @@ from .lib import get_monthly_ranking, get_weekly_ranking
 
 @bp.route("/<tournament_week_id>")
 @login_required
-def ranking(tournament_week_id):
+def weekly_ranking(tournament_week_id):
     week = TournamentWeek.query.get_or_404(tournament_week_id)
     if week.deleted_at:
         abort(404)
@@ -34,7 +34,7 @@ def latest_ranking():
     if week.deleted_at:
         abort(404)
 
-    return redirect(url_for(".ranking", tournament_week_id=week.id))
+    return redirect(url_for(".weekly_ranking", tournament_week_id=week.id))
 
 
 @bp.route("/monthly/", methods=["GET", "POST"])
@@ -81,7 +81,7 @@ def index():
                                                                  for w in weeks]
 
     if form.validate_on_submit() and form.week_name.data != -1:
-        return redirect(url_for(".ranking", tournament_week_id=form.week_name.data))
+        return redirect(url_for(".weekly_ranking", tournament_week_id=form.week_name.data))
 
     return render_template(
         "ranking/index.html",
