@@ -6,26 +6,24 @@ from flask import abort, flash, redirect, render_template, request, url_for
 from flask_login import current_user
 
 from . import bp
+from .forms import CreateTournamentDrawForm, CreateTournamentForm, EditTournamentForm, FillTournamentDrawForm, \
+    MakeForecastForm
 from .. import db
+from ..constants import tournament_categories
 from ..decorators import login_required, manager_required
 from ..email import send_email
-from ..models import (Match, Participation, Player, Ranking, Tournament,
-                      TournamentCategory, TournamentPlayer, TournamentStatus,
-                      TournamentWeek, User)
-from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
-                    EditTournamentForm, FillTournamentDrawForm,
-                    MakeForecastForm)
+from ..models import Match, Participation, Player, Ranking, Tournament, TournamentPlayer, TournamentStatus, \
+    TournamentWeek, User
 
 
 @bp.route("/create", methods=["GET", "POST"])
 @manager_required
 def create_tournament():
-    title = u"Créer un tournoi"
     form = CreateTournamentForm(request.form)
     form.category.choices = [("", "Choisir une catégorie")]
     form.category.choices += [(
         i, c["full_name"])
-        for i, c in TournamentCategory.categories.items()]
+        for i, c in tournament_categories.items()]
 
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())
@@ -37,35 +35,39 @@ def create_tournament():
             db.session.add(tournament_week)
             db.session.commit()
 
-        category = TournamentCategory.categories.get(form.category.data)
+        category = tournament_categories.get(form.category.data)
         number_rounds = category["number_rounds"]
-        tournament = Tournament(name=form.name.data,
-                                started_at=form.start_date.data,
-                                week_id=tournament_week.id,
-                                number_rounds=number_rounds,
-                                category=form.category.data,
-                                )
+        tournament = Tournament(
+            name=form.name.data,
+            started_at=form.start_date.data,
+            week_id=tournament_week.id,
+            number_rounds=number_rounds,
+            category=form.category.data,
+        )
         db.session.add(tournament)
         db.session.commit()
         for i in range(1, 2 ** tournament.number_rounds):
-            match = Match(position=i,
-                          tournament_id=tournament.id,
-                          round=floor(log(i) / log(2)) + 1)
+            match = Match(
+                position=i,
+                tournament_id=tournament.id,
+                round=floor(log(i) / log(2)) + 1
+            )
             db.session.add(match)
         db.session.commit()
         flash(f"Le tournoi {form.name.data} a été créé", "info")
         return redirect(url_for(".create_tournament"))
     else:
-        return render_template("tournament/create_tournament.html",
-                               title=title,
-                               form=form)
+        return render_template(
+            "tournament/create_tournament.html",
+            title="Créer un tournoi",
+            form=form
+        )
 
 
 @bp.route("/<tournament_id>/edit", methods=["GET", "POST"])
 @manager_required
 def edit_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    title = tournament.name
     form = EditTournamentForm(request.form)
 
     if request.method == "GET":
@@ -87,25 +89,28 @@ def edit_tournament(tournament_id):
         db.session.add(tournament)
         db.session.commit()
         flash(f"Le tournoi {form.name.data} a été mis à jour", "info")
-        return redirect(url_for(".edit_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".edit_tournament", tournament_id=tournament_id))
     else:
-        return render_template("tournament/edit_tournament.html",
-                               title=title,
-                               form=form,
-                               tournament=tournament)
+        return render_template(
+            "tournament/edit_tournament.html",
+            title=tournament.name,
+            form=form,
+            tournament=tournament
+        )
 
 
 @bp.route("/view")
 @login_required
 def view_tournaments():
-    title = "Tournois"
     tournaments = (Tournament.query
                    .filter(Tournament.deleted_at.is_(None))
                    )
-    return render_template("tournament/view_tournaments.html",
-                           title=title,
-                           tournaments=tournaments)
+
+    return render_template(
+        "tournament/view_tournaments.html",
+        title="Tournois",
+        tournaments=tournaments
+    )
 
 
 @bp.route("/<tournament_id>/view")
@@ -125,12 +130,14 @@ def view_tournament(tournament_id):
     else:
         form = None
         forbidden_forecasts = ""
-    title = tournament.name
-    return render_template("tournament/view_tournament.html",
-                           title=title,
-                           tournament=tournament,
-                           form=form,
-                           forbidden_forecasts=forbidden_forecasts)
+
+    return render_template(
+        "tournament/view_tournament.html",
+        title=tournament.name,
+        tournament=tournament,
+        form=form,
+        forbidden_forecasts=forbidden_forecasts
+    )
 
 
 @bp.route("/<tournament_id>/register")
@@ -142,11 +149,12 @@ def register(tournament_id):
               "doute car tu es déjà inscrit à un autre tournoi cette semaine,"
               "soit car les inscriptions sont fermées.",
               "warning")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
-    participant = Participation(tournament_id=tournament_id,
-                                user_id=current_user.id)
+    participant = Participation(
+        tournament_id=tournament_id,
+        user_id=current_user.id
+    )
     db.session.add(participant)
     db.session.commit()
     flash(f"Tu es bien inscrit au tournoi {tournament.name}", "success")
@@ -159,8 +167,7 @@ def withdraw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if not current_user.participation(tournament):
         flash("Tu n'es pas inscrit à ce tournoi", "warning")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     participation = current_user.participation(tournament)
     if not tournament.is_open_to_registration():
@@ -175,15 +182,13 @@ def withdraw(tournament_id):
 @manager_required
 def create_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    title = f"{tournament.name} - Tableau"
 
     matches_with_tournament_player = [m for m in tournament.matches
                                       if m.tournament_player1_id
                                       or m.tournament_player2_id]
 
     if len(matches_with_tournament_player) > 0:
-        return redirect(url_for(
-            ".edit_tournament_draw", tournament_id=tournament_id))
+        return redirect(url_for(".edit_tournament_draw", tournament_id=tournament_id))
 
     matches = tournament.get_matches_first_round()
 
@@ -212,12 +217,14 @@ def create_tournament_draw(tournament_id):
                 player_id = None
                 qualifier_count += 1
                 qualifier_id = qualifier_count
-            t1 = TournamentPlayer(player_id=player_id,
-                                  seed=p.data["player1_seed"],
-                                  status=p.data["player1_status"],
-                                  position=0,
-                                  qualifier_id=qualifier_id,
-                                  tournament_id=tournament_id)
+            t1 = TournamentPlayer(
+                player_id=player_id,
+                seed=p.data["player1_seed"],
+                status=p.data["player1_status"],
+                position=0,
+                qualifier_id=qualifier_id,
+                tournament_id=tournament_id
+            )
             if p.data["player2_name"] >= 0:
                 player_id = p.data["player2_name"]
                 qualifier_id = None
@@ -225,12 +232,14 @@ def create_tournament_draw(tournament_id):
                 player_id = None
                 qualifier_count += 1
                 qualifier_id = qualifier_count
-            t2 = TournamentPlayer(player_id=player_id,
-                                  seed=p.data["player2_seed"],
-                                  status=p.data["player2_status"],
-                                  position=1,
-                                  qualifier_id=qualifier_id,
-                                  tournament_id=tournament_id)
+            t2 = TournamentPlayer(
+                player_id=player_id,
+                seed=p.data["player2_seed"],
+                status=p.data["player2_status"],
+                position=1,
+                qualifier_id=qualifier_id,
+                tournament_id=tournament_id
+            )
 
             # Add tournament players
             db.session.add(t1)
@@ -244,20 +253,20 @@ def create_tournament_draw(tournament_id):
             db.session.commit()
 
         flash(f"Le tableau du tournoi {tournament.name} a été créé", "info")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
     else:
-        return render_template("tournament/create_tournament_draw.html",
-                               title=title,
-                               form=form,
-                               tournament=tournament)
+        return render_template(
+            "tournament/create_tournament_draw.html",
+            title=f"{tournament.name} - Tableau",
+            form=form,
+            tournament=tournament
+        )
 
 
 @bp.route("/<tournament_id>/draw/edit", methods=["GET", "POST"])
 @manager_required
 def edit_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    title = f"{tournament.name} - Tableau"
 
     matches = tournament.get_matches_first_round()
     participations = {p: p.tournament_player.player
@@ -281,9 +290,9 @@ def edit_tournament_draw(tournament_id):
 
     if request.method == "GET":
         for p, match in zip(form.player, matches):
-            if match.tournament_player1.player:
+            if match.tournament_player1 and match.tournament_player1.player:
                 p.player1_name.data = match.tournament_player1.player.id
-            if match.tournament_player2.player:
+            if match.tournament_player2 and match.tournament_player2.player:
                 p.player2_name.data = match.tournament_player2.player.id
             p.player1_status.data = match.tournament_player1.status
             p.player2_status.data = match.tournament_player2.status
@@ -341,16 +350,18 @@ def edit_tournament_draw(tournament_id):
                         "email/draw_updated",
                         user=participation.user,
                         tournament=tournament,
-                        forecast=forecast)
+                        forecast=forecast
+                    )
 
         flash(f"Le tableau du tournoi {tournament.name} a été modifié", "info")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
     else:
-        return render_template("tournament/edit_tournament_draw.html",
-                               title=title,
-                               form=form,
-                               tournament=tournament)
+        return render_template(
+            "tournament/edit_tournament_draw.html",
+            title=f"{tournament.name} - Tableau",
+            form=form,
+            tournament=tournament
+        )
 
 
 @bp.route("/<tournament_id>/forecast", methods=["POST"])
@@ -361,20 +372,17 @@ def make_forecast(tournament_id):
     if not current_user.can_make_forecast(tournament):
         flash("Tu n'es pas autorisé à faire un pronostic pour ce tournoi",
               "warning")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     if not request.form["player"]:
         flash("Requête invalide", "warning")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     if int(request.form["player"]) == -1:
         forecast = None
         current_user.make_forecast(tournament, forecast)
         flash("Ton pronostic a bien été pris en compte.", "success")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     forecast = int(request.form["player"])
     participation = current_user.participation(tournament)
@@ -387,8 +395,7 @@ def make_forecast(tournament_id):
     else:
         flash("Ce pronostic est invalide.", "warning")
 
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament_id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
 
 @bp.route("/<tournament_id>/draw")
@@ -397,11 +404,12 @@ def view_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if tournament.deleted_at:
         abort(404)
-    title = f"{tournament.name} - Tableau"
 
-    return render_template("tournament/view_tournament_draw.html",
-                           title=title,
-                           tournament=tournament)
+    return render_template(
+        "tournament/view_tournament_draw.html",
+        title=f"{tournament.name} - Tableau",
+        tournament=tournament
+    )
 
 
 @bp.route("/<tournament_id>/draw/update", methods=["GET", "POST"])
@@ -410,7 +418,6 @@ def update_tournament_draw(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
     if tournament.deleted_at:
         abort(404)
-    title = f"Mettre à jour le tableau"
 
     form = FillTournamentDrawForm()
 
@@ -418,8 +425,7 @@ def update_tournament_draw(tournament_id):
         try:
             results = json.loads(form.forecast.data)
         except json.decoder.JSONDecodeError:
-            return redirect(url_for(".view_tournament",
-                                    tournament_id=tournament_id))
+            return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
         matches = tournament.matches
 
@@ -449,17 +455,17 @@ def update_tournament_draw(tournament_id):
         tournament.compute_scores()
 
         if all(results[str(match.id)] != "None" for match in matches):
-            return redirect(url_for(".close_tournament",
-                                    tournament_id=tournament_id))
+            return redirect(url_for(".close_tournament", tournament_id=tournament_id))
 
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament_id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
 
     else:
-        return render_template("tournament/update_tournament_draw.html",
-                               title=title,
-                               tournament=tournament,
-                               form=form)
+        return render_template(
+            "tournament/update_tournament_draw.html",
+            title="Mettre à jour le tableau",
+            tournament=tournament,
+            form=form
+        )
 
 
 @bp.route("/<tournament_id>/open_registrations")
@@ -470,8 +476,7 @@ def open_registrations(tournament_id):
     db.session.add(tournament)
     db.session.commit()
     flash("Les inscriptions au tournoi sont ouvertes", "info")
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament.id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
 @bp.route("/<tournament_id>/close_registrations")
@@ -487,8 +492,7 @@ def close_registrations(tournament_id):
             db.session.delete(participant)
     db.session.commit()
     flash("Les inscriptions au tournoi sont closes", "info")
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament.id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
 @bp.route("/<tournament_id>/close_tournament")
@@ -497,8 +501,7 @@ def close_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
     if tournament.status == TournamentStatus.FINISHED:
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament.id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
     tournament.status = TournamentStatus.FINISHED
     db.session.add(tournament)
@@ -508,16 +511,17 @@ def close_tournament(tournament_id):
     Ranking.compute_rankings(tournament.week)
 
     flash("Le tournoi a bien été clos", "info")
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament.id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
 @bp.route("/<tournament_id>/stats")
 @login_required
 def stats(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
-    return render_template("tournament/stats.html",
-                           tournament=tournament)
+    return render_template(
+        "tournament/stats.html",
+        tournament=tournament
+    )
 
 
 @bp.route("/<tournament_id>/send_notification_email")
@@ -527,8 +531,7 @@ def send_notification_email(tournament_id):
 
     if all(t.notification_sent_at is not None for t in tournament.week.tournaments):
         flash("La notification par mail a déjà été envoyée pour tous les tournois de la semaine", "info")
-        return redirect(url_for(".view_tournament",
-                                tournament_id=tournament.id))
+        return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
     for t in tournament.week.tournaments:
         t.notification_sent_at = datetime.now()
@@ -543,8 +546,8 @@ def send_notification_email(tournament_id):
             f"Les tournois de la semaine sont ouverts aux inscriptions !",
             "email/registrations_open",
             user=user,
-            tournaments=tournament.week.tournaments)
+            tournaments=tournament.week.tournaments
+        )
 
     flash("Les participants ont été notifiés par mail de l'ouverture des tournois de la semaine", "info")
-    return redirect(url_for(".view_tournament",
-                            tournament_id=tournament.id))
+    return redirect(url_for(".view_tournament", tournament_id=tournament.id))

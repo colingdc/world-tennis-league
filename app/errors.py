@@ -1,5 +1,4 @@
-from flask import (render_template, request, jsonify,
-                   current_app, redirect, url_for)
+from flask import render_template, request, jsonify, current_app, redirect, url_for
 
 
 def unauthorized(e):

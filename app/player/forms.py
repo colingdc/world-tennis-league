@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField
 from wtforms.validators import InputRequired, Optional
 
 from ..models import Player
@@ -8,11 +8,16 @@ from ..models import Player
 class CreatePlayerForm(FlaskForm):
     first_name = StringField(
         "Prénom",
-        validators=[Optional()])
+        validators=[
+            Optional()
+        ]
+    )
     last_name = StringField(
         "Nom",
-        validators=[InputRequired(message="Ce champ est obligatoire")])
-    submit = SubmitField("Valider")
+        validators=[
+            InputRequired(message="Ce champ est obligatoire")
+        ]
+    )
 
     def validate(self):
         rv = FlaskForm.validate(self)
@@ -29,11 +34,16 @@ class CreatePlayerForm(FlaskForm):
 class EditPlayerForm(FlaskForm):
     first_name = StringField(
         "Prénom",
-        validators=[Optional()])
+        validators=[
+            Optional()
+        ]
+    )
     last_name = StringField(
         "Nom",
-        validators=[InputRequired(message="Ce champ est obligatoire")])
-    submit = SubmitField("Valider")
+        validators=[
+            InputRequired(message="Ce champ est obligatoire")
+        ]
+    )
 
     def __init__(self, player, *args, **kwargs):
         super(EditPlayerForm, self).__init__(*args, **kwargs)
