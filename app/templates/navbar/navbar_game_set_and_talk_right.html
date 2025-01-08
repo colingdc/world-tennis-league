@@ -1,0 +1,81 @@
+{% if current_user.is_authenticated %}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="fa fa-medal" aria-hidden="true"></span>
+        La World Tennis League
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="{{ url_for('main.index') }}">
+                <span class="fa fa-home" aria-hidden="true"></span>
+                Accueil
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('user.view_user', user_id=current_user.id) }}">
+                <span class="fa fa-user" aria-hidden="true"></span>
+                Mon profil [{{ current_user.username }}]
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('user.settings') }}">
+                <span class="fa fa-cog" aria-hidden="true"></span>
+                Paramètres
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('auth.logout') }}">
+                <span class="fa fa-sign-out-alt" aria-hidden="true"></span>
+                Me déconnecter
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('auth.change_password') }}">
+                <span class="fa fa-lock" aria-hidden="true"></span>
+                Modifier mon mot de passe
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('main.rules') }}">
+                <span class="fa fa-gavel" aria-hidden="true"></span>
+                Les règles
+            </a>
+        </li>
+    </ul>
+</li>
+{% else %}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="fa fa-medal" aria-hidden="true"></span>
+        La World Tennis League
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="{{ url_for('main.index') }}">
+                <span class="fa fa-home" aria-hidden="true"></span>
+                Accueil
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('auth.signup') }}">
+                <span class="fa fa-user-plus" aria-hidden="true"></span>
+                Inscription
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('auth.login') }}">
+                <span class="fa fa-sign-in-alt" aria-hidden="true"></span>
+                Connexion
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('main.rules') }}">
+                <span class="fa fa-gavel" aria-hidden="true"></span>
+                Les règles
+            </a>
+        </li>
+    </ul>
+</li>
+{% endif %}

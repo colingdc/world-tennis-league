@@ -1,32 +1,32 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+
+{% block content %}
 
 <div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Historique du classement</h3>
-  </div>
-
-  <div class="panel-body">
-    <div class="alert alert-info">
-      <p>Consulte le classement à la fin du tournoi de ton choix.</p>
+    <div class="panel-heading">
+        <h3 class="panel-title">Historique du classement</h3>
     </div>
 
-    <div class="row">
-      <form action="{{ url_for('ranking.index') }}" method="POST">
-        {{ form.hidden_tag() }}
-        <div class="col-md-8 col-md-offset-2">
-          <div
-            class="form-group {% if form.week_name.errors %} has-error {% endif %}"
-          >
-            {{ form.week_name.label() }}
-            <div>{{form.week_name(class="form-control")}}</div>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-success" type="submit">Valider</button>
-          </div>
+    <div class="panel-body">
+        <div class="alert alert-info">
+            <p>Consulte le classement à la fin du tournoi de ton choix.</p>
         </div>
-      </form>
+
+        <div class="row">
+            <form action="{{ url_for('ranking.index') }}" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="form-group {% if form.week_name.errors %} has-error {% endif %}">
+                        {{ form.week_name.label() }}
+                        <div>{{ form.week_name(class="form-control") }}</div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success" type="submit">Valider</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
 </div>
 
-{% endblock %}
+{% endblock content %}

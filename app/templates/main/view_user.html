@@ -1,59 +1,64 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+
+{% block content %}
 
 <div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Profil de {{ user.username }}</h3>
-  </div>
-
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-md-12">
-        {% if user.get_participations().count() > 3 %}
-        <div
-          id="ranking-chart"
-          class="chart"
-          style="margin-bottom: 20px;"
-        ></div>
-        {% endif %}
-        <div class="table">
-          <table class="table table-striped table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Tournoi</th>
-                <th>Joueur choisi</th>
-                <th>Stade atteint</th>
-                <th>Points</th>
-                <th>Classement ATP</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for participation in user.get_participations() %} {% if not
-              participation.tournament.is_open_to_registration() %}
-              <tr>
-                <td>
-                  <a
-                    href="{{ url_for('tournament.view_tournament', tournament_id = participation.tournament.id, _external = True) }}"
-                  >
-                    {{ participation.tournament.name }}</a
-                  >
-                </td>
-                <td>
-                  {{ participation.tournament_player.get_name(format="standard") }}
-                </td>
-                <td>{{ participation.get_status() | safe }}</td>
-                <td>{{ participation.points }}</td>
-                <td>{{ participation.get_ranking() or "" }}</td>
-              </tr>
-              {% endif %} {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div class="panel-heading">
+        <h3 class="panel-title">Profil de {{ user.username }}</h3>
     </div>
-  </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                {% if user.get_participations().count() > 3 %}
+                <div
+                        id="ranking-chart"
+                        class="chart"
+                        style="margin-bottom: 20px;"
+                ></div>
+                {% endif %}
+
+                <div class="table">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Tournoi</th>
+                            <th>Joueur choisi</th>
+                            <th>Stade atteint</th>
+                            <th>Points</th>
+                            <th>Classement ATP</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for participation in user.get_participations() %}
+                        {% if not participation.tournament.is_open_to_registration() %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('tournament.view_tournament', tournament_id = participation.tournament.id, _external = True) }}">
+                                    {{ participation.tournament.name }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ participation.tournament_player.get_name(format="standard") }}
+                            </td>
+                            <td>{{ participation.get_status() | safe }}</td>
+                            <td>{{ participation.points }}</td>
+                            <td>{{ participation.get_ranking() or "" }}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-{% endblock %} {% block extrajs %}
+{% endblock content %}
+
+{% block extrajs %}
+
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script>
   var series = {{ series | safe }}
@@ -88,4 +93,5 @@
     });
   });
 </script>
-{% endblock %}
+
+{% endblock extrajs %}
