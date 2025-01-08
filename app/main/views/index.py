@@ -1,7 +1,8 @@
-from flask import redirect, render_template, url_for
+from flask import render_template
 from flask_login import current_user
 
 from .. import bp
+from ...navigation import go_to_login_page
 from ...tournament.lib import fetch_ongoing_tournaments, fetch_open_tournaments
 
 
@@ -18,4 +19,4 @@ def index():
             user=current_user
         )
 
-    return redirect(url_for("auth.login"))
+    return go_to_login_page()

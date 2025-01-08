@@ -1,9 +1,10 @@
 from functools import wraps
 
-from flask import abort, redirect, url_for, request, session
+from flask import abort, request, session
 from flask_login import current_user
 
 from .models import Permission
+from .navigation import go_to_account_unconfirmed_page, go_to_login_page
 
 
 def permission_required(permission=None):
@@ -31,9 +32,9 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            return redirect(url_for("auth.login"))
+            return go_to_login_page()
         if not current_user.confirmed:
-            return redirect(url_for("auth.unconfirmed"))
+            return go_to_account_unconfirmed_page()
         return f(*args, **kwargs)
     return decorated_function
 
@@ -43,6 +44,6 @@ def auth_required(f):
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
             session["next"] = request.url
-            return redirect(url_for("auth.login"))
+            return go_to_login_page()
         return f(*args, **kwargs)
     return decorated_function

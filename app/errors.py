@@ -1,4 +1,6 @@
-from flask import render_template, request, jsonify, current_app, redirect, url_for
+from flask import render_template, request, jsonify, current_app
+
+from .navigation import go_to_login_page
 
 
 def unauthorized(e):
@@ -8,7 +10,7 @@ def unauthorized(e):
         response.status_code = 401
         return response
     current_app.logger.error('Unauthorized: %s', (request.path))
-    return redirect(url_for("auth.login"))
+    return go_to_login_page()
 
 
 def forbidden(e):

@@ -6,6 +6,7 @@ from ..lib import fetch_tournament
 from ... import db
 from ...decorators import manager_required
 from ...models import Player, TournamentPlayer
+from ...navigation import go_to_tournament_page
 from ...notifications import display_info_message
 
 
@@ -87,7 +88,7 @@ def create_tournament_draw(tournament_id):
             db.session.commit()
 
         display_info_message(f"Le tableau du tournoi {tournament.name} a été créé")
-        return redirect(url_for(".view_tournament", tournament_id=tournament_id))
+        return go_to_tournament_page(tournament_id)
     else:
         return render_template(
             "tournament/create_tournament_draw.html",

@@ -1,10 +1,11 @@
-from flask import current_app, redirect, render_template, request, session, url_for
+from flask import current_app, render_template, request, session
 from flask_login import login_user, logout_user
 
 from .. import bp
 from ..forms import SignupForm
 from ..lib import get_user_by_username, get_user_by_email, create_user
 from ...email import send_email
+from ...navigation import go_to_account_unconfirmed_page
 from ...notifications import display_info_message
 
 
@@ -23,11 +24,7 @@ def signup():
             form.email.errors.append("Cet email existe déjà")
 
         if user_exists or email_exists:
-            return render_template(
-                "auth/signup.html",
-                title="Inscription",
-                form=form
-            )
+            return render_signup_page(form)
         else:
             user = create_user(form.username.data, form.email.data, form.password.data)
 
@@ -55,10 +52,14 @@ def signup():
             logout_user()
             login_user(user)
 
-            return redirect(url_for("auth.unconfirmed"))
+            return go_to_account_unconfirmed_page()
     else:
-        return render_template(
-            "auth/signup.html",
-            title="Inscription",
-            form=form
-        )
+        return render_signup_page(form)
+
+
+def render_signup_page(form):
+    return render_template(
+        "auth/signup.html",
+        title="Inscription",
+        form=form
+    )
