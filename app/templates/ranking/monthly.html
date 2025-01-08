@@ -18,12 +18,12 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Classements mensuels</h3>
+        <h3 class="panel-title">{{ _("monthly_rankings") }}</h3>
     </div>
 
     <div class="panel-body">
         <div class="alert alert-info">
-            <p>Consulte le classement sur l'ensemble du mois de ton choix.</p>
+            <p>{{ _("view_monthly_ranking") }}</p>
         </div>
 
         <div class="row">
@@ -35,7 +35,7 @@
                         <div>{{ form.month_name(class="form-control") }}</div>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-success" type="submit">Valider</button>
+                        <button class="btn btn-success" type="submit">{{ _("confirm") }}</button>
                     </div>
                 </div>
             </form>
@@ -47,7 +47,7 @@
 <div class="panel panel-default panel-table">
     <div class="panel-heading">
         <h3 class="panel-title">
-            Classement du mois {{ month_name }}
+            {{ _("ranking_for_month") }} {{ month_name }}
         </h3>
     </div>
 
@@ -60,9 +60,9 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Pseudo</th>
-                    <th>Points</th>
-                    <th>Nombre de tournois</th>
+                    <th>{{ _("username") }}</th>
+                    <th>{{ _("points") }}</th>
+                    <th>{{ _("number_of_tournaments") }}</th>
                 </tr>
                 </thead>
                 <tbody>

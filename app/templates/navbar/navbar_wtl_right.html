@@ -7,49 +7,49 @@
     <ul class="dropdown-menu">
         <li>
             <a href="{{ url_for('user.view_user', user_id=current_user.id) }}">
-                <span class="fa fa-user" aria-hidden="true"></span> Mon profil
+                <span class="fa fa-user" aria-hidden="true"></span> {{ _("my_profile") }}
             </a>
         </li>
         <li>
             <a href="{{ url_for('user.settings') }}">
-                <span class="fa fa-cog" aria-hidden="true"></span> Paramètres
+                <span class="fa fa-cog" aria-hidden="true"></span> {{ _("settings") }}
             </a>
         </li>
         <li>
             <a href="{{ url_for('auth.logout') }}">
-                <span class="fa fa-sign-out-alt" aria-hidden="true"></span> Me déconnecter
+                <span class="fa fa-sign-out-alt" aria-hidden="true"></span> {{ _("logout") }}
             </a>
         </li>
         <li>
             <a href="{{ url_for('auth.change_password') }}">
-                <span class="fa fa-lock" aria-hidden="true"></span> Modifier mon mot de passe
+                <span class="fa fa-lock" aria-hidden="true"></span> {{ _("modify_my_password") }}
             </a>
         </li>
         <li>
             <a href="{{ url_for('tournament.view_tournaments') }}">
-                <span class="fa fa-lock" aria-hidden="true"></span> Tournois
+                <span class="fa fa-lock" aria-hidden="true"></span> {{ _("tournaments") }}
             </a>
         </li>
         {% if current_user.is_manager() %}
         <li role="separator" class="divider"></li>
         <li>
             <a href="{{ url_for('tournament.create_tournament') }}">
-                <span class="fa fa-trophy" aria-hidden="true"></span> Créer un tournoi
+                <span class="fa fa-trophy" aria-hidden="true"></span> {{ _("create_a_tournament") }}
             </a>
         </li>
         <li>
             <a href="{{ url_for('user.view_users') }}">
-                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs
+                <span class="fa fa-user" aria-hidden="true"></span> {{ _("users") }}
             </a>
         </li>
         <li>
             <a href="{{ url_for('user.view_users_raw') }}">
-                <span class="fa fa-user" aria-hidden="true"></span> Utilisateurs (export brut)
+                <span class="fa fa-user" aria-hidden="true"></span> {{ _("users_raw_export") }}
             </a>
         </li>
         <li>
             <a href="{{ url_for('player.view_players') }}">
-                <span class="fa fa-racket" aria-hidden="true"></span> Joueurs ATP
+                <span class="fa fa-racket" aria-hidden="true"></span> {{ _("atp_players") }}
             </a>
         </li>
         {% endif %}
@@ -58,12 +58,12 @@
 {% else %}
 <li>
     <a href="{{ url_for('auth.signup') }}">
-        <span class="fa fa-user-plus" aria-hidden="true"></span> Inscription
+        <span class="fa fa-user-plus" aria-hidden="true"></span> {{ _("signup") }}
     </a>
 </li>
 <li>
     <a href="{{ url_for('auth.login') }}">
-        <span class="fa fa-sign-in-alt" aria-hidden="true"></span> Connexion
+        <span class="fa fa-sign-in-alt" aria-hidden="true"></span> {{ _("login") }}
     </a>
 </li>
 {% endif %}

@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from flask import redirect, render_template, request, url_for
+from flask_babel import _
 
 from .. import bp
 from ..forms import CreateTournamentForm
@@ -14,7 +15,7 @@ from ...notifications import display_info_message
 @manager_required
 def create_tournament():
     form = CreateTournamentForm(request.form)
-    form.category.choices = [("", "Choisir une catégorie")]
+    form.category.choices = [("", _("choose_a_category"))]
     form.category.choices += [(
         i, c["full_name"])
         for i, c in tournament_categories.items()]
@@ -33,11 +34,11 @@ def create_tournament():
             category_name=form.category.data,
         )
 
-        display_info_message(f"Le tournoi {form.name.data} a été créé")
+        display_info_message(_("tournament_created", tournament_name=form.name.data))
         return redirect(url_for(".create_tournament"))
     else:
         return render_template(
             "tournament/create_tournament.html",
-            title="Créer un tournoi",
+            title=_("create_a_tournament"),
             form=form
         )

@@ -1,3 +1,4 @@
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -13,8 +14,8 @@ def confirm(token):
         return go_to_homepage()
 
     if current_user.confirm(token):
-        display_success_message("Ton compte est à présent validé.")
+        display_success_message(_("account_validated"))
         return go_to_homepage()
     else:
-        display_danger_message("Ce lien de confirmation est invalide ou a expiré.")
+        display_danger_message(_("invalid_confirmation_link"))
         return go_to_account_unconfirmed_page()

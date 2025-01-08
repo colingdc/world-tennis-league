@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 
 from .. import bp
 from ..lib import fetch_sorted_players
@@ -12,6 +13,6 @@ def view_players():
 
     return render_template(
         "player/view_players.html",
-        title="Joueurs",
+        title=_("players"),
         players=players
     )

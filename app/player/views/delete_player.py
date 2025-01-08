@@ -1,4 +1,5 @@
 from flask import redirect, url_for
+from flask_babel import _
 
 from .. import bp
 from ..lib import fetch_player_by_id
@@ -14,13 +15,12 @@ def delete_player(player_id):
     if player.tournament_players.count() > 0:
         tournament = player.tournament_players.first().tournament
 
-        display_danger_message("Ce joueur ne peut pas être supprimé car il apparait dans le "
-                               f"tableau d'au moins un tournoi ({tournament.name})")
+        display_danger_message(_("player_in_use", tournament_name=tournament.name))
 
         return redirect(url_for(".view_players"))
 
     player.delete()
 
-    display_info_message(f"Le joueur {player.get_name()} a été supprimé")
+    display_info_message(_("player_deleted", player_name=player.get_name()))
 
     return redirect(url_for(".view_players"))

@@ -1,9 +1,9 @@
 <table>
     <thead>
     <tr>
-        <th>Pseudo</th>
-        <th>Email</th>
-        <th>Confirmé</th>
+        <th>{{ _("username") }}</th>
+        <th>{{ _("email") }}</th>
+        <th>{{ _("validated") }}</th>
     </tr>
     </thead>
     <tbody>
@@ -11,7 +11,7 @@
     <tr>
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ "Oui" if user.confirmed else "Non" }}</td>
+        <td>{{ _("yes") if user.confirmed else _("no") }}</td>
     </tr>
     {% endfor %}
     </tbody>

@@ -1,3 +1,4 @@
+from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 from wtforms import DateTimeField, FieldList, FormField, IntegerField, SelectField, StringField
 from wtforms.validators import InputRequired, Optional
@@ -5,52 +6,52 @@ from wtforms.validators import InputRequired, Optional
 
 class CreateTournamentForm(FlaskForm):
     name = StringField(
-        'Nom',
+        _l("name"),
         validators=[
-            InputRequired(message="Ce champ est obligatoire")
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     category = SelectField(
-        'Catégorie',
+        _l("category"),
         validators=[
-            InputRequired(message="Ce champ est obligatoire")
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     start_date = DateTimeField(
-        'Date de début',
+        _l("start_date"),
         format="%d/%m/%Y %H:%M",
         validators=[
-            InputRequired(message="Ce champ est obligatoire")
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     week = DateTimeField(
-        'Semaine',
+        _l("week"),
         format="%d/%m/%Y",
         validators=[
-            InputRequired(message="Ce champ est obligatoire")
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
 
 
 class EditTournamentForm(FlaskForm):
     name = StringField(
-        'Nom',
+        _l("name"),
         validators=[
-            InputRequired(message="Ce champ est obligatoire")
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     start_date = DateTimeField(
-        'Date de début',
+        _l("start_date"),
         format="%d/%m/%Y %H:%M",
         validators=[
-            InputRequired(message="Ce champ est obligatoire")
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
     week = DateTimeField(
-        'Semaine',
+        _l("week"),
         format="%d/%m/%Y",
         validators=[
-            InputRequired(message="Ce champ est obligatoire")
+            InputRequired(message=_l("mandatory_field"))
         ]
     )
 

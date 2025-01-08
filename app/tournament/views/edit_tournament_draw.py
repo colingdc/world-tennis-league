@@ -1,4 +1,5 @@
 from flask import render_template, request
+from flask_babel import _
 
 from .. import bp
 from ..forms import CreateTournamentDrawForm
@@ -24,13 +25,13 @@ def edit_tournament_draw(tournament_id):
     if not request.form:
         form = CreateTournamentDrawForm()
 
-        for _ in matches:
+        for __ in matches:
             form.player.append_entry()
 
     else:
         form = CreateTournamentDrawForm(request.form)
 
-    player_names = [(-1, "Choisir un joueur")] + Player.get_all()
+    player_names = [(-1, _("choose_a_player"))] + Player.get_all()
 
     for p in form.player:
         p.player1_name.choices = player_names
@@ -97,19 +98,19 @@ def edit_tournament_draw(tournament_id):
 
                     send_email(
                         participation.user.email,
-                        f"Tableau du tournoi {tournament.name} modifié",
+                        _("tournament_draw_has_been_modified", tournament_name=tournament.name),
                         "email/draw_updated",
                         user=participation.user,
                         tournament=tournament,
                         forecast=forecast
                     )
 
-        display_info_message(f"Le tableau du tournoi {tournament.name} a été modifié")
+        display_info_message(_("tournament_draw_updated", tournament_name=tournament.name))
         return go_to_tournament_page(tournament_id)
     else:
         return render_template(
             "tournament/edit_tournament_draw.html",
-            title=f"{tournament.name} – Tableau",
+            title=_("tournament_draw", tournament_name=tournament.name),
             form=form,
             tournament=tournament
         )

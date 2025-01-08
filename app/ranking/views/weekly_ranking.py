@@ -1,4 +1,5 @@
-from flask import abort, render_template
+from flask import render_template
+from flask_babel import _
 
 from .. import bp
 from ..lib import get_weekly_ranking
@@ -15,7 +16,7 @@ def weekly_ranking(tournament_week_id):
 
     return render_template(
         "ranking/ranking.html",
-        title="Classement",
+        title=_("ranking"),
         ranking=ranking,
         week=week
     )

@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -17,7 +18,7 @@ def view_tournament(tournament_id):
 
         participation = current_user.participation(tournament)
 
-        form.player.choices = [(-1, "Choisir un joueur")]
+        form.player.choices = [(-1, _("choose_a_player"))]
         form.player.choices += [(p.id, p.get_name("last_name_first"))
                                 for p in tournament.get_allowed_forecasts()]
 

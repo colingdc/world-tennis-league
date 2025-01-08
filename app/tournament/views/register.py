@@ -1,3 +1,4 @@
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -15,7 +16,7 @@ def register(tournament_id):
     tournament = fetch_tournament(tournament_id)
 
     if not current_user.can_register_to_tournament(tournament):
-        display_warning_message("Tu n'es pas autorisé à t'inscrire à ce tournoi, soit car tu es déjà inscrit à un autre tournoi cette semaine, soit car les inscriptions sont fermées.")
+        display_warning_message(_("not_allowed_to_register"))
         return go_to_tournament_page(tournament_id)
 
     participant = Participation(
@@ -26,5 +27,5 @@ def register(tournament_id):
     db.session.add(participant)
     db.session.commit()
 
-    display_success_message(f"Tu es bien inscrit au tournoi {tournament.name}")
+    display_success_message(_("registration_confirmed", tournament_name=tournament.name))
     return go_to_tournament_page(tournament_id)

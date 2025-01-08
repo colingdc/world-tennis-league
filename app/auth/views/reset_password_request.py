@@ -1,4 +1,5 @@
 from flask import render_template, request
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -24,22 +25,19 @@ def reset_password_request():
 
             send_email(
                 user.email,
-                "Réinitialisation du mot de passe",
+                _("password_reset"),
                 "email/reset_password",
                 user=user,
                 token=token,
                 next=request.args.get("next")
             )
 
-        display_info_message("Un email contenant des instructions pour réinitialiser "
-                             "ton mot de passe t'a été envoyé. Si tu n'as pas reçu d'email, "
-                             "vérifie dans ton dossier de spams et assure toi d'avoir rentré "
-                             "la bonne adresse mail.")
+        display_info_message(_("password_reset_email_sent"))
 
         return go_to_login_page()
 
     return render_template(
         "auth/reset_password_request.html",
-        title="Réinitialisation du mot de passe",
+        title=_("password_reset"),
         form=form
     )

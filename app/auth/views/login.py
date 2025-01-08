@@ -1,4 +1,5 @@
 from flask import render_template, session
+from flask_babel import _
 from flask_login import current_user, login_user
 
 from .. import bp
@@ -23,14 +24,14 @@ def login():
         # If the credentials are incorrect, render the login page
         # with an error message
         if user is None:
-            form.username.errors.append("Identifiants incorrects")
+            form.username.errors.append(_("invalid_credentials"))
             form.password.errors.append("")
 
             return render_login_page(form)
 
         is_password_correct = user.verify_password(form.password.data)
         if not is_password_correct:
-            form.username.errors.append("Identifiants incorrects")
+            form.username.errors.append(_("invalid_credentials"))
             form.password.errors.append("")
 
             return render_login_page(form)
@@ -40,7 +41,7 @@ def login():
         session["signed"] = True
         session["username"] = user.username
 
-        display_success_message("Tu es à présent connecté.")
+        display_success_message(_("login_confirmed"))
         return go_to_account_unconfirmed_page()
 
     return render_login_page(form)
@@ -49,6 +50,6 @@ def login():
 def render_login_page(form):
     return render_template(
         "auth/login.html",
-        title="Connexion",
+        title=_("login"),
         form=form
     )

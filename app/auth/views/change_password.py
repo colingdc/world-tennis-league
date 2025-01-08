@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -20,14 +21,14 @@ def change_password():
 
             db.session.add(current_user)
 
-            display_success_message("Ton mot de passe a été mis à jour.")
+            display_success_message(_("password_updated"))
             return go_to_homepage()
         else:
-            form.old_password.errors.append("Mot de passe incorrect")
+            form.old_password.errors.append(_("invalid_password"))
 
     return render_template(
         "auth/change_password.html",
-        title="Changement de mot de passe",
+        title=_("password_change"),
         form=form,
         user=current_user
     )

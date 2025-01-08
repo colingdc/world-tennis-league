@@ -1,3 +1,4 @@
+from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
@@ -5,7 +6,7 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 class SignupForm(FlaskForm):
     email = StringField(
-        'Email',
+        _l("email"),
         validators=[
             DataRequired(),
             Length(1, 64),
@@ -13,14 +14,14 @@ class SignupForm(FlaskForm):
         ]
     )
     password = PasswordField(
-        'Mot de passe',
+        _l("password"),
         validators=[
             DataRequired(),
             Length(min=8)
         ]
     )
     username = StringField(
-        "Pseudo",
+        _l("username"),
         validators=[
             DataRequired(),
             Length(1, 64)
@@ -30,40 +31,40 @@ class SignupForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     username = StringField(
-        "Pseudo",
+        _l("username"),
         validators=[
             DataRequired()
         ]
     )
     password = PasswordField(
-        "Mot de passe",
+        _l("password"),
         validators=[
             DataRequired()
         ]
     )
     remember_me = BooleanField(
-        "Se souvenir de moi",
+        _l("remember_me"),
         default=False
     )
 
 
 class ChangePasswordForm(FlaskForm):
     old_password = PasswordField(
-        "Mot de passe actuel",
+        _l("current_password"),
         validators=[
             DataRequired()
         ]
     )
     password = PasswordField(
-        "Nouveau mot de passe",
+        _l("new_password"),
         validators=[
             DataRequired(),
             Length(min=8),
-            EqualTo('password2', message="Les mots de passe renseignés sont différents.")
+            EqualTo("password2", message=_l("passwords_are_different"))
         ]
     )
     password2 = PasswordField(
-        "Confirmer le nouveau mot de passe",
+        _l("confirm_new_password"),
         validators=[
             DataRequired()
         ]
@@ -72,7 +73,7 @@ class ChangePasswordForm(FlaskForm):
 
 class PasswordResetRequestForm(FlaskForm):
     email = StringField(
-        "Email",
+        _l("email"),
         validators=[
             DataRequired(),
             Length(1, 64),
@@ -83,7 +84,7 @@ class PasswordResetRequestForm(FlaskForm):
 
 class PasswordResetForm(FlaskForm):
     email = StringField(
-        "Email",
+        _l("email"),
         validators=[
             DataRequired(),
             Length(1, 64),
@@ -91,15 +92,15 @@ class PasswordResetForm(FlaskForm):
         ]
     )
     password = PasswordField(
-        "Nouveau mot de passe",
+        _l("new_password"),
         validators=[
             DataRequired(),
             Length(min=8),
-            EqualTo('password2', message="Les mots de passe renseignés sont différents.")
+            EqualTo("password2", message=_l("passwords_are_different"))
         ]
     )
     password2 = PasswordField(
-        "Confirmer le mot de passe",
+        _l("confirm_password"),
         validators=[
             DataRequired()
         ]

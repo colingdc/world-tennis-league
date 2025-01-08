@@ -20,7 +20,7 @@
             <a href="{{ url_for('.view_tournament', tournament_id=tournament.id) }}">
                 {{ tournament.name }}
             </a>
-            - Statistiques
+            - {{ _("statistics") }}
         </h3>
     </div>
 
@@ -32,9 +32,9 @@
             >
                 <thead>
                 <tr>
-                    <th>Joueur</th>
-                    <th>Nombre de pronostics</th>
-                    <th>Stade atteint</th>
+                    <th>{{ _("player") }}</th>
+                    <th>{{ _("number_of_forecasts") }}</th>
+                    <th>{{ _("round_reached") }}</th>
                 </tr>
                 </thead>
                 <tbody>

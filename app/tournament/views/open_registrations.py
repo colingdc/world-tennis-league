@@ -1,3 +1,5 @@
+from flask_babel import _
+
 from .. import bp
 from ..lib import open_tournament_registrations, fetch_tournament
 from ...decorators import manager_required
@@ -12,5 +14,5 @@ def open_registrations(tournament_id):
 
     open_tournament_registrations(tournament)
 
-    display_info_message("Les inscriptions au tournoi sont ouvertes")
+    display_info_message(_("registrations_opened"))
     return go_to_tournament_page(tournament_id)

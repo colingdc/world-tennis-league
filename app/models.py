@@ -1,6 +1,7 @@
 import datetime
 
 from flask import current_app
+from flask_babel import _
 from flask_login import AnonymousUserMixin, UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from .constants import tournament_categories
@@ -18,7 +19,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True)
     password_hash = db.Column(db.String(128))
     notifications_activated = db.Column(db.Boolean, default=False)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
     participations = db.relationship("Participation", backref="user", lazy="dynamic")
     rankings = db.relationship("Ranking", backref="user", lazy="dynamic")
 
@@ -30,7 +31,7 @@ class User(UserMixin, db.Model):
 
     @property
     def password(self):
-        raise AttributeError('password is not a readable attribute')
+        raise AttributeError("password is not a readable attribute")
 
     @password.setter
     def password(self, password):
@@ -211,11 +212,11 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'User': (Permission.PARTICIPATE_TOURNAMENT, True),
-            'Tournament Manager': (Permission.PARTICIPATE_TOURNAMENT |
+            "User": (Permission.PARTICIPATE_TOURNAMENT, True),
+            "Tournament Manager": (Permission.PARTICIPATE_TOURNAMENT |
                                    Permission.MANAGE_TOURNAMENT,
                                    False),
-            'Administrator': (0xff, False)
+            "Administrator": (0xff, False)
         }
         for r in roles:
             role = Role.query.filter_by(name=r).first()
@@ -272,7 +273,7 @@ class Tournament(db.Model):
     status = db.Column(db.Integer, default=TournamentStatus.CREATED)
     notification_sent_at = db.Column(db.DateTime)
 
-    week_id = db.Column(db.Integer, db.ForeignKey('tournament_weeks.id'))
+    week_id = db.Column(db.Integer, db.ForeignKey("tournament_weeks.id"))
     participations = db.relationship("Participation", backref="tournament", lazy="dynamic")
     players = db.relationship("TournamentPlayer", backref="tournament", lazy="dynamic")
     matches = db.relationship("Match", backref="tournament", lazy="dynamic")
@@ -285,13 +286,14 @@ class Tournament(db.Model):
         db.session.commit()
 
     def get_status(self):
-        statuses = {
-            10: "Créé",
-            20: "Ouvert aux inscriptions",
-            30: "En cours",
-            40: "Terminé"
-        }
-        return statuses.get(self.status)
+        if self.status == TournamentStatus.CREATED:
+            return _("tournament_status_created")
+        if self.status == TournamentStatus.REGISTRATION_OPEN:
+            return _("tournament_status_registration_open")
+        if self.status == TournamentStatus.ONGOING:
+            return _("tournament_status_ongoing")
+        if self.status == TournamentStatus.FINISHED:
+            return _("tournament_status_finished")
 
     def is_open_to_registration(self):
         return self.status == TournamentStatus.REGISTRATION_OPEN

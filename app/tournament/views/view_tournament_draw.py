@@ -1,4 +1,5 @@
-from flask import abort, render_template
+from flask import render_template
+from flask_babel import _
 
 from .. import bp
 from ..lib import fetch_tournament
@@ -12,6 +13,6 @@ def view_tournament_draw(tournament_id):
 
     return render_template(
         "tournament/view_tournament_draw.html",
-        title=f"{tournament.name} – Tableau",
+        title=_("tournament_draw", tournament_name=tournament.name),
         tournament=tournament
     )

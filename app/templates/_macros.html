@@ -12,9 +12,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">×</span><span class="sr-only">Fermer</span>
+                    <span aria-hidden="true">×</span><span class="sr-only">{{ _("close") }}</span>
                 </button>
-                <h4 class="modal-title" id="frm_title">Confirmer</h4>
+                <h4 class="modal-title" id="frm_title">{{ _("confirm") }}</h4>
             </div>
             <div class="modal-body" id="frm_body"></div>
             <div class="modal-footer">
@@ -24,7 +24,7 @@
                         class="btn btn-success col-sm-2 pull-right"
                         id="frm_submit"
                 >
-                    Oui
+                    {{ _("yes") }}
                 </button>
                 <button
                         type="button"
@@ -32,7 +32,7 @@
                         data-dismiss="modal"
                         id="frm_cancel"
                 >
-                    Non
+                    {{ _("no") }}
                 </button>
             </div>
         </div>
