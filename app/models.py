@@ -278,7 +278,7 @@ class TournamentCategory:
             "full_name": "ATP 1000 (7 tours)",
             "number_rounds": 7,
             "name": "ATP 1000",
-            "points": [1000, 650, 400, 200, 100, 50, 25, 10],
+            "points": [1000, 650, 400, 200, 100, 50, 30, 10],
         },
         "ATP 1000 (6 tours)": {
             "full_name": "ATP 1000 (6 tours)",
