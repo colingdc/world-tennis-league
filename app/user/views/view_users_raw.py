@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 
 from .. import bp
 from ...decorators import manager_required
@@ -13,6 +14,6 @@ def view_users_raw():
 
     return render_template(
         "main/view_users_raw.html",
-        title="Utilisateurs",
+        title=_("users"),
         users=users
     )

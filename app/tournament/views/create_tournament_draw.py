@@ -1,4 +1,5 @@
 from flask import redirect, render_template, request, url_for
+from flask_babel import _
 
 from .. import bp
 from ..forms import CreateTournamentDrawForm
@@ -27,13 +28,13 @@ def create_tournament_draw(tournament_id):
     if not request.form:
         form = CreateTournamentDrawForm()
 
-        for _ in matches:
+        for __ in matches:
             form.player.append_entry()
 
     else:
         form = CreateTournamentDrawForm(request.form)
 
-    player_names = [(-1, "Choisir un joueur")] + Player.get_all()
+    player_names = [(-1, _("choose_a_player"))] + Player.get_all()
 
     for p in form.player:
         p.player1_name.choices = player_names
@@ -87,12 +88,12 @@ def create_tournament_draw(tournament_id):
             db.session.add(match)
             db.session.commit()
 
-        display_info_message(f"Le tableau du tournoi {tournament.name} a été créé")
+        display_info_message(_("tournament_draw_created", tournament_name=tournament.name))
         return go_to_tournament_page(tournament_id)
     else:
         return render_template(
             "tournament/create_tournament_draw.html",
-            title=f"{tournament.name} – Tableau",
+            title=_("tournament_draw", tournament_name=tournament.name),
             form=form,
             tournament=tournament
         )

@@ -13,12 +13,12 @@
         {% if "/wtl" in request.path %}
 
         <span class="fa fa-medal" aria-hidden="true"></span>
-        La World Tennis League
+        {{ _("the_world_tennis_league") }}
 
         {% else %}
 
         <span><img class="logo" src="{{ url_for('static', filename='images/logo.png') }}"/></span>
-        Game, Set & Talk
+        {{ _("game_set_and_talk") }}
 
         {% endif %}
     </a>

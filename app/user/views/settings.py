@@ -1,4 +1,5 @@
 from flask import render_template, request
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -19,11 +20,11 @@ def settings():
     if form.validate_on_submit():
         update_notification_preferences(current_user, form.notifications_activated.data)
 
-        display_info_message(f"Tes préférences de notifications ont été mises à jour")
+        display_info_message(_("notification_preferences_updated"))
 
     return render_template(
         "main/settings.html",
-        title="Paramètres",
+        title=_("settings"),
         form=form,
         user=current_user
     )

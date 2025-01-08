@@ -1,3 +1,4 @@
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -14,11 +15,11 @@ def resend_confirmation():
 
     send_email(
         to=current_user.email,
-        subject="Confirmation de ton adresse mail",
+        subject=_("email_address_confirmation"),
         template="email/confirm",
         user=current_user,
         token=token
     )
 
-    display_info_message("Un email de confirmation t'a été envoyé.")
+    display_info_message(_("confirmation_email_sent"))
     return go_to_account_unconfirmed_page()

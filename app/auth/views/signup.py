@@ -1,4 +1,5 @@
 from flask import current_app, render_template, request, session
+from flask_babel import _
 from flask_login import login_user, logout_user
 
 from .. import bp
@@ -18,10 +19,10 @@ def signup():
         email_exists = get_user_by_email(form.email.data) is not None
 
         if user_exists:
-            form.username.errors.append("Ce nom d'utilisateur est déjà pris")
+            form.username.errors.append(_("username_already_used"))
 
         if email_exists:
-            form.email.errors.append("Cet email existe déjà")
+            form.email.errors.append(_("email_already_used"))
 
         if user_exists or email_exists:
             return render_signup_page(form)
@@ -32,7 +33,7 @@ def signup():
 
             send_email(
                 to=user.email,
-                subject="Confirmation de ton adresse mail",
+                subject=_("email_address_confirmation"),
                 template="email/confirm",
                 user=user,
                 token=token
@@ -40,12 +41,12 @@ def signup():
 
             send_email(
                 to=current_app.config.get("ADMIN_WTL"),
-                subject="Nouvel inscrit",
+                subject=_("new_user_signup"),
                 template="email/new_user",
                 user=user
             )
 
-            display_info_message("Un email de confirmation t'a été envoyé.")
+            display_info_message(_("confirmation_email_sent"))
 
             session.pop("signed", None)
             session.pop("username", None)
@@ -60,6 +61,6 @@ def signup():
 def render_signup_page(form):
     return render_template(
         "auth/signup.html",
-        title="Inscription",
+        title=_("signup"),
         form=form
     )

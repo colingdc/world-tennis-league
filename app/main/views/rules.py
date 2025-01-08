@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 
 from .. import bp
 
@@ -7,5 +8,5 @@ from .. import bp
 def rules():
     return render_template(
         "main/rules.html",
-        title="FAQ"
+        title=_("faq")
     )

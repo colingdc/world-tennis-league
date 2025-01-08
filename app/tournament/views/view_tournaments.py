@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 
 from .. import bp
 from ..lib import fetch_all_tournaments
@@ -12,6 +13,6 @@ def view_tournaments():
 
     return render_template(
         "tournament/view_tournaments.html",
-        title="Tournois",
+        title=_("tournaments"),
         tournaments=tournaments
     )

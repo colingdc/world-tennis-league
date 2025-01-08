@@ -1,4 +1,5 @@
 from flask import redirect, render_template, request, url_for
+from flask_babel import _
 
 from .. import bp
 from ..forms import EditPlayerForm
@@ -20,7 +21,7 @@ def edit_player(player_id):
     if form.validate_on_submit():
         update_player(player, form.first_name.data, form.last_name.data)
 
-        display_info_message(f"Le joueur {player.get_name()} a été mis à jour")
+        display_info_message(_("player_updated", player_name=player.get_name()))
         return redirect(url_for(".view_players"))
     else:
         return render_template(

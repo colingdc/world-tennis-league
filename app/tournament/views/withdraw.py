@@ -1,3 +1,4 @@
+from flask_babel import _
 from flask_login import current_user
 
 from .. import bp
@@ -13,15 +14,15 @@ def withdraw(tournament_id):
     tournament = fetch_tournament(tournament_id)
 
     if not current_user.participation(tournament):
-        display_warning_message("Tu n'es pas inscrit à ce tournoi")
+        display_warning_message(_("not_registered_yet"))
         return go_to_tournament_page(tournament_id)
 
     participation = current_user.participation(tournament)
 
     if not tournament.is_open_to_registration():
-        display_warning_message("Tu ne peux plus te retirer de ce tournoi")
+        display_warning_message(_("not_allowed_to_withdraw"))
     else:
         participation.delete()
-        display_success_message(f"Tu es bien désinscrit du tournoi {tournament.name}")
+        display_success_message(_("withdrawal_confirmed", tournament_name=tournament.name))
 
     return go_to_tournament_page(tournament_id)

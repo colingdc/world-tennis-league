@@ -1,6 +1,7 @@
 import json
 
-from flask import redirect, render_template, url_for, abort
+from flask import redirect, render_template, url_for
+from flask_babel import _
 
 from .. import bp
 from ..forms import FillTournamentDrawForm
@@ -58,7 +59,7 @@ def update_tournament_draw(tournament_id):
     else:
         return render_template(
             "tournament/update_tournament_draw.html",
-            title=f"{tournament.name} – Tableau",
+            title=_("tournament_draw", tournament_name=tournament.name),
             tournament=tournament,
             form=form
         )

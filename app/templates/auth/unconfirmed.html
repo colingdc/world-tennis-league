@@ -4,19 +4,19 @@
 
 <div class="page-header">
     <div class="well">
-        <h1>Bienvenue {{ current_user.username }} !</h1>
-        <h3>Tu n'as pas encore confirmé ton email.</h3>
+        <h1>{{ _("welcome", username=current_user.username) }}</h1>
+        <h3>{{ _("you_have_not_confirmed_your_email") }}</h3>
         <p>
-            Avant de pouvoir accéder au site, tu dois confirmer ton adresse email
+            {{ _("you_must_confirm_your_email") }}
             <strong>({{ current_user.email }})</strong>.
         </p>
         <p>
-            Vérifie ta boîte mail, tu as dû recevoir un email contenant un lien de confirmation.
+            {{ _("check_your_mailbox") }}
         </p>
         <p>
-            Tu n'as pas reçu l'email ou le lien de confirmation a expiré ?
+            {{ _("did_not_receive_email?") }}
             <a href="{{ url_for('auth.resend_confirmation') }}">
-                Envoyer à nouveau l'email de confirmation
+                {{ _("resend_confirmation_email") }}
             </a>
         </p>
     </div>

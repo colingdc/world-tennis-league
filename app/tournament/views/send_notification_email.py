@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from flask_babel import _
+
 from .. import bp
 from ..lib import fetch_tournament
 from ... import db
@@ -16,7 +18,7 @@ def send_notification_email(tournament_id):
     tournament = fetch_tournament(tournament_id)
 
     if all(t.notification_sent_at is not None for t in tournament.week.tournaments):
-        display_info_message("La notification par mail a déjà été envoyée pour tous les tournois de la semaine")
+        display_info_message(_("participants_already_notified"))
         return go_to_tournament_page(tournament.id)
 
     for t in tournament.week.tournaments:
@@ -29,11 +31,11 @@ def send_notification_email(tournament_id):
     for user in users_to_notify:
         send_email(
             user.email,
-            "Les tournois de la semaine sont ouverts aux inscriptions !",
+            _("registrations_opened_this_week"),
             "email/registrations_open",
             user=user,
             tournaments=tournament.week.tournaments
         )
 
-    display_info_message("Les participants ont été notifiés par mail de l'ouverture des tournois de la semaine")
+    display_info_message(_("participants_notified"))
     return go_to_tournament_page(tournament.id)
