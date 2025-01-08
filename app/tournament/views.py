@@ -10,8 +10,9 @@ from .. import db
 from ..decorators import login_required, manager_required
 from ..email import send_email
 from ..models import (Match, Participation, Player, Ranking, Tournament,
-                      TournamentCategory, TournamentPlayer, TournamentStatus,
+                      TournamentPlayer, TournamentStatus,
                       TournamentWeek, User)
+from ..constants import tournament_categories
 from .forms import (CreateTournamentDrawForm, CreateTournamentForm,
                     EditTournamentForm, FillTournamentDrawForm,
                     MakeForecastForm)
@@ -25,7 +26,7 @@ def create_tournament():
     form.category.choices = [("", "Choisir une catégorie")]
     form.category.choices += [(
         i, c["full_name"])
-        for i, c in TournamentCategory.categories.items()]
+        for i, c in tournament_categories.items()]
 
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())
@@ -37,7 +38,7 @@ def create_tournament():
             db.session.add(tournament_week)
             db.session.commit()
 
-        category = TournamentCategory.categories.get(form.category.data)
+        category = tournament_categories.get(form.category.data)
         number_rounds = category["number_rounds"]
         tournament = Tournament(name=form.name.data,
                                 started_at=form.start_date.data,
