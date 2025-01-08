@@ -38,13 +38,7 @@ def create_app(config_name):
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.filter(User.id == int(user_id)).first()
-
-    error_handler = RotatingFileHandler(
-        "logs/app.log", maxBytes=1000000, backupCount=1)
-    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-    error_handler.setFormatter(formatter)
-    app.logger.addHandler(error_handler)
+        return User.query.get(user_id)
 
     @app.template_filter('autoversion')
     def autoversion_filter(filename):
@@ -57,6 +51,22 @@ def create_app(config_name):
         newfilename = "{0}?v={1}".format(filename, timestamp)
         return newfilename
 
+    register_loggers(app)
+    register_datetime_filters(app)
+    register_blueprints(app)
+    register_error_handlers(app)
+
+    return app
+
+
+def register_loggers(app):
+    error_handler = RotatingFileHandler("logs/app.log", maxBytes=1000000, backupCount=1)
+    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+    error_handler.setFormatter(formatter)
+    app.logger.addHandler(error_handler)
+
+
+def register_datetime_filters(app):
     def custom_datetime_filter(value):
         dt = format_datetime(value, "EEEE d MMMM yyyy à H:mm")
         return dt.capitalize()
@@ -89,6 +99,8 @@ def create_app(config_name):
     app.jinja_env.filters["dt"] = custom_datetime_filter
     app.jinja_env.filters["dt_diff"] = custom_datetime_difference_filter
 
+
+def register_blueprints(app):
     from .public import bp as public_blueprint
     app.register_blueprint(public_blueprint)
 
@@ -110,6 +122,8 @@ def create_app(config_name):
     from .player import bp as player_blueprint
     app.register_blueprint(player_blueprint, url_prefix="/wtl/player")
 
+
+def register_error_handlers(app):
     from .errors import unauthorized, forbidden, page_not_found, bad_request, internal_server_error, unhandled_exception
 
     app.register_error_handler(401, unauthorized)
@@ -118,5 +132,3 @@ def create_app(config_name):
     app.register_error_handler(400, bad_request)
     # app.register_error_handler(500, internal_server_error)
     # app.register_error_handler(Exception, unhandled_exception)
-
-    return app

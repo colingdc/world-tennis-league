@@ -8,19 +8,20 @@ from instance import instance
 
 
 def make_shell_context():
-    return dict(app=app,
-                db=db,
-                Match=Match,
-                Participation=Participation,
-                Player=Player,
-                Ranking=Ranking,
-                Role=Role,
-                Tournament=Tournament,
-                TournamentPlayer=TournamentPlayer,
-                TournamentStatus=TournamentStatus,
-                TournamentWeek=TournamentWeek,
-                User=User,
-                )
+    return dict(
+        app=app,
+        db=db,
+        Match=Match,
+        Participation=Participation,
+        Player=Player,
+        Ranking=Ranking,
+        Role=Role,
+        Tournament=Tournament,
+        TournamentPlayer=TournamentPlayer,
+        TournamentStatus=TournamentStatus,
+        TournamentWeek=TournamentWeek,
+        User=User,
+    )
 
 
 app = create_app(instance)
@@ -28,7 +29,6 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command("db", MigrateCommand)
 manager.add_command("shell", Shell(make_context=make_shell_context))
-
 
 if __name__ == "__main__":
     manager.run()

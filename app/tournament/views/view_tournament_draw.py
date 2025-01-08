@@ -10,9 +10,6 @@ from ...decorators import login_required
 def view_tournament_draw(tournament_id):
     tournament = fetch_tournament(tournament_id)
 
-    if tournament.deleted_at:
-        abort(404)
-
     return render_template(
         "tournament/view_tournament_draw.html",
         title=f"{tournament.name} – Tableau",

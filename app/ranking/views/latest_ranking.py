@@ -10,7 +10,4 @@ from ...models import Tournament
 def latest_ranking():
     week = Tournament.get_latest_finished_tournament().week
 
-    if week.deleted_at:
-        abort(404)
-
     return redirect(url_for(".weekly_ranking", tournament_week_id=week.id))
