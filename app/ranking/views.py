@@ -4,19 +4,21 @@ from flask import abort, redirect, render_template, url_for
 from flask_babel import format_datetime
 
 from . import bp
-from ..decorators import login_required
-from ..models import Ranking, Tournament, TournamentWeek, TournamentStatus
 from .forms import RankingForm, MonthlyRankingForm
+from .lib import get_monthly_ranking, get_weekly_ranking
+from ..decorators import login_required
+from ..models import Tournament, TournamentWeek, TournamentStatus
 
 
 @bp.route("/<tournament_week_id>")
 @login_required
-def ranking(tournament_week_id):
+def weekly_ranking(tournament_week_id):
     week = TournamentWeek.query.get_or_404(tournament_week_id)
+
     if week.deleted_at:
         abort(404)
 
-    ranking = Ranking.get_ranking(week)
+    ranking = get_weekly_ranking(week)
 
     return render_template(
         "ranking/ranking.html",
@@ -30,10 +32,11 @@ def ranking(tournament_week_id):
 @login_required
 def latest_ranking():
     week = Tournament.get_latest_finished_tournament().week
+
     if week.deleted_at:
         abort(404)
 
-    return redirect(url_for(".ranking", tournament_week_id=week.id))
+    return redirect(url_for(".weekly_ranking", tournament_week_id=week.id))
 
 
 @bp.route("/monthly/", methods=["GET", "POST"])
@@ -54,7 +57,7 @@ def monthly_ranking(year=None, month=None):
         year, month = form.month_name.data.split("-")
         return redirect(url_for(".monthly_ranking", year=int(year), month=int(month)))
 
-    ranking = Ranking.get_monthly_ranking(year, month) if year and month else None
+    ranking = get_monthly_ranking(year, month) if year and month else None
     month_name = format_date(year, month) if year and month else None
 
     return render_template(
@@ -70,17 +73,16 @@ def monthly_ranking(year=None, month=None):
 @login_required
 def index():
     form = RankingForm()
+
     weeks = (TournamentWeek.query
              .join(Tournament)
              .filter(Tournament.status == TournamentStatus.FINISHED)
              .order_by(TournamentWeek.start_date.desc()))
 
-    form.week_name.choices = [
-                                 (-1, "Choisir une semaine")] + [(w.id, w.get_name("ranking"))
-                                                                 for w in weeks]
+    form.week_name.choices = [(-1, "Choisir une semaine")] + [(w.id, w.get_name("ranking")) for w in weeks]
 
     if form.validate_on_submit() and form.week_name.data != -1:
-        return redirect(url_for(".ranking", tournament_week_id=form.week_name.data))
+        return redirect(url_for(".weekly_ranking", tournament_week_id=form.week_name.data))
 
     return render_template(
         "ranking/index.html",
