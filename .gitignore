@@ -101,7 +101,6 @@ ENV/
 .mypy_cache/
 
 .vscode/
-__pycache__/
 .idea/
 migrations/
 tmp/coverage/
@@ -112,7 +111,7 @@ tmp/coverage/
 instance.py
 run.sh
 
-# csv files used to migrate data
+# csv files used to migrate data
 data/*.csv
 data/*.xlsx
 *.sql
@@ -125,3 +124,4 @@ nohup.out
 load_variables.sh
 launch.sh
 kill.sh
+logs/
