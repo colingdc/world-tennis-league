@@ -1,6 +1,5 @@
 import json
 from datetime import datetime, timedelta
-from math import floor, log
 
 from flask import abort, redirect, render_template, request, url_for
 from flask_login import current_user
@@ -8,12 +7,14 @@ from flask_login import current_user
 from . import bp
 from .forms import CreateTournamentDrawForm, CreateTournamentForm, EditTournamentForm, FillTournamentDrawForm, \
     MakeForecastForm
+from .lib import insert_tournament_week, fetch_tournament_week_by_start_date, insert_tournament, \
+    open_tournament_registrations, close_tournament_registrations, finish_tournament, is_tournament_finished, \
+    fetch_non_deleted_tournaments
 from .. import db
 from ..constants import tournament_categories
 from ..decorators import login_required, manager_required
 from ..email import send_email
-from ..models import Match, Participation, Player, Ranking, Tournament, TournamentPlayer, TournamentStatus, \
-    TournamentWeek, User
+from ..models import Participation, Player, Tournament, TournamentPlayer, User
 from ..notifications import display_success_message, display_info_message, display_warning_message
 
 
@@ -28,36 +29,17 @@ def create_tournament():
 
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())
-        tournament_week = (TournamentWeek.query
-                           .filter_by(start_date=monday)
-                           .first())
+        tournament_week = fetch_tournament_week_by_start_date(monday)
 
         if tournament_week is None:
-            tournament_week = TournamentWeek(start_date=monday)
-            db.session.add(tournament_week)
-            db.session.commit()
+            tournament_week = insert_tournament_week(monday)
 
-        category = tournament_categories.get(form.category.data)
-        number_rounds = category["number_rounds"]
-        tournament = Tournament(
+        insert_tournament(
             name=form.name.data,
-            started_at=form.start_date.data,
+            start_date=form.start_date.data,
             week_id=tournament_week.id,
-            number_rounds=number_rounds,
-            category=form.category.data,
+            category_name=form.category.data,
         )
-
-        db.session.add(tournament)
-        db.session.commit()
-
-        for i in range(1, 2 ** tournament.number_rounds):
-            match = Match(
-                position=i,
-                tournament_id=tournament.id,
-                round=floor(log(i) / log(2)) + 1
-            )
-            db.session.add(match)
-        db.session.commit()
 
         display_info_message(f"Le tournoi {form.name.data} a été créé")
         return redirect(url_for(".create_tournament"))
@@ -82,15 +64,10 @@ def edit_tournament(tournament_id):
 
     if form.validate_on_submit():
         monday = form.week.data - timedelta(days=form.week.data.weekday())
-        tournament_week = (TournamentWeek.query
-                           .filter_by(start_date=monday)
-                           .first())
+        tournament_week = fetch_tournament_week_by_start_date(monday)
 
         if tournament_week is None:
-            tournament_week = TournamentWeek(start_date=monday)
-
-            db.session.add(tournament_week)
-            db.session.commit()
+            tournament_week = insert_tournament_week(monday)
 
         tournament.name = form.name.data
         tournament.started_at = form.start_date.data
@@ -113,7 +90,7 @@ def edit_tournament(tournament_id):
 @bp.route("/view")
 @login_required
 def view_tournaments():
-    tournaments = Tournament.query.filter(Tournament.deleted_at.is_(None))
+    tournaments = fetch_non_deleted_tournaments()
 
     return render_template(
         "tournament/view_tournaments.html",
@@ -500,10 +477,7 @@ def update_tournament_draw(tournament_id):
 def open_registrations(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
-    tournament.status = TournamentStatus.REGISTRATION_OPEN
-
-    db.session.add(tournament)
-    db.session.commit()
+    open_tournament_registrations(tournament)
 
     display_info_message("Les inscriptions au tournoi sont ouvertes")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
@@ -514,15 +488,7 @@ def open_registrations(tournament_id):
 def close_registrations(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
-    tournament.status = TournamentStatus.ONGOING
-
-    db.session.add(tournament)
-    db.session.commit()
-
-    for participant in tournament.participations:
-        if not participant.has_made_forecast():
-            db.session.delete(participant)
-    db.session.commit()
+    close_tournament_registrations(tournament)
 
     display_info_message("Les inscriptions au tournoi sont closes")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
@@ -533,18 +499,10 @@ def close_registrations(tournament_id):
 def close_tournament(tournament_id):
     tournament = Tournament.query.get_or_404(tournament_id)
 
-    if tournament.status == TournamentStatus.FINISHED:
-        return redirect(url_for(".view_tournament", tournament_id=tournament.id))
+    if not is_tournament_finished(tournament):
+        finish_tournament(tournament)
+        display_info_message("Le tournoi a bien été clos")
 
-    tournament.status = TournamentStatus.FINISHED
-
-    db.session.add(tournament)
-    db.session.commit()
-
-    tournament.compute_scores()
-    Ranking.compute_rankings(tournament.week)
-
-    display_info_message("Le tournoi a bien été clos")
     return redirect(url_for(".view_tournament", tournament_id=tournament.id))
 
 
