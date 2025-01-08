@@ -7,8 +7,8 @@ from ..lib import fetch_tournament
 from ... import db
 from ...decorators import manager_required
 from ...email import send_email
-from ...models import User
 from ...notifications import display_info_message
+from ...user.lib import fetch_users_that_can_receive_notifications
 
 
 @bp.route("/<tournament_id>/send_notification_email")
@@ -25,7 +25,7 @@ def send_notification_email(tournament_id):
         db.session.add(t)
     db.session.commit()
 
-    users_to_notify = User.query.filter(User.notifications_activated).filter(User.confirmed)
+    users_to_notify = fetch_users_that_can_receive_notifications()
 
     for user in users_to_notify:
         send_email(

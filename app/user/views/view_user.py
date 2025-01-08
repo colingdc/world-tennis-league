@@ -6,7 +6,7 @@ from ...decorators import login_required
 from ...models import User
 
 
-@bp.route("/user/<user_id>")
+@bp.route("/<user_id>")
 @login_required
 def view_user(user_id):
     user = User.query.get_or_404(user_id)

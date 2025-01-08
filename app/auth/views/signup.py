@@ -3,9 +3,8 @@ from flask_login import login_user, logout_user
 
 from .. import bp
 from ..forms import SignupForm
-from ... import db
+from ..lib import get_user_by_username, get_user_by_email, create_user
 from ...email import send_email
-from ...models import Role, User
 from ...notifications import display_info_message
 
 
@@ -14,8 +13,8 @@ def signup():
     form = SignupForm(request.form)
 
     if form.validate_on_submit():
-        user_exists = User.query.filter_by(username=form.username.data).first()
-        email_exists = User.query.filter_by(email=form.email.data).first()
+        user_exists = get_user_by_username(form.username.data) is not None
+        email_exists = get_user_by_email(form.email.data) is not None
 
         if user_exists:
             form.username.errors.append("Ce nom d'utilisateur est déjà pris")
@@ -30,16 +29,7 @@ def signup():
                 form=form
             )
         else:
-            role = Role.query.filter(Role.name == "User").first()
-            user = User(
-                username=form.username.data,
-                email=form.email.data,
-                password=form.password.data,
-                role=role
-            )
-
-            db.session.add(user)
-            db.session.commit()
+            user = create_user(form.username.data, form.email.data, form.password.data)
 
             token = user.generate_confirmation_token()
 

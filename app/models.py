@@ -362,24 +362,6 @@ class Tournament(db.Model):
                 .filter(Tournament.status == TournamentStatus.FINISHED))
         return tournaments
 
-    @staticmethod
-    def get_ongoing_tournaments():
-        tournaments = (
-            Tournament.query
-                .order_by(Tournament.started_at.desc())
-                .filter(Tournament.deleted_at.is_(None))
-                .filter(Tournament.status == TournamentStatus.ONGOING))
-        return tournaments
-
-    @staticmethod
-    def get_open_tournaments():
-        tournaments = (
-            Tournament.query
-                .order_by(Tournament.started_at.desc())
-                .filter(Tournament.deleted_at.is_(None))
-                .filter(Tournament.status == TournamentStatus.REGISTRATION_OPEN))
-        return tournaments
-
 
 class Participation(db.Model):
     __tablename__ = "participations"

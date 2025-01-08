@@ -1,4 +1,16 @@
-from ..models import Tournament, TournamentWeek, Ranking
+from .. import db
+from ..models import Tournament, TournamentWeek, Ranking, User
+
+
+def fetch_users_that_can_receive_notifications():
+    return User.query.filter(User.notifications_activated).filter(User.confirmed)
+
+
+def update_notification_preferences(user, notifications_activated):
+    user.notifications_activated = notifications_activated
+
+    db.session.add(user)
+    db.session.commit()
 
 
 def generate_chart(user):
