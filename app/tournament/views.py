@@ -347,6 +347,9 @@ def edit_tournament_draw(tournament_id):
                         user=participation.user,
                         tournament=tournament,
                         forecast=forecast)
+                elif participation.tournament_player_id is None:
+                    db.session.delete(participation)
+                    db.session.commit()
 
         flash(f"Le tableau du tournoi {tournament.name} a été modifié", "info")
         return redirect(url_for(".view_tournament",
