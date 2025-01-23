@@ -293,6 +293,8 @@ def edit_tournament_draw(tournament_id):
     if form.validate_on_submit():
         qualifier_count = 0
         modified_players = []
+        new_players_map = {}
+
         for match, p in zip(matches, form.player):
             if p.data["player1_name"] >= 0:
                 player_id = p.data["player1_name"]
@@ -309,6 +311,7 @@ def edit_tournament_draw(tournament_id):
             t1.seed = p.data["player1_seed"]
             t1.status = p.data["player1_status"]
             t1.qualifier_id = qualifier_id
+            new_players_map[player_id] = t1.id
 
             if p.data["player2_name"] >= 0:
                 player_id = p.data["player2_name"]
@@ -325,16 +328,18 @@ def edit_tournament_draw(tournament_id):
             t2.seed = p.data["player2_seed"]
             t2.status = p.data["player2_status"]
             t2.qualifier_id = qualifier_id
+            new_players_map[player_id] = t2.id
 
             # Add tournament players
             db.session.add(t1)
             db.session.add(t2)
             db.session.commit()
 
-        if tournament.is_open_to_registration():
-            for participation, forecast in participations.items():
-                if forecast in modified_players:
-                    participation.tournament_player = None
+        for participation, forecast in participations.items():
+            if forecast in modified_players:
+                participation.tournament_player_id = new_players_map.get(forecast.id)
+
+                if tournament.is_open_to_registration():
                     send_email(
                         participation.user.email,
                         f"Tableau du tournoi {tournament.name} modifié",
@@ -342,6 +347,9 @@ def edit_tournament_draw(tournament_id):
                         user=participation.user,
                         tournament=tournament,
                         forecast=forecast)
+                elif participation.tournament_player_id is None:
+                    db.session.delete(participation)
+                    db.session.commit()
 
         flash(f"Le tableau du tournoi {tournament.name} a été modifié", "info")
         return redirect(url_for(".view_tournament",
