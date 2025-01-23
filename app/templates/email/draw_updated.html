@@ -5,9 +5,8 @@
   modifié.
 </p>
 <p>
-  Le joueur que tu as choisi ({{ forecast.get_name() }}) a déclaré forfait ou a
-  changé de place dans le tableau, et ton pronostic a été annulé. Pour
-  participer à ce tournoi tu dois effectuer un nouveau pronostic sur
+  Le joueur que tu as choisi ({{ forecast.get_name() }}) a déclaré forfait et ton pronostic a été annulé. Pour
+  participer à ce tournoi, tu dois effectuer un nouveau pronostic sur
   <a
     href="{{ url_for('tournament.view_tournament', tournament_id=tournament.id, _external=True) }}"
     >cette page</a
